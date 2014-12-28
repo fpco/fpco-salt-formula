@@ -3,9 +3,9 @@
 # ensure we can easily add apt repos/PPA
 apt-get install -y python-software-properties
 # this will give us latest saltstack
-add-apt-repository ppa:saltstack/salt
+add-apt-repository -y ppa:saltstack/salt
 # ensure we get zmq v4
-add-apt-repository ppa:chris-lea/zeromq
+add-apt-repository -y ppa:chris-lea/zeromq
 # ensure PPAs are active and install!
 apt-get update
 apt-get install -y salt-minion
