@@ -13,19 +13,23 @@ apt-get install -y salt-minion
 service salt-minion stop
 # where to put salt configs AND pillar/formula
 export SALT_ROOT=/etc/salt
+CONFIG_PATH=$SALT_ROOT/minion
+FILE_ROOT=$SALT_ROOT/formula
+PILLAR_ROOT=$SALT_ROOT/pillar
 # make a home for salt configs
-mkdir -p $SALT_ROOT/formula $SALT_ROOT/pillar
+mkdir -p $FILE_ROOT $PILLAR_ROOT
 # symlink to keep rsync updates simple
-ln -sf `pwd` $SALT_ROOT/formula/
+#ln -sf `pwd` $SALT_ROOT/formula
+rsync -avz `pwd`/ $FILE_ROOT/
 # create a suitable minion config for local file roots/etc
-cat <<EOF > $SALT_ROOT/minion
+cat <<EOF > $CONFIG_PATH
 file_client: local
 file_roots:
   base:
-    - $SALT_ROOT/formula
+    - $FILE_ROOT
 pillar_roots:
   base:
-    - $SALT_ROOT/pillar
+    - $PILLAR_ROOT
 EOF
 
 # setup stackage binary
