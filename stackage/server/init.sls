@@ -4,7 +4,7 @@
 stackage-server-image:
   docker.built:
     - name: stackage-server:run
-    - path: /home/ubuntu/dockerfile-experiments/stackage-server/run/
+    - path: /home/ubuntu/devops-experiments/dockerfiles/stackage-server/run/
 
 
 stackage-server:
