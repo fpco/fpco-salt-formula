@@ -55,6 +55,7 @@ stackage-server-config:
     - require:
         - file: stackage-config-path
     - source: salt://stackage/server/files/settings.yml
+    - template: jinja
 
 
 stackage-postgres-config:
@@ -65,6 +66,7 @@ stackage-postgres-config:
     - require:
         - file: stackage-config-path
     - source: salt://stackage/server/files/postgresql.yml
+    - template: jinja
 
 start-stackage-server-script:
   file.managed:

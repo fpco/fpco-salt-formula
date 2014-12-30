@@ -1,10 +1,10 @@
-{%- set app_root = 'http://beta.stackage.org' %}
-{%- set hackage_root = 'http://hackage.fpcomplete.com' %}
-{%- set aws_s3_access  = 'someaccesskey' %}
-{%- set aws_s3_secret  = 'somesecretkey' %}
-{%- set aws_s3_bucket  = 'stackage-server-beta' %}
-{%- set blob_store_path = '/tmp/stackage-server' %}
-{%- set server_port = 3000 %}
+{%- set server_port = salt['pillar.get']('stackage:server:port', 3000) %}
+{%- set app_root = salt['pillar.get']('stackage:server:app_root', 'http://beta.stackage.org') %}
+{%- set hackage_root = salt['pillar.get']('stackage:server:hackage_root', 'http://hackage.fpcomplete.com') %}
+{%- set blob_store_path = salt['pillar.get']('stackage:server:blob_path', '/tmp/stackage-server') %}
+{%- set aws_s3_access = salt['pillar.get']('stackage:s3:access', 'someaccesskey') %}
+{%- set aws_s3_secret = salt['pillar.get']('stackage:s3:secret', 'somesecretkey') %}
+{%- set aws_s3_bucket = salt['pillar.get']('stackage:s3:bucket', 'stackage-server-beta') %}
 
 Default: &defaults
   host: "*4" # any IPv4 host
