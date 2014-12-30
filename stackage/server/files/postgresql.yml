@@ -1,0 +1,23 @@
+Default: &defaults
+  user: stackage_server_beta
+  password: stackage_server_beta
+  host: docker_db
+  port: 5432
+  database: stackage_server_beta
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Testing:
+  database: stackage_server_test
+  <<: *defaults
+
+Staging:
+  poolsize: 100
+  <<: *defaults
+
+Production:
+  database: stackage_server_production
+  poolsize: 100
+  <<: *defaults

@@ -54,48 +54,7 @@ stackage-server-config:
     - group: root
     - require:
         - file: stackage-config-path
-    - contents: |
-        Default: &defaults
-          host: "*4" # any IPv4 host
-          port: 3000
-          approot: "http://beta.stackage.org"
-          hackage-root: http://hackage.fpcomplete.com
-          admin-users:
-            - fpcomplete
-          # google-auth:
-            # client-id: foo
-            # client-secret: bar
-
-        Development:
-          <<: *defaults
-          blob-store: file:dev-blob-store
-
-        Testing:
-          <<: *defaults
-
-        Staging:
-          <<: *defaults
-          blob-store:
-            type: aws
-            local: /tmp/stackage-server
-            access: someaccesskey
-            secret: somesecretkey
-            bucket: stackage-server-beta
-
-
-        Production:
-          #approot: "http://www.example.com"
-          <<: *defaults
-          blob-store: file:/tmp/stackage-server
-
-        S3-backed storage:
-          blob-store:
-            type: aws
-            local: /tmp/stackage-server
-            access: someaccesskey
-            secret: somesecretkey
-            bucket: stackage-server-beta
-
+    - source: salt://stackage/server/files/settings.yml
 
 
 stackage-postgres-config:
@@ -105,31 +64,7 @@ stackage-postgres-config:
     - group: root
     - require:
         - file: stackage-config-path
-    - contents: |
-        Default: &defaults
-          user: stackage_server_beta
-          password: stackage_server_beta
-          host: docker_db
-          port: 5432
-          database: stackage_server_beta
-          poolsize: 10
-
-        Development:
-          <<: *defaults
-
-        Testing:
-          database: stackage_server_test
-          <<: *defaults
-
-        Staging:
-          poolsize: 100
-          <<: *defaults
-
-        Production:
-          database: stackage_server_production
-          poolsize: 100
-          <<: *defaults
-
+    - source: salt://stackage/server/files/postgresql.yml
 
 start-stackage-server-script:
   file.managed:
@@ -145,7 +80,7 @@ start-stackage-server-script:
             -a STDOUT                   \
             --link postgres:docker_db   \
             --publish :80:3000          \
-            --volume /home/stackage/server/:/opt/stackage-server  \
+            --volume {{ HOME }}:/opt/stackage-server  \
             stackage-server:run
 
 
@@ -168,7 +103,7 @@ stackage-upstart-config:
               -a STDOUT                   \
               --link postgres:docker_db   \
               --publish :80:3000          \
-              --volume /home/stackage/server/:/opt/stackage-server  \
+              --volume {{ HOME }}:/opt/stackage-server  \
               stackage-server:run
         # /usr/local/bin/start-stackage-server
         end script
