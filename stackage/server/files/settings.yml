@@ -1,8 +1,16 @@
+{%- set app_root = 'http://beta.stackage.org' %}
+{%- set hackage_root = 'http://hackage.fpcomplete.com' %}
+{%- set aws_s3_access  = 'someaccesskey' %}
+{%- set aws_s3_secret  = 'somesecretkey' %}
+{%- set aws_s3_bucket  = 'stackage-server-beta' %}
+{%- set blob_store_path = '/tmp/stackage-server' %}
+{%- set server_port = 3000 %}
+
 Default: &defaults
   host: "*4" # any IPv4 host
-  port: 3000
-  approot: "http://beta.stackage.org"
-  hackage-root: http://hackage.fpcomplete.com
+  port: {{ server_port }}
+  approot: {{ app_root }}
+  hackage-root: {{ hackage_root }}
   admin-users:
     - fpcomplete
   # google-auth:
@@ -20,23 +28,12 @@ Staging:
   <<: *defaults
   blob-store:
     type: aws
-    local: /tmp/stackage-server
-    access: someaccesskey
-    secret: somesecretkey
-    bucket: stackage-server-beta
+    local: {{ blob_store_path }}
+    access: {{ aws_s3_access }}
+    secret: {{ aws_s3_secret }}
+    bucket: {{ aws_s3_bucket }}
 
 
 Production:
-  #approot: "http://www.example.com"
   <<: *defaults
-  blob-store: file:/tmp/stackage-server
-
-S3-backed storage:
-  blob-store:
-    type: aws
-    local: /tmp/stackage-server
-    access: someaccesskey
-    secret: somesecretkey
-    bucket: stackage-server-beta
-
-
+  blob-store: file:{{ blob_store_path }}

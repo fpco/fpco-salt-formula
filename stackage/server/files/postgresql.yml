@@ -1,10 +1,18 @@
+{%- set dbname = 'stackage_server_beta' %}
+{%- set user = 'stackage_server_beta' %}
+{%- set pass = 'stackage_server_beta' %}
+{%- set host  = 'docker_db' %}
+{%- set port  = 5432 %}
+{%- set poolsize  = 10 %}
+
+
 Default: &defaults
-  user: stackage_server_beta
-  password: stackage_server_beta
-  host: docker_db
-  port: 5432
-  database: stackage_server_beta
-  poolsize: 10
+  user: {{ user }}
+  password: {{ pass }}
+  host: {{ host }}
+  port: {{ port }}
+  database: {{ dbname }}
+  poolsize: {{ poolsize }}
 
 Development:
   <<: *defaults
