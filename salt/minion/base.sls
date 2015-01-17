@@ -22,6 +22,7 @@ salt-minion:
     - watch:
         - pkg: salt-minion
         - file: salt-minion
+        - file: salt-minion-id
 
 salt-minion-id:
   file.managed:
