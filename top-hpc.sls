@@ -9,8 +9,11 @@ base:
   'master':
     - salt.master
 
-  'compute0':
-    - hpc.example-war.master
+  'compute*':
+    - hpc.example-war
 
-  'compute[1-5]':
-    - hpc.example-war.slave
+# 'compute0':
+#   - hpc.example-war.master
+
+# 'compute[1-5]':
+#   - hpc.example-war.slave
