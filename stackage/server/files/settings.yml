@@ -36,4 +36,9 @@ Staging:
 
 Production:
   <<: *defaults
-  blob-store: file:{{ blob_store_path }}
+  blob-store:
+    type: aws
+    local: {{ blob_store_path }}
+    access: {{ aws_s3_access }}
+    secret: {{ aws_s3_secret }}
+    bucket: {{ aws_s3_bucket }}

@@ -1,7 +1,7 @@
 {%- set dbname = salt['pillar.get']('stackage:db:name', 'stackage_server_beta') %}
 {%- set user = salt['pillar.get']('stackage:db:user', 'stackage_server_beta') %}
 {%- set pass = salt['pillar.get']('stackage:db:pass', 'stackage_server_beta') %}
-{%- set host = salt['pillar.get']('stackage:db:host', 'docker_db') %}
+{%- set host = salt['pillar.get']('stackage:db:host', 'localhost') %}
 {%- set port = salt['pillar.get']('stackage:db:port', 5432) %}
 {%- set poolsize = salt['pillar.get']('stackage:db:poolsize', 10) %}
 
@@ -18,14 +18,10 @@ Development:
   <<: *defaults
 
 Testing:
-  database: stackage_server_test
   <<: *defaults
 
 Staging:
-  poolsize: 100
   <<: *defaults
 
 Production:
-  database: stackage_server_production
-  poolsize: 100
   <<: *defaults

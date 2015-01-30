@@ -1,6 +1,6 @@
 include:
   - stackage.server.config
-  - stackage.server.docker_image
+  - stackage.server.runtime_deps
 
 
 stackage-server:
@@ -8,27 +8,18 @@ stackage-server:
     - name: stackage
     - system: True
     - gid_from_name: True
-  # create a container, build if it does not exist
-# docker.installed:
-#   - name: stackage-server
-#   - image: stackage-server:run
-#   - user: stackage
-#   - detach: True
-#   - ports:
-#       - 3000:3000
-#   - volumes:
-#       - {{ HOME }}:/opt/stackage-server/:ro
-#   - watch:
-#       - docker: stackage-server-image
-#       - file: stackage-server-config
-#       - file: stackage-postgres-config
-# service.running:
-#   - name: stackage-server
-#   - watch:
-#       - file: stackage-server-config
-#       - file: stackage-postgres-config
-#       - file: stackage-upstart-config
-#       - docker: stackage-server
-#   - require:
-#       - file: stackage-upstart-config
-
+  service.running:
+    - name: stackage-server
+    - watch:
+        - file: stackage-server
+        - file: stackage-server-config
+        - file: stackage-server-postgres-config
+        - file: stackage-server-upstart-config
+    - require:
+        - pkg: stackage-server-runtime-dependencies
+  file.managed:
+    - name: /usr/local/bin/stackage-server
+    - user: root
+    - group: root
+    - mode: 755
+    - source: salt://stackage/server/files/stackage-server
