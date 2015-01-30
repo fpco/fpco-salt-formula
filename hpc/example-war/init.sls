@@ -1,48 +1,18 @@
-{%- set runtime_tarball = '/root/example-war-runtime.tar' %}
-{%- set image_tag = 'hpc/example-war:latest' %}
-{%- set image_name = salt['pillar.get']('hpc:docker_image', 'docker.fpcomplete.com/hpc:test') %}
+{%- set image_name = salt['pillar.get']('hpc:exwar:image', 'docker.fpcomplete.com/exwar') %}
+{%- set image_tag = salt['pillar.get']('hpc:exwar:tag', 'latest') %}
 {%- set hpc_port = salt['pillar.get']('hpc:port', 9909) %}
 
 include:
     - docker.install
 
-# first attempt..
-#runtime-image-to-import:
-#  docker.loaded:
-#    - name: example-war-runtime
-#    - source: salt://hpc/files/hpc-example-war-runtime.tar
-#    - require:
-#        - service: docker
-#        - module: salt-module-refresh
-
-# second attempt..
-#runtime-image-to-import:
-#  file.managed:
-#    - name: /root/example-war-runtime.tar
-#    - source: salt://hpc/files/hpc-example-war-runtime.tar
-#    - mode: 600
-#    - user: root
-#    - group: root
-#  cmd.run:
-#    - name: docker import {{ runtime_tarball }} {{ image_tag }}
-#    - unless: 
-#    - require:
-#        - file: runtime-image-to-import
-#        - service: docker
-#        - module: salt-module-refresh
-
-runtime-image-to-import:
-# third attempt..
-# docker.pull:
-#   - name: docker.fpcomplete.com/hpc:test
-#   - tag: example-war-runtime
-# finally.. salt-minion is not loading docker module, currently for unknown reason
-  cmd.run:
-    - name: docker pull {{ image_name }}
+hcp-example-war-runtime-image:
+  docker.pulled:
+    - name: {{ image_name }}
+    - tag: {{ image_tag }}
     - require:
         - service: docker
 
-hpc-open-firewall:
+hpc-example-war-open-firewall:
   file.managed:
     - name: /etc/ufw/applications.d/hpc-example.conf
     - user: root
@@ -56,4 +26,4 @@ hpc-open-firewall:
   cmd.wait:
     - name: ufw allow hpc-example
     - watch:
-        - file: hpc-open-firewall
+        - file: hpc-example-war-open-firewall
