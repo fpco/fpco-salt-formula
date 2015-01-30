@@ -19,6 +19,7 @@ salt-module-refresh:
     - watch:
         - pkg: docker-dependencies
         - pkg: docker
+        - service: docker
 
 docker:
   # the pkgrepo state does not seem to be working 100%, what gives?
