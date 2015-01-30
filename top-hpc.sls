@@ -11,9 +11,19 @@ base:
 
   'compute*':
     - hpc.example-war
+    - hpc.chwar
 
-# 'compute0':
-#   - hpc.example-war.master
 
-# 'compute[1-5]':
-#   - hpc.example-war.slave
+  'compute0':
+        - hpc.chwar.master
+
+  'compute[1-4]':
+        - hpc.chwar.slave
+
+
+  'compute5':
+        - hpc.example-war.master
+
+  'compute[6-9]':
+        - hpc.example-war.slave
+
