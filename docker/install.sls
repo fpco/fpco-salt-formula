@@ -1,3 +1,9 @@
+# ensure docker and its dependencies are installed, through apt and pip, and
+# that we have then reloaded salt's modules
+
+include:
+  - python.pip
+
 docker-dependencies:
   pkg.installed:
     - pkgs:
@@ -6,20 +12,24 @@ docker-dependencies:
         - iptables
         - ca-certificates
         - lxc
-        - python-pip
   pip.installed:
-     - name:  docker-py
-     - require:
+    - name:  docker-py
+    - require:
+        - pip: pip
+        - module: pip-refresh_modules
         - pkg: docker-dependencies
-        - module: salt-module-refresh
 
-salt-module-refresh:
+docker-refresh_modules:
   module.wait:
     - name: saltutil.refresh_modules
+    - require:
+        - pkg: docker-dependencies
+        - pip: docker-dependencies
+        - pkg: docker
     - watch:
         - pkg: docker-dependencies
+        - pip: docker-dependencies
         - pkg: docker
-        - service: docker
 
 docker:
   # the pkgrepo state does not seem to be working 100%, what gives?
@@ -37,7 +47,9 @@ docker:
     - refresh: True
   service.running:
     - enable: True
-    - require:
+    - watch:
         - pkg: docker
+    - require:
+        - module: docker-refresh_modules
 
 
