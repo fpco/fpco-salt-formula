@@ -1,4 +1,4 @@
-{% set HOME = '/home/stackage/server' %}
+{% set HOME = '/home/stackage' %}
 {% set CONF = HOME + '/config' %}
 
 stackage-server-config-path:
@@ -43,3 +43,8 @@ stackage-server-upstart-config:
     - user: root
     - group: root
     - source: salt://stackage/server/files/upstart.conf
+    - template: jinja
+    - defaults:
+        run_as_user: 'stackage'
+        env: 'Staging'
+        port: 3000

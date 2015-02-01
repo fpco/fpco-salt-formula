@@ -1,7 +1,6 @@
 base:
   'web*':
     - salt.minion.base
-    - postgres.client
     - stackage.server.runtime_deps
     - stackage.server
 
