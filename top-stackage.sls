@@ -7,4 +7,5 @@ base:
   'master':
     - salt.master
     - salt.minion.base
+#   - jenkins
 #   - stackage.server.rds
