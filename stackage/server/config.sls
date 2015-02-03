@@ -1,6 +1,12 @@
 {% set HOME = '/home/stackage' %}
 {% set CONF = HOME + '/config' %}
 
+stackage:
+  user.present:
+    - name: stackage
+    - system: True
+    - gid_from_name: True
+
 stackage-server-config-path:
   file.directory:
     - name: {{ CONF }}
@@ -35,16 +41,3 @@ stackage-server-postgres-config:
     - source: salt://stackage/server/files/postgresql.yml
     - template: jinja
 
-
-stackage-server-upstart-config:
-  file.managed:
-    - name: /etc/init/stackage-server.conf
-    - mode: 640
-    - user: root
-    - group: root
-    - source: salt://stackage/server/files/upstart.conf
-    - template: jinja
-    - defaults:
-        run_as_user: 'stackage'
-        env: 'Staging'
-        port: 3000

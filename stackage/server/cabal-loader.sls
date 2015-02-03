@@ -1,39 +1,37 @@
-start-stackage-cabal-loader-script:
+{%- set log_path = '/var/log/cabal.log' %}
+{%- set loader_bin = '/usr/local/bin/cabal-loader-stackage' %}
+{%- set env = 'Staging' %}
+{%- set user = 'stackage' %}
+
+include:
+  - stackage.server.runtime_deps
+  - stackage.server.config
+
+cabal-loader-stackage:
   file.managed:
-    - name: /usr/local/bin/start-stackage-cabal-loader
-    - user: root
-    - group: stackage
-    - mode: 0750
-    - contents: |
-        #!/bin/sh
-        /usr/bin/docker run             \
-            --user="stackage"           \
-            --restart=no                \
-            -a STDOUT                   \
-            --link postgres:docker_db   \
-            --volume /home/stackage/server/:/opt/stackage-server  \
-            stackage-server:cabal-loader
-
-
-
-stackage-cabal-loader-upstart-config:
-  file.managed:
-    - name: /etc/init/stackage-cabal-loader.conf
+    - name: /usr/local/bin/cabal-loader-stackage
+    - mode: 755
     - user: root
     - group: root
-    - contents: |
-        description "Stackage Server Cabal Loader (docker container)"
-        author "dev@fpcomplete.com"
-        start on filesystem and started docker and started postgres
-        stop on runlevel [!2345]
-        respawn
-        script
-          /usr/bin/docker run             \
-              --user="stackage"           \
-              -a STDOUT                   \
-              --link postgres:docker_db   \
-              --volume /home/stackage/server/:/opt/stackage-server  \
-              stackage-server:cabal-loader
-        # /usr/local/bin/start-stackage-cabal-loader
-        end script
+    - source: salt://stackage/server/files/cabal-loader-stackage
 
+  cron.present:
+    - name: '{{ loader_bin }} {{ env }} >> {{ log_path }} 2>&1'
+    - identifier: run-cabal-loader-stackage
+    - user: {{ user }}
+    - minute: 30
+    - hour: '*' 
+    - require:
+        - file: cabal-loader-stackage
+        - file: cabal-loader-log
+
+cabal-loader-log:
+  file.managed:
+    - name: {{ log_path }}
+    - user: {{ user }}
+    - group: root
+    - mode: 640
+    - source: False
+    - replace: False
+    - require:
+        - user: stackage

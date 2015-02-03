@@ -4,10 +4,6 @@ include:
 
 
 stackage-server:
-  user.present:
-    - name: stackage
-    - system: True
-    - gid_from_name: True
   file.managed:
     - name: /usr/local/bin/stackage-server
     - mode: 755
@@ -46,4 +42,18 @@ stackage-server-static-files:
     - dir_mode: 755
     - file_mode: 644
     - require:
-        - user: stackage-server
+        - user: stackage
+
+stackage-server-upstart-config:
+  file.managed:
+    - name: /etc/init/stackage-server.conf
+    - mode: 640
+    - user: root
+    - group: root
+    - source: salt://stackage/server/files/upstart.conf
+    - template: jinja
+    - defaults:
+        run_as_user: 'stackage'
+        env: 'Staging'
+        port: 3000
+
