@@ -7,6 +7,9 @@ base:
   'build0':
         - stackage.server.cabal-loader
 
+  'build1':
+        - stackage.server.builds.nightly
+
   'master':
     - salt.master
     - salt.minion.base
