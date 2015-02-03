@@ -19,11 +19,23 @@ stackage-server:
     - watch:
         - file: stackage-server
         - file: stackage-server-config
+        - file: stackage-server-client-key
         - file: stackage-server-postgres-config
         - file: stackage-server-upstart-config
         - file: stackage-server-static-files
     - require:
         - pkg: stackage-server-runtime-dependencies
+
+stackage-server-client-key:
+  file.managed:
+    - name: /home/stackage/config/client_session_key.aes
+    - source: salt://stackage/server/files/client_session_key.aes
+    - user: stackage
+    - group: stackage
+    - mode: 640
+    - require:
+        - file: stackage-server-config
+        - user: stackage
 
 stackage-server-static-files:
   file.recurse:
