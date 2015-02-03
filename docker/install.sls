@@ -32,6 +32,8 @@ docker-refresh_modules:
         - pkg: docker
 
 docker:
+  group.present:
+    - name: docker
   # the pkgrepo state does not seem to be working 100%, what gives?
   pkgrepo.managed:
     - name: 'deb http://get.docker.com/ubuntu docker main'
