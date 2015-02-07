@@ -1,11 +1,8 @@
 {% set HOME = '/home/stackage' %}
 {% set CONF = HOME + '/config' %}
 
-stackage:
-  user.present:
-    - name: stackage
-    - system: True
-    - gid_from_name: True
+include:
+  - stackage.server.user
 
 stackage-server-config-path:
   file.directory:
