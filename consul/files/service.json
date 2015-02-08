@@ -1,0 +1,17 @@
+{
+  "service": {
+      "name": "{{ name }}",
+      {%- if tags %}
+      "tags": [
+        {% for tag in tags %}"{{ tag }}"{%- if not loop.last %},{%- endif %}
+        {% endfor %}],
+      {%- else %}
+      "tags": [],
+      {%- endif %}
+      "port": {{ port }},
+      "check": {
+          "script": "{{ check['script'] }}",
+          "interval": "{{ check['interval'] }}"
+      }
+  }
+}
