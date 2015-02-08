@@ -5,7 +5,7 @@
 {%- set consul = salt['pillar.get']('consul', {}) %}
 
 include:
-  - consul
+  - consul.config
 
 consul-upstart:
   file.managed:
@@ -18,9 +18,9 @@ consul-upstart:
     - defaults: 
         description: "Consul Agent"
         bin_path: /usr/local/bin/consul
-        cmd_args: agent
+        cmd_args: agent -config-dir {{ home }}/conf.d/ 
         run_as: {{ user }}
-        chdir: {{ home }}
+        home: {{ home }}
         webui: False
   service.running:
     - name: consul
@@ -30,13 +30,3 @@ consul-upstart:
         - file: consul-user
         - file: consul-config
         - file: consul-upstart
-
-extend:
-  consul-config:
-    file.managed:
-      - context:
-          leaders: {%- for leader_ip in consul['leaders'] %}
-            - {{ leader_ip }}
-            {% endfor %}
-          secret_key: {{ consul['secret_key'] }}
-

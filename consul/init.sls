@@ -19,19 +19,13 @@ consul-bin:
     - mode: 755
 
 
-consul-config:
-  file.managed:
-    - name: {{ home }}/config.json
-    - source: salt://consul/files/config.json
+consul-conf-d:
+  file.directory:
+    - name: {{ home }}/conf.d
     - user: {{ user }}
     - group: {{ user }}
-    - mode: 640
-    - template: jinja
-    - defaults:
-        dc: us-east-1
-        home: {{ home }}
-        leaders: []
-        server: False
+    - mode: 750
     - require:
         - user: consul-user
         - file: consul-user
+

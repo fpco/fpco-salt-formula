@@ -3,9 +3,10 @@
 {%- set home = '/home/consul' %}
 {%- set user = 'consul' %}
 {%- set consul = salt['pillar.get']('consul', {}) %}
+{%- set bootstrap_args = '-bootstrap-expect ' + consul['leader_count'] %}
 
 include:
-  - consul
+  - consul.config
 
 
 consul-upstart:
@@ -19,9 +20,9 @@ consul-upstart:
     - defaults: 
         description: "Consul Leader"
         bin_path: /usr/local/bin/consul
-        cmd_args: agent -bootstrap-expect {{ consul['leader_count'] }}
+        cmd_args: agent -config-dir {{ home }}/conf.d/ {{ bootstrap_args }}
         run_as: {{ user }}
-        chdir: {{ home }}
+        home: {{ home }}
         webui: False
   service.running:
     - name: consul
@@ -37,8 +38,3 @@ extend:
     file.managed:
       - context:
           server: True
-          leaders: {%- for leader_ip in consul['leaders'] %}
-            - {{ leader_ip }}
-            {% endfor %}
-          secret_key: {{ consul['secret_key'] }}
-
