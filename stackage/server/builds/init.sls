@@ -1,5 +1,6 @@
 {%- set image = 'docker.fpcomplete.com/stackage:latest' %}
 {%- set tag = 'latest' %}
+{%- set force = True %}
 
 include:
   - docker.install
@@ -8,6 +9,7 @@ include:
 stackage-image:
   docker.pulled:
     - name: {{ image }}
+    - force: {{ force }}
     - require:
         - service: docker
 
