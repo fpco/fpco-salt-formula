@@ -26,7 +26,9 @@ base:
   'master':
     - salt.master
     - consul.webui
+    - consul.services.consul-webui
     - consul.services.salt-master
+    - consul.services.ssh
     - rsyslog.salt-master
 #   - jenkins
 #   - stackage.server.rds
