@@ -1,0 +1,9 @@
+$ModLoad imfile
+
+$InputFileName {{ file }}
+$InputFileFacility local0
+$InputFileTag {{ tag }}:
+$InputFileStateFile state-{{ state_suffix }}
+$InputFileSeverity {{ log_level }}
+$InputRunFileMonitor
+$InputFilePollInterval {{ interval }}
