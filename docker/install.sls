@@ -53,5 +53,11 @@ docker:
         - pkg: docker
     - require:
         - module: docker-refresh_modules
-
+  file.managed:
+    - name: /etc/default/docker
+    - user: root
+    - group: root
+    - mode: 640
+    - contents: |
+        DOCKER_OPTS="--storage-opt dm.basesize=20G"
 
