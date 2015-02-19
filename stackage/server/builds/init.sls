@@ -1,4 +1,4 @@
-{%- set image = 'docker.fpcomplete.com/stackage:latest' %}
+{%- set image = 'docker.fpcomplete.com/fpco/stackage:latest' %}
 {%- set tag = 'latest' %}
 {%- set force = True %}
 

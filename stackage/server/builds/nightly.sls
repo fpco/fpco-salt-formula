@@ -1,6 +1,6 @@
 {%- set log_path = '/var/log/stackage-nightly.log' %}
 {%- set docker_run = 'docker run  -it --rm -v $(pwd):/stackage -w /stackage' %}
-{%- set image = 'docker.fpcomplete.com/stackage:latest' %}
+{%- set image = 'docker.fpcomplete.com/fpco/stackage:latest' %}
 {%- set cmd = '/bin/bash -c "cabal update && stackage nightly --skip-upload"' %}
 {%- set build = 'nightly' %}
 {%- set user = 'stackage' %}
