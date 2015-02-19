@@ -4,6 +4,8 @@
 include:
   - stackage.server.user
 
+# this could do a recurse on files/directories to ensure correct modes
+# right now we rely on the archive.extracted state to do that for us
 stackage-server-config-path:
   file.directory:
     - name: {{ CONF }}
@@ -13,6 +15,8 @@ stackage-server-config-path:
     - mode: 750
     - require:
         - user: stackage
+        - file: stackage
+        - archive: stackage-release
 
 
 stackage-server-config:

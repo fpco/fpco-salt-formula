@@ -13,14 +13,17 @@ stackage-server:
   service.running:
     - name: stackage-server
     - watch:
+        - file: stackage
+        - file: stackage-release
         - file: stackage-server
         - file: stackage-server-config
         - file: stackage-server-client-key
         - file: stackage-server-postgres-config
         - file: stackage-server-upstart-config
-        - file: stackage-server-static-files
+        - archive: stackage-release
     - require:
         - pkg: stackage-server-runtime-dependencies
+
 
 stackage-server-client-key:
   file.managed:
@@ -33,16 +36,6 @@ stackage-server-client-key:
         - file: stackage-server-config
         - user: stackage
 
-stackage-server-static-files:
-  file.recurse:
-    - name: /home/stackage/static/
-    - source: salt://stackage/server/files/static/
-    - user: stackage
-    - group: stackage
-    - dir_mode: 755
-    - file_mode: 644
-    - require:
-        - user: stackage
 
 stackage-server-upstart-config:
   file.managed:
