@@ -5,11 +5,17 @@ include:
 
 stackage-server:
   file.managed:
-    - name: /usr/local/bin/stackage-server
-    - mode: 755
+    - name: /etc/init/stackage-server.conf
+    - mode: 640
     - user: root
     - group: root
-    - source: salt://stackage/server/files/stackage-server
+    - source: salt://stackage/server/files/upstart.conf
+    - template: jinja
+    - defaults:
+        bin_path: /home/stackage/dist/build/stackage-server/stackage-server
+        run_as_user: 'stackage'
+        env: 'Staging'
+        port: 3000
   service.running:
     - name: stackage-server
     - watch:
@@ -23,6 +29,18 @@ stackage-server:
         - archive: stackage-release
     - require:
         - pkg: stackage-server-runtime-dependencies
+        - file: stackage-server-exectuable
+
+
+stackage-server-exectuable:
+  file.exists:
+    - name: /home/stackage/dist/build/stackage-server/stackage-server
+    - mode: 750
+    - user: stackage
+    - group: stackage
+    - require:
+        - user: stackage
+        - archive: stackage-release
 
 
 stackage-server-client-key:
@@ -37,16 +55,4 @@ stackage-server-client-key:
         - user: stackage
 
 
-stackage-server-upstart-config:
-  file.managed:
-    - name: /etc/init/stackage-server.conf
-    - mode: 640
-    - user: root
-    - group: root
-    - source: salt://stackage/server/files/upstart.conf
-    - template: jinja
-    - defaults:
-        run_as_user: 'stackage'
-        env: 'Staging'
-        port: 3000
 
