@@ -25,7 +25,6 @@ stackage-server:
         - file: stackage-server-config
         - file: stackage-server-client-key
         - file: stackage-server-postgres-config
-        - file: stackage-server-upstart-config
         - archive: stackage-release
     - require:
         - pkg: stackage-server-runtime-dependencies
