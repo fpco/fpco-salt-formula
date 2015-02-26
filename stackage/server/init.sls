@@ -12,7 +12,8 @@ stackage-server:
     - source: salt://stackage/server/files/upstart.conf
     - template: jinja
     - defaults:
-        bin_path: /home/stackage/dist/build/stackage-server/stackage-server
+        home: /home/stackage
+        bin_path: dist/build/stackage-server/stackage-server
         run_as_user: 'stackage'
         env: 'Staging'
         port: 3000
