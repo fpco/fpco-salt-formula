@@ -1,5 +1,9 @@
 base:
   '*':
+    - ufw.install
+    - ufw.default_deny
+    - ufw.allow_ssh
+    - ufw.enable
     - salt.minion.base
     - rsyslog.common
 

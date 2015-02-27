@@ -3,7 +3,7 @@ base:
     - ufw.install
     - ufw.default_deny
     - ufw.allow_ssh
-    - python
+    - ufw.enable
     - salt.minion.base
 
   'master':
