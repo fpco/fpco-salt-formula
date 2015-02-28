@@ -2,7 +2,6 @@
 
 {%- set home = '/home/consul' %}
 {%- set user = 'consul' %}
-{%- set consul = salt['pillar.get']('consul', {}) %}
 
 include:
   - consul.config

@@ -1,3 +1,5 @@
+{%- set leaders = salt['pillar.get']('consul:leaders', []) %}
+
 {%- if server %}
 {%- set server = 'true' %}
 {%- else %}
