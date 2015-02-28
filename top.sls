@@ -5,3 +5,4 @@ base:
     - ufw.allow_ssh
     - python
     - salt.minion.base
+    - consul.agent
