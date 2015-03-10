@@ -6,6 +6,11 @@
 {%- set server = 'false' %}
 {%- endif %}
 {
+  {%- if server %}
+  "addresses": {
+    "http": "{{ ip[0] }}"
+  },
+  {%- endif %}
   "acl_datacenter": "{{ dc }}",
   "bind_addr": "{{ ip[0] }}",
   "datacenter": "{{ dc }}",
