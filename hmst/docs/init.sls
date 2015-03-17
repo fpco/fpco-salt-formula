@@ -16,7 +16,12 @@ hmst-docs-root:
     - name: {{ docs_root }}
     - user: www-data
     - group: www-data
-    - mode: 570
+    - file_mode: 460
+    - dir_mode: 570
+    - recurse:
+        - user
+        - group
+        - mode
     - makedirs: True
 
 
