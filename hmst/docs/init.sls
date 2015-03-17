@@ -37,6 +37,7 @@ hmst-docs-vhost-config:
         - file: nginx-remove-default-vhost
 
 
+{%- if nginx.vhosts.managed.hmst_docs.enabled %}
 hmst-docs-vhost-enabled:
   file.symlink:
     - name: {{ nginx.server.vhost_enabled }}/hmst-docs
@@ -46,4 +47,10 @@ hmst-docs-vhost-enabled:
     - require:
         - file: hmst-docs-root
         - file: hmst-docs-vhost-config
-
+{%- else %}
+hmst-docs-vhost-disabled:
+  file.absent:
+    - name: {{ nginx.server.vhost_enabled }}/hmst-docs
+    - watch_in:
+        - service: nginx
+{%- endif %}
