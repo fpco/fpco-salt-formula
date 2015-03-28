@@ -3,3 +3,5 @@
 drop-default-user:
   user.absent:
     - name: {{ user }}
+  file.absent:
+    - name: /etc/sudoers.d/90-cloud-init-users
