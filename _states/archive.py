@@ -134,8 +134,8 @@ def extracted(name,
     else:
         # this is needed until merging PR 2651
         log.debug('Untar %s in %s', filename, name)
-        results = __salt__['cmd.run_all']('tar -xv{0}f {1}'.format(tar_options,
-                                                             filename),
+        results = __salt__['cmd.run_all']('tar -xv{0} -f {1}'.format(tar_options,
+                                                                     filename),
                                           cwd=name)
         if results['retcode'] != 0:
             return results
