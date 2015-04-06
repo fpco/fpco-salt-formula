@@ -88,7 +88,7 @@ def extracted(name,
 
     log.debug('Input seem valid so far')
     filename = os.path.join(__opts__['cachedir'],
-                            '{0}.{1}'.format(if_missing.replace('/', '_'),
+                            '{0}.{1}'.format(name.replace('/', '_'),
                                              archive_format))
     if not os.path.exists(filename):
         if __opts__['test']:
