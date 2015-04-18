@@ -5,19 +5,20 @@ include:
 
 
 pip:
-  pkg.installed:
-    - name: python-pip
+  cmd.run:
+    - name: easy_install -U pip
+    - unless: which pip
     - require:
         - pkg: python-setuptools
   module.wait:
     - name: saltutil.refresh_modules
     - watch:
-        - pkg: pip
+        - cmd: pip
   # upgrade pip with pip, now that we have it installed and available
   pip.installed:
-    - name: pip > 1.0
+    - name: pip > 1.5
     - require:
-        - pkg: pip
+        - cmd: pip
         - module: pip
 
 
