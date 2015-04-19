@@ -3,6 +3,6 @@ base:
   '*':
     - ufw.default_deny
     - ufw.allow_ssh
-    - python
+    - python.pip
     - salt.minion.base
     - consul.agent
