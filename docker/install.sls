@@ -1,8 +1,30 @@
 # ensure docker and its dependencies are installed, through apt and pip, and
 # that we have then reloaded salt's modules
 
+{%- set aufs = salt['pillar.get']('docker:aufs', True) %}
+{%- set aufs_tools = salt['pillar.get']('docker:aufs_tools', 'linux-image-extra-3.13.0-40-generic') %}
+{%- set default_opts = '' %}
+{%- set dm_opts = '--storage-opt dm.basesize=20G' %}
+
+{%- if aufs %}
+{%- set opts = default_opts %}
+{%- else %}
+{%- set opts = dm_opts %}
+{%- endif %}
+
+
 include:
   - python.pip
+
+
+{%- if aufs %}
+aufs-docker-tools:
+  pkg.latest:
+    - name: {{ aufs_tools }}
+    - require_in:
+        - pkg: docker
+        - service: docker
+{%- endif %}
 
 docker-dependencies:
   pkg.installed:
@@ -51,6 +73,7 @@ docker:
     - enable: True
     - watch:
         - pkg: docker
+        - file: docker
     - require:
         - module: docker-refresh_modules
   file.managed:
@@ -59,5 +82,5 @@ docker:
     - group: root
     - mode: 640
     - contents: |
-        DOCKER_OPTS="--storage-opt dm.basesize=20G"
+        DOCKER_OPTS="{{ opts }}"
 
