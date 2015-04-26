@@ -3,6 +3,7 @@
 {%- set c = salt['pillar.get']('consul', {}) %}
 {%- set home = '/home/consul' %}
 {%- set user = 'consul' %}
+{%- set ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 
 include:
   - consul
@@ -20,7 +21,7 @@ consul-config:
         dc: {{ c['datacenter'] }}
         home: {{ home }}
         server: False
-        ip: {{ salt['grains.get']('ip4_interfaces')['eth0'] }}
+        ip: {{ ip }}
         secret_key: {{ c['secret_key'] }}
     - require:
         - user: consul-user

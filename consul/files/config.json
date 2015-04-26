@@ -8,11 +8,11 @@
 {
   {%- if server %}
   "addresses": {
-    "http": "{{ ip[0] }}"
+    "http": "{{ ip }}"
   },
   {%- endif %}
   "acl_datacenter": "{{ dc }}",
-  "bind_addr": "{{ ip[0] }}",
+  "bind_addr": "{{ ip }}",
   "datacenter": "{{ dc }}",
   "data_dir": "{{ home }}/tmp/",
   "disable_update_check": true,
