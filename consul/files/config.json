@@ -2,13 +2,15 @@
 
 {%- if server %}
 {%- set server = 'true' %}
+{%- set http_ip = ip %}
 {%- else %}
 {%- set server = 'false' %}
+{%- set http_ip = '127.0.0.1' %}
 {%- endif %}
 {
   {%- if server %}
   "addresses": {
-    "http": "{{ ip }}"
+    "http": "{{ http_ip }}"
   },
   {%- endif %}
   "acl_datacenter": "{{ dc }}",
