@@ -11,6 +11,7 @@
 {%- set checksum = '581decd401b218c181b06a176c61cb35e6e4a6d91adf3837c5d2498c7aef98d6d4da536407c800e0d0d027914a174cdb04994e5bd5fdda7ee276b168fb4a5f8e' %}
 
 include:
+  - consul.python
   - consul.user
   - unzip
 
