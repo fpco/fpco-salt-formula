@@ -14,15 +14,41 @@
 #            -e ECS_LOGLEVEL=info                         \
 #            -e ECS_DATADIR=/data                         \
 #               amazon/amazon-ecs-agent:latest
+#
+#
+# Pillar available:
+#
+#   enable_ecs: boolean to enable `docker.running` the `ecs-agent` container
+#
+#   ecs:        a dictionary of environment variables
+#     env:
+#       ECS_LOGFILE:  /log/ecs-agent.log
+#       ECS_LOGLEVEL: info
+#       ECS_DATADIR:  data
+#   
 
+{%- set data_dir = '/var/lib/ecs/data' %}
+{%- set log_path = '/var/log/ecs' %}
 {%- set image = 'amazon/amazon-ecs-agent' %}
 {%- set tag = 'latest' %}
 {%- set enabled = salt['pillar.get']('enable_ecs', False) %}
+{%- set env = salt['pillar.get']('ecs:env', {}) %}
+
 
 ecs-agent-image:
   docker.pulled:
     - name: {{ image }}
     - tag: latest
+
+ecs-agent-data-dir:
+  file.directory:
+    - name: {{ data_dir }}
+    - makedirs: True
+
+ecs-agent-log-dir:
+  file.directory:
+    - name: {{ log_path }}
+    - makedirs: True
 
 ecs-agent-container:
   docker.installed:
@@ -35,12 +61,15 @@ ecs-agent-container:
         - /var/run/docker.sock:/var/run/docker.sock
         - /var/log/ecs/:/log
         - /var/lib/ecs/data:/data
-    - environment:
-        ECS_LOGFILE: /log/ecs-agent.log
-        ECS_LOGLEVEL: info
-        ECS_DATADIR: data
+    {%- if env %}
+    - environment: {% for e, v in env.items() %}
+        {{ e }}: {{ v }}
+        {%- endfor %}
+    {%- endif %}
     - require:
         - docker: ecs-agent-image
+        - file: ecs-agent-data-dir
+        - file: ecs-agent-log-dir
 
 
 {%- if enabled %}
