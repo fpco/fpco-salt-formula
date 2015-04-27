@@ -17,6 +17,7 @@
 
 {%- set image = 'amazon/amazon-ecs-agent' %}
 {%- set tag = 'latest' %}
+{%- set enabled = salt['pillar.get']('enable_ecs', False) %}
 
 ecs-agent-image:
   docker.pulled:
@@ -41,9 +42,11 @@ ecs-agent-container:
     - require:
         - docker: ecs-agent-image
 
+
+{%- if enabled %}
 ecs-agent-service:
   docker.running:
     - name: ecs-agent
     - require:
         - docker: ecs-agent-container
-
+{%- endif %}
