@@ -7,7 +7,7 @@
 {%- set version = '0.1.0' %}
 {%- set base_url = 'https://dl.bintray.com/mitchellh/' + app %}
 {%- set release_archive = app + '_' + version + '_linux_amd64.zip' %}
-{%- set release_url = base_url + release_archive %}
+{%- set release_url = base_url + '/' + release_archive %}
 {%- set bin_path = '/usr/local/bin/' + app %}
 {%- set checksum = 'dd3b391e06e12829325395ea1c3e4c17d722520a8fa73668a9f0b8d6b4cc6e20afde31cd2669c8b611773d851d5b530d0eeb870943457b8acffa3510489961f8' %}
 
