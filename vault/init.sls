@@ -76,7 +76,7 @@ vault-config:
     - template: jinja
     - defaults:
         backend: {{ c['backend'] }}
-        path: {{ or data_dir }}
+        path: {{ data_dir }}
         cert_file: {{ home }}/server.crt
         key_file: {{ home }}/server.key
     - require:
