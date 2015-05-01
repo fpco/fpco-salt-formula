@@ -84,3 +84,23 @@ vault-config:
         - file: vault-user
 
 
+vault-server:
+  file.managed:
+    - name: /etc/init/vault-server.conf
+    - mode: 640
+    - user: root
+    - group: root
+    - source: salt://vault/files/upstart.conf
+    - template: jinja
+    - defaults:
+        home: {{ home }}
+        bin_path: {{ bin_path }}
+        run_as_user: 'vault'
+        opts: ''
+  service.running:
+    - name: vault-server
+    - watch:
+        - file: vault-server
+        - file: vault-config
+        - archive: vault-bin
+
