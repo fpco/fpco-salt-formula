@@ -12,8 +12,8 @@
 {%- set checksum = 'dd3b391e06e12829325395ea1c3e4c17d722520a8fa73668a9f0b8d6b4cc6e20afde31cd2669c8b611773d851d5b530d0eeb870943457b8acffa3510489961f8' %}
 
 {%- set default_data_dir = home + '/data' %}
-{%- set c = salt['pillar.get']('vault', {}) %}
-{%- set data_dir = c['path'] or default_data_dir %}
+{%- set data_dir = salt['pillar.get']('vault:path', default_data_dir) %}
+{%- set backend = salt['pillar.get']('vault:backend', 'file') %}
 
 
 include:
@@ -75,7 +75,7 @@ vault-config:
     - mode: 640
     - template: jinja
     - defaults:
-        backend: {{ c['backend'] }}
+        backend: {{ backend }}
         path: {{ data_dir }}
         cert_file: {{ home }}/server.crt
         key_file: {{ home }}/server.key
