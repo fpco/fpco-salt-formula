@@ -1,7 +1,7 @@
 # install and setup vault
 # downloads from https://dl.bintray.com/mitchellh/vault/vault_0.1.0_linux_amd64.zip
 
-{%- set app = 'vault'
+{%- set app = 'vault' %}
 {%- set user = app %}
 {%- set home = '/home/' + user %}
 {%- set version = '0.1.0' %}
