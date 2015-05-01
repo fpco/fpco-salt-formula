@@ -14,7 +14,7 @@
 {%- set default_data_dir = home + '/data' %}
 {%- set data_dir = salt['pillar.get']('vault:path', default_data_dir) %}
 {%- set backend = salt['pillar.get']('vault:backend', 'file') %}
-
+{%- set server_opts = '' %}
 
 include:
   - unzip
@@ -92,11 +92,11 @@ vault-server:
     - group: root
     - source: salt://vault/files/upstart.conf
     - template: jinja
-    - defaults:
+    - context:
         home: {{ home }}
         bin_path: {{ bin_path }}
-        run_as_user: 'vault'
-        opts: ''
+        run_as_user: {{ user }}
+        opts: {{ server_opts }}
   service.running:
     - name: vault-server
     - watch:
