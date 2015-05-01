@@ -11,6 +11,7 @@
 {%- set bin_path = '/usr/local/bin/' + app %}
 {%- set checksum = 'dd3b391e06e12829325395ea1c3e4c17d722520a8fa73668a9f0b8d6b4cc6e20afde31cd2669c8b611773d851d5b530d0eeb870943457b8acffa3510489961f8' %}
 
+{%- set conf_path = home + '/config.hcl' %}
 {%- set default_data_dir = home + '/data' %}
 {%- set data_dir = salt['pillar.get']('vault:path', default_data_dir) %}
 {%- set backend = salt['pillar.get']('vault:backend', 'file') %}
@@ -68,7 +69,7 @@ vault-data-dir:
 
 vault-config:
   file.managed:
-    - name: {{ home }}/config.json
+    - name: {{ conf_path }}
     - source: salt://vault/files/config.hcl
     - user: {{ user }}
     - group: {{ user }}
@@ -96,7 +97,7 @@ vault-server:
         home: {{ home }}
         bin_path: {{ bin_path }}
         run_as_user: {{ user }}
-        opts: {{ server_opts }}
+        opts: '-config config.hcl'
   service.running:
     - name: vault-server
     - watch:
