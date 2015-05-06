@@ -1,5 +1,5 @@
 include:
-  - jq
   - zsh
-  - htop
+  - common.jq
+  - common.htop
 
