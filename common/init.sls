@@ -1,0 +1,5 @@
+include:
+  - jq
+  - zsh
+  - htop
+
