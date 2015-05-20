@@ -2,7 +2,9 @@
 # that we have then reloaded salt's modules
 
 {%- set aufs = salt['pillar.get']('docker:aufs', True) %}
-{%- set aufs_tools = salt['pillar.get']('docker:aufs_tools', 'linux-image-extra-3.13.0-40-generic') %}
+{%- set version = salt['cmd.run']('uname -r') %}
+{%- set default_aufs_tools_pkg = 'linux-image-extra-' + version %}
+{%- set aufs_tools = salt['pillar.get']('docker:aufs_tools', default_aufs_tools_pkg) %}
 {%- set default_opts = '' %}
 {%- set dm_opts = '--storage-opt dm.basesize=20G' %}
 
