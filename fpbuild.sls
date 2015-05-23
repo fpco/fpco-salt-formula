@@ -22,3 +22,9 @@ fpbuild:
         - fpbuild: /tmp/fpbuild_current_amd64.deb
     - watch:
         - file: fpbuild
+  cmd.run:
+    - name: 'fpbuild --version'
+    - require:
+        - pkg: fpbuild
+        - file: fpbuild
+        - pkg: fpbuild-deps
