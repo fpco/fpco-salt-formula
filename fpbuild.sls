@@ -16,15 +16,24 @@ fpbuild:
     - mode: 400
     - source: {{ deb_url }}
     - source_hash: sha512={{ checksum }}
-  pkg.installed:
-    - name: fpbuild
-    - sources:
-        - fpbuild: /tmp/fpbuild_current_amd64.deb
-    - watch:
+  cmd.run:
+    - name: 'dpkg --install /tmp/fpbuild_current_amd64.deb'
+    - require:
         - file: fpbuild
+
+
+fpbuild-version:
   cmd.run:
     - name: 'fpbuild --version'
     - require:
-        - pkg: fpbuild
-        - file: fpbuild
         - pkg: fpbuild-deps
+        - cmd: fpbuild
+        - file: fpbuild
+
+
+fpbuild-remove-dpkg:
+  file.absent:
+    - name: /tmp/fpbuild_current_amd64.deb
+    - require:
+        - cmd: fpbuild
+        - cmd: fpbuild-version
