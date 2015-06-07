@@ -39,7 +39,7 @@ start on filesystem and started docker
 stop on runlevel [!2345]
 respawn
 
-{%- if env_vars %}
+{%- if env_vars is defined %}
 {%- for var, val in env_vars.items() %}
 env {{ var }}={{ val }}
 {%- endfor %}
@@ -52,10 +52,11 @@ pre-start script
         --name {{ container_name }} \
         -p {{ ip }}:{{ host_port }}:{{ container_port }} \
         {#- be careful with - around here... #}
-        {%- if docker_args %}
+        {%- if docker_args is defined %}
         {{ docker_args | indent(8) }}
         {% endif -%}
-        {{ img }}:{{ tag }}
+        {{ img }}:{{ tag }} {%- if cmd %} \
+        {{ cmd }}{% endif %}
     # we actually start the container here...
     /usr/bin/docker start {{ container_name }}
 end script
