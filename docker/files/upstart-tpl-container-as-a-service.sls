@@ -55,7 +55,7 @@ pre-start script
         {%- if docker_args is defined %}
         {{ docker_args | indent(8) }}
         {%- endif %}
-        {{ img }}:{{ tag }} {% if cmd %} \
+        {{ img }}:{{ tag }} {% if cmd is defined %} \
         {{ cmd }}{% endif %}
     # we actually start the container here...
     /usr/bin/docker start {{ container_name }}
