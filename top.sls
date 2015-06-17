@@ -7,4 +7,5 @@ base:
     - python.pip
     - salt.minion.base
     - consul.agent
+    - stack.ppa
     - docker
