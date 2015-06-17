@@ -9,3 +9,4 @@ base:
     - consul.agent
     - stack.ppa
     - docker
+    - zsh
