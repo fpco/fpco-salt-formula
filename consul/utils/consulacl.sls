@@ -11,5 +11,7 @@ consulacl:
   cmd.run:
     - name: make
     - cwd: {{ repo_root }}
+    - env:
+        - GOPATH: /root/.go
     - require:
         - git: consulacl
