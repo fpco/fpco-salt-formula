@@ -1,4 +1,5 @@
 {%- set leaders = salt['pillar.get']('consul:leaders', []) %}
+{%- set master_token = salt['pillar.get']('consul:master_token', '') %}
 
 {%- if server %}
 {%- set server = 'true' %}
@@ -14,6 +15,7 @@
   },
   {%- endif %}
   "acl_datacenter": "{{ dc }}",
+  "acl_master_token": "{{ master_token }}",
   "bind_addr": "{{ ip }}",
   "datacenter": "{{ dc }}",
   "data_dir": "{{ home }}/tmp/",
