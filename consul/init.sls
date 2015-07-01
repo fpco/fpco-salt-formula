@@ -16,12 +16,12 @@ include:
   - unzip
 
 
-consul-bin:
+unpack-consul:
   archive.extracted:
     - name: {{ bin_path }}-{{ version }}
     - source: {{ release_url }}
     - source_hash: sha512={{ checksum }}
-    - if_missing: {{ bin_path }}-{{ version }}/consul
+    - if_missing: {{ bin_path }}/consul
     - archive_format: zip
     - require:
         - pkg: unzip
@@ -29,7 +29,18 @@ consul-bin:
     - name: {{ bin_path }}
     - target: {{ bin_path }}-{{ version }}/consul
     - require:
-        - archive: consul-bin
+        - archive: unpack-consul
+
+
+# .zip does not keep the execute bit.
+# this also lets us block access to the exec,
+# from users who are not in the consul group
+consul-bin:
+  file.managed:
+    - name: {{ bin_path }}-{{ version }}/consul
+    - user: root
+    - group: {{ user }}
+    - mode: 750
 
 
 consul-conf-d:
