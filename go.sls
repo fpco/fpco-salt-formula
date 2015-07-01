@@ -16,15 +16,12 @@ golang-bin:
     - tar_options: z
 
 
-golang-shell-profile.d:
-  file.managed:
-    - name: /etc/profile.d/golang.sh
-    - user: root
-    - group: root
-    - mode: 644
-    - contents: |
-        export PATH=$PATH:{{ go_path }}/bin
-        export GOPATH=$HOME/.go
+golang-environment:
+  file.append:
+    - name: /etc/environment
+    - text: |
+        PATH="$PATH:{{ go_path }}/bin"
+        GOPATH="$HOME/.go"
 
 
 {#- iterate over the list of names we have for the go executables, create symlinks #}
