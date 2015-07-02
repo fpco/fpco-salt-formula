@@ -16,6 +16,7 @@
   {%- endif %}
   "acl_datacenter": "{{ dc }}",
   "acl_master_token": "{{ master_token }}",
+  "acl_default_policy": "deny",
   "bind_addr": "{{ ip }}",
   "datacenter": "{{ dc }}",
   "data_dir": "{{ home }}/tmp/",
