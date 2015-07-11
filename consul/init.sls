@@ -5,8 +5,10 @@
 
 {%- set home = '/home/consul' %}
 {%- set user = 'consul' %}
-{%- set bin_path = '/usr/local/bin/consul' %}
+{%- set bin_root = '/usr/local/bin/' %}
+{%- set consul_bin = bin_root + 'consul' %}
 {%- set version = '0.5.2' %}
+{%- set install_path = bin_root + 'consul-' + version %}
 {%- set release_url = 'https://dl.bintray.com/mitchellh/consul/' + version + '_linux_amd64.zip' %}
 {%- set checksum = '7bab204e9891d81a19422e70e20bbb527b7bb0b14c406f77ca38ca8dc11249fe5e45075e31a8eaed4bfce03f4af524b2603f4dcfe4c8b6ab0dfe367a5605553b' %}
 
@@ -16,20 +18,36 @@ include:
   - unzip
 
 
-consul-bin:
+consul-archive:
   archive.extracted:
-    - name: {{ bin_path }}-{{ version }}
+    - name: {{ install_path }}
     - source: {{ release_url }}
     - source_hash: sha512={{ checksum }}
-    - if_missing: {{ bin_path }}-{{ version }}/consul
+    - if_missing: {{ install_path }}/consul
     - archive_format: zip
     - require:
         - pkg: unzip
-  file.symlink:
-    - name: {{ bin_path }}
-    - target: {{ bin_path }}-{{ version }}/consul
+  file.directory:
+    - name: {{ install_path }}
+    - user: root
+    - group: consul
+    - file_mode: 750
+    - dir_mode: 750
+    - makedirs: True
+    - recurse:
+        - user
+        - group
+        - mode
     - require:
-        - archive: consul-bin
+        - archive: consul-archive
+
+
+consul-bin:
+  file.symlink:
+    - name: {{ consul_bin }}
+    - target: {{ install_path }}/consul
+    - require:
+        - file: consul-archive
 
 
 consul-conf-d:
