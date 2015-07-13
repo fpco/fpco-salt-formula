@@ -27,10 +27,10 @@
  #             S3_BUCKET: my_bucket
  #             AWS_ACCESS_KEY_ID: {{ access_key }}
  #             AWS_SECRET_ACCESS_KEY: {{ secret_key }}
- #           docker_args: |
- #             # can put other docker args here too, just end with \
- #             -e SETTINGS_FLAVOR=prod \
- #
+ #           # list of additional/custom docker args to pass in
+ #           docker_args:
+ #             - '-e SETTINGS_FLAVOR=prod'
+ #             - '--entrypoint /usr/local/bin/foo'
  #
  -#}
 description "{{ desc }}"
@@ -53,7 +53,9 @@ pre-start script
         -p {{ ip }}:{{ host_port }}:{{ container_port }} \
         {#- be careful with - around here... #}
         {%- if docker_args is defined %}
-        {{ docker_args | indent(8) }}
+        {%- for arg in docker_args %}
+        {{ arg | indent(8) }} \
+        {%- endfor %}
         {%- endif %}
         {{ img }}:{{ tag }} {% if cmd is defined %} \
         {{ cmd }}{% endif %}

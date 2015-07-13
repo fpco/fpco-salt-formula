@@ -34,12 +34,12 @@ s3-static-registry-upstart:
           S3_BUCKET: {{ bucket_name }}
           AWS_ACCESS_KEY_ID: {{ access_key }}
           AWS_SECRET_ACCESS_KEY: {{ secret_key }}
-        docker_args: |
-          -e SETTINGS_FLAVOR=prod \
-          -e STORAGE_PATH=/v1 \
-          -e S3_BUCKET=$S3_BUCKET \
-          -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
-          -e AWS_SECRET_KEY="$AWS_SECRET_ACCESS_KEY" \
+        docker_args:
+          - '-e SETTINGS_FLAVOR=prod'
+          - '-e STORAGE_PATH=/v1'
+          - '-e S3_BUCKET=$S3_BUCKET'
+          - '-e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID"'
+          - '-e AWS_SECRET_KEY="$AWS_SECRET_ACCESS_KEY"'
   service.running:
     - name: {{ registry_name }}-registry
     - enable: True
