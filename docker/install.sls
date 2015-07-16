@@ -65,8 +65,9 @@ docker:
     - file: '/etc/apt/sources.list.d/docker.list'
     - key_url: salt://docker/files/ppa.pgp
     - keyserver: keyserver.ubuntu.com
-  pkg.latest:
+  pkg.installed:
     - name: lxc-docker
+    - version: 1.6.2
     - require:
         - pkgrepo: docker
         - pkg: docker-dependencies
