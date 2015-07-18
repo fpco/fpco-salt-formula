@@ -46,7 +46,10 @@ pv-{{ device }}:
 vg-{{ vol_group }}:
   lvm.vg_present:
     - name: {{ vol_group }}
-    - devices: {% for dev in config['devices'] %}/dev/{{ dev }},{% endfor %}
+    {#- this next for-if combination results in lines like:
+          devices: /dev/xvdf1
+          devices: /dev/xvdf1,/dev/xvdg1 #}
+    - devices: {% for dev in config['devices'] %}/dev/{{ dev }}{% if not loop.first %},{% endif %}{% endfor %}
 
 
 {% for volume, cfg in config['volumes'].items() %}
