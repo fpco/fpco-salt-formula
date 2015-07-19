@@ -48,11 +48,12 @@ vg-{{ vol_group }}:
     - name: {{ vol_group }}
     {#- this next for-if combination results in lines like:
           devices: /dev/xvdf1
-          devices: /dev/xvdf1,/dev/xvdg1 #}
-    - devices: {% for dev in config['devices'] %}/dev/{{ dev }}{% if not loop.first %},{% endif %}{% endfor %}
+          devices: /dev/xvdf1,/dev/xvdg1
+          devices: /dev/xvdf1,/dev/xvdg1,/dev/xvdh1 #}
+    - devices: {% for dev in config['devices'] %}/dev/{{ dev }}{% if loop.length > 1 and not loop.last %},{% endif %}{% endfor %}
 
 
-{% for volume, cfg in config['volumes'].items() %}
+{%- for volume, cfg in config['volumes'].items() %}
 lv-{{ volume }}:
   lvm.lv_present:
     - name: {{ volume }}
