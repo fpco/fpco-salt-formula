@@ -2,11 +2,12 @@
 # that we have then reloaded salt's modules
 
 {%- set aufs = salt['pillar.get']('docker:aufs', True) %}
-{%- set version = salt['cmd.run']('uname -r') %}
-{%- set default_aufs_tools_pkg = 'linux-image-extra-' + version %}
+{%- set linux_version = salt['cmd.run']('uname -r') %}
+{%- set default_aufs_tools_pkg = 'linux-image-extra-' + linux_version %}
 {%- set aufs_tools = salt['pillar.get']('docker:aufs_tools', default_aufs_tools_pkg) %}
 {%- set default_opts = '' %}
 {%- set dm_opts = '--storage-opt dm.basesize=20G' %}
+{%- set docker_version = salt['pillar.get']('docker:version', '1.6.2') %}
 
 {%- if aufs %}
 {%- set opts = default_opts %}
@@ -67,7 +68,7 @@ docker:
     - keyserver: keyserver.ubuntu.com
   pkg.installed:
     - name: lxc-docker
-    - version: 1.6.2
+    - version: "{{ docker_version }}"
     - require:
         - pkgrepo: docker
         - pkg: docker-dependencies
