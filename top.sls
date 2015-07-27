@@ -6,6 +6,7 @@ base:
     - ufw.allow_ssh
     - python.pip
     - salt.minion.base
+    - dnsmasq.install
     - consul.agent
     - stack.ppa
     - docker
