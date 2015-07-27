@@ -1,26 +1,37 @@
 {%- set leaders = salt['pillar.get']('consul:leaders', []) %}
+{%- set dc = salt['pillar.get']('consul:datacenter', []) %}
+{%- set client_token = salt['pillar.get']('consul:client_token', False) %}
+{%- set secret_key = salt['pillar.get']('consul:secret_key', '') %}
+{%- set log_level = salt['pillar.get']('consul:log_level', 'INFO') %}
+{%- set master_token = salt['pillar.get']('consul:master_token', '') %}
 
 {%- if server %}
-{%- set server = 'true' %}
-{%- set http_ip = ip %}
+  {#- JSON does not want to see True/False #}
+  {%- set server = 'true' %}
+  {%- set http_ip = ip %}
 {%- else %}
-{%- set server = 'false' %}
-{%- set http_ip = '127.0.0.1' %}
-{%- endif %}
+  {%- set server = 'false' %}
+  {%- set http_ip = '127.0.0.1' %}
+{%- endif -%}
+
 {
   {%- if server %}
   "addresses": {
     "http": "{{ http_ip }}"
   },
-  {%- endif %}
   "acl_datacenter": "{{ dc }}",
+  "acl_master_token": "{{ master_token }}",
+  "acl_default_policy": "deny",
+  {%- endif %}
+  "acl_token": "{{ client_token }}",
   "bind_addr": "{{ ip }}",
   "datacenter": "{{ dc }}",
   "data_dir": "{{ home }}/tmp/",
   "disable_update_check": true,
   "disable_remote_exec": true,
+  "enable_syslog": true,
   "encrypt": "{{ secret_key }}",
-  "log_level": "INFO",
+  "log_level": "{{ log_level }}",
   "node_name": "{{ salt['grains.get']('id') }}",
   "server": {{ server }},
   {%- if leaders %}
@@ -31,4 +42,3 @@
   {%- endif %}
   "watches": []
 }
-

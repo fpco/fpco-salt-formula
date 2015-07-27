@@ -18,11 +18,9 @@ consul-config:
     - mode: 640
     - template: jinja
     - defaults:
-        dc: {{ c['datacenter'] }}
         home: {{ home }}
         server: False
         ip: {{ ip }}
-        secret_key: {{ c['secret_key'] }}
     - require:
         - user: consul-user
         - file: consul-user
