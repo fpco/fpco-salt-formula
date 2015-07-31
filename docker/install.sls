@@ -67,8 +67,7 @@ docker:
     - key_url: salt://docker/files/ppa.pgp
     - keyserver: keyserver.ubuntu.com
   pkg.installed:
-    - name: lxc-docker
-    - version: "{{ docker_version }}"
+    - name: lxc-docker-{{ docker_version }}
     - require:
         - pkgrepo: docker
         - pkg: docker-dependencies
