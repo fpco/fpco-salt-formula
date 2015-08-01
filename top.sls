@@ -5,6 +5,7 @@ base:
     - ufw.default_deny
     - ufw.allow_ssh
     - python.pip
+    - stack.docker_cleanup
     - salt.minion.base
     - dnsmasq.install
     - consul.agent
