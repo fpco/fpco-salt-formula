@@ -1,6 +1,6 @@
 {%- set image = salt['pillar.get']('bouncy:image', 'fpco/rdr2tls') %}
 {%- set tag = salt['pillar.get']('bouncy:tag', 'latest') %}
-{%- set port = salt['pillar.get']('bouncy:port', '4321') %}
+{%- set port = salt['pillar.get']('bouncy:port', '8080') %}
 {%- set host_ip = salt['pillar.get']('bouncy:ip', '0.0.0.0') %}
 {%- set opts = salt['pillar.get']('bouncy:opts', '') %}
 {%- set cname = 'bouncy' %}
