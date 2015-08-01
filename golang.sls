@@ -17,15 +17,18 @@ golang-bin:
 
 
 golang-environment:
-  file.append:
-    - name: /etc/environment
-    - text: |
-        PATH="$PATH:{{ go_path }}/bin"
-        GOPATH="$HOME/.go"
+  file.managed:
+    - name: /etc/profile.d/golang.sh
+    - user: root
+    - group: root
+    - mode: 644
+    - contents: |
+        export PATH="$PATH:{{ go_path }}/bin"
+        export GOPATH="$HOME/.go"
 
 
 {#- iterate over the list of names we have for the go executables, create symlinks #}
-{%- for exec in go_executables %}
+{% for exec in go_executables %}
 {{ exec }}-bin-symlink:
   file.symlink:
     - name: /usr/local/bin/{{ exec }}
