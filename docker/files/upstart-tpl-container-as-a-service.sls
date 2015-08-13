@@ -46,7 +46,9 @@ env {{ var }}={{ val }}
 {%- endif %}
 
 pre-start script
-    # if you rm here, upstart will bail on you when docker rm fails
+    /usr/bin/docker stop {{ container_name }} || true
+    /usr/bin/docker rm {{ container_name }} || true
+
     /usr/bin/docker pull {{ img }}:{{ tag }}
     /usr/bin/docker create \
         --name {{ container_name }} \
@@ -75,9 +77,9 @@ end script
 
 post-stop script
     # double stop, incase the logs exited before the pre-stop docker stop
-    /usr/bin/docker stop {{ container_name }}
+    /usr/bin/docker stop {{ container_name }} || true
     # need to rm the container instance here so the next start succeeds
     # note that we'll lose docker entry, rely on upstart to have caught logs..
-    /usr/bin/docker rm {{ container_name }}
+    /usr/bin/docker rm {{ container_name }} || true
 end script
 
