@@ -12,7 +12,7 @@ include:
   - unzip
 
 
-terraform-bin:
+terraform-archive:
   archive.extracted:
     - name: {{ bin_path }}-{{ version }}
     - source: {{ release_url }}
@@ -21,9 +21,24 @@ terraform-bin:
     - archive_format: zip
     - require:
         - pkg: unzip
+  file.directory:
+    - name: {{ bin_path }}-{{ version }}
+    - user: root
+    - group: root
+    - file_mode: 755
+    - dir_mode: 755
+    - makedirs: True
+    - recurse:
+        - user
+        - group
+        - mode
+    - require:
+        - archive: terraform-archive
+
+terraform-bin:
   file.symlink:
     - name: {{ bin_path }}
     - target: {{ bin_path }}-{{ version }}/terraform
     - require:
-        - archive: terraform-bin
+        - file: terraform-archive
 
