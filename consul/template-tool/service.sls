@@ -8,7 +8,7 @@ include:
   - .config
 
 
-consul-tpl-upstart:
+consul-tpl-service:
   file.managed:
     - name: /etc/init/{{ service_name }}.conf
     - source: salt://upstart/files/generic.conf
@@ -29,4 +29,4 @@ consul-tpl-upstart:
     - enable: True
     - watch:
         - file: consul-tpl-base-config
-        - file: consul-tpl-upstart
+        - file: consul-tpl-service

@@ -24,7 +24,7 @@ consul-template-config-bootstrap_formula:
           command = "salt-call  --local  --file-root /srv/salt/bootstrap-formula/formula  --pillar-root /srv/salt/bootstrap-formula/pillar  --config-dir /srv/salt/bootstrap-formula/conf  state.sls salt.file_roots"
         }
     - watch_in:
-        - service: consul-tpl-upstart
+        - service: consul-tpl-service
 
 
 consul-template-bootstrap_formula:
@@ -37,6 +37,6 @@ consul-template-bootstrap_formula:
         {{ key "bootstrap_formula" }}
         {% endraw %}
     - watch_in:
-        - service: consul-tpl-upstart
+        - service: consul-tpl-service
 
 
