@@ -2,14 +2,19 @@
 base:
   '*':
     - common
+    - python.pip
     - ufw.default_deny
     - ufw.allow_ssh
-    - python.pip
-    - consul.template-tool.install
+    - ufw.enable
+    - docker
+    - dnsmasq
+    - consul
+    - consul.dnsmasq
+    - consul.template-tool
+    - stack.ppa
     - stack.docker_cleanup
     - salt.minion.base
-    - dnsmasq.install
-    - consul.agent
-    - stack.ppa
-    - docker
+    - salt.master
+    - salt.file_roots.consul-template
+    - users.consul-template
     - zsh
