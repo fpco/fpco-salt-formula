@@ -21,7 +21,7 @@ consul-template-config-bootstrap_formula:
         template {
           source = "{{ template_path }}/bootstrap_formula.tpl"
           destination = "{{ pillar_path }}/bootstrap.sls"
-          command = "salt-call  --local  --file-root /srv/salt/bootstrap-formula/formula  --pillar-root /srv/salt/bootstrap-formula/pillar  --config-dir /srv/salt/bootstrap-formula/conf  state.sls salt.file_roots"
+          command = "salt-call  --local  --file-root /srv/salt/bootstrap-formula/formula  --pillar-root /srv/salt/bootstrap-formula/pillar  --config-dir /srv/salt/bootstrap-formula/conf  state.highstate"
         }
     - watch_in:
         - service: consul-tpl-service
