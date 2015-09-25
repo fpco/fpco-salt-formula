@@ -1,3 +1,3 @@
 python-consul:
   pip.installed:
-    - name: python-consul==0.3.5
+    - name: python-consul==0.4.5
