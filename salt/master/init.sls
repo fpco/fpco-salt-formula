@@ -1,7 +1,7 @@
 {#- set the service as either running or disabled #}
-{%- set status = salt['pillar.get']('salt:master:service:status') %}
+{%- set status = salt['pillar.get']('salt:master:service:status', 'dead') %}
 {#- boolean - if enabled, the service starts on boot #}
-{%- set enabled = salt['pillar.get']('salt:master:service:enabled') %}
+{%- set enabled = salt['pillar.get']('salt:master:service:enabled', False) %}
 
 
 salt-master:
