@@ -1,6 +1,5 @@
 # manage the consul config file, leave dependents to consul.init
 
-{%- set c = salt['pillar.get']('consul', {}) %}
 {%- set home = '/home/consul' %}
 {%- set user = 'consul' %}
 {%- set ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
