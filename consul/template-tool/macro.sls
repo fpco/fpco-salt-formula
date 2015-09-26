@@ -38,8 +38,11 @@ consul-tpl-template-{{ name }}:
 
 
 consul-tpl-pillar-{{ name }}:
-  file.exists:
+  file.managed:
     - name: {{ pillar_path }}/{{ name }}.sls
+    - user: {{ user }}
+    - group: root
+    - mode: 640
 
 {% endmacro %}
 
