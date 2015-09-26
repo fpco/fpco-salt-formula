@@ -38,5 +38,5 @@ consul-template-bootstrap_formula:
         {% endraw %}
     - watch_in:
         - service: consul-tpl-service
-
-
+    - require:
+        - file: consul-tpl-templates-path

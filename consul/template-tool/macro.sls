@@ -35,6 +35,8 @@ consul-tpl-template-{{ name }}:
     - source: salt://{{ template_src }}
     - watch_in:
         - service: consul-tpl-service
+    - require:
+        - file: consul-tpl-templates-path
 
 
 consul-tpl-pillar-{{ name }}:

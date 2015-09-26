@@ -3,6 +3,7 @@
 {%- set conf_path = consul_home + '/template-tool' %}
 {%- set user = 'consul' %}
 {%- set service_name = 'consul-template' %}
+{%- set template_path = '/srv/consul-templates' %}
 
 include:
   - .config
@@ -30,3 +31,12 @@ consul-tpl-service:
     - watch:
         - file: consul-tpl-base-config
         - file: consul-tpl-service
+        - file: consul-tpl-templates-path
+
+
+consul-tpl-templates-path:
+  file.directory:
+    - name: {{ template_path }}
+    - user: {{ user }}
+    - group: root
+    - mode: 750
