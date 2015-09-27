@@ -45,9 +45,8 @@ bouncy-service:
         # the image tag to reference
         tag: {{ tag }}
         # ip/port mapping  
-        ip: {{ host_ip }}
-        host_port: {{ port }}
-        container_port: 8080
+        docker_args:
+          - '--publish {{ host_ip }}:{{ port }}:8080'
         cmd: rdr2tls {{ opts }}
   service.running: 
     - name: {{ cname }}

@@ -30,10 +30,8 @@ prometheus-cloudwatch-exporter-upstart:
         # the image tag to reference
         tag: {{ tag }}
         # ip/port mapping
-        ip: {{ ip }}
-        host_port: {{ port }}
-        container_port: 9106
         docker_args:
+          - '--publish {{ ip }}:{{ port }}:9106'
           - '--net="host"'
           - '--volume /etc/cloudwatch-exporter.json:/config.json'
     - require:

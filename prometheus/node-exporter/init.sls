@@ -32,10 +32,8 @@ prometheus-node_exporter-upstart:
         # the image tag to reference
         tag: {{ tag }}
         # ip/port mapping
-        ip: {{ ip }}
-        host_port: {{ port }}
-        container_port: 9100
         docker_args:
+          - '--publish {{ ip }}:{{ port }}:9100'
           - '--net="host"'
   service.running:
     - name: {{ cname }}

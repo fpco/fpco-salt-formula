@@ -11,11 +11,11 @@
 {%- set s3_baseurl = salt['pillar.get']('rproxy:s3_baseurl', 's3.amazonaws.com') %}
 {%- set s3_backend = s3_baseurl + '/' + bucket %}
 
-{%- set cname = 'registry' %}
+{%- set cname = 'docker-registry' %}
 
 s3-proxy-docker-registry-upstart:
   file.managed:
-    - name: /etc/init/docker-registry.conf
+    - name: /etc/init/{{ cname }}.conf
     - user: root
     - group: root
     - mode: 644
@@ -25,18 +25,17 @@ s3-proxy-docker-registry-upstart:
         desc: Docker Registry (S3 Proxy)
         author: the-ops-ninjas@fpcomplete.com
         # the name of the container instance
-        container_name: docker-registry
+        container_name: {{ cname }}
         # the Docker image to use
         img: {{ image }}
         # the image tag to reference
         tag: {{ tag }}
         # ip/port mapping
-        ip: 127.0.0.1
-        host_port: {{ port }}
-        container_port: 8080
+        docker_args:
+          - '--publish 127.0.0.1:{{ port }}:8080'
         cmd: rdr2tls -p 8080 -P {{ s3_backend }}
   service.running:
-    - name: docker-registry
+    - name: {{ cname }}
     - enable: True
     - watch:
         - file: s3-proxy-docker-registry-upstart

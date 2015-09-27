@@ -52,7 +52,6 @@ pre-start script
     /usr/bin/docker pull {{ img }}:{{ tag }}
     /usr/bin/docker create \
         --name {{ container_name }} \
-        -p {{ ip }}:{{ host_port }}:{{ container_port }} \
         {#- be careful with - around here... #}
         {%- if docker_args is defined %}
         {%- for arg in docker_args %}

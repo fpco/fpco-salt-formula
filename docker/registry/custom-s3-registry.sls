@@ -25,16 +25,13 @@ s3-static-registry-upstart:
         img: {{ registry_img }}
         # the image tag to reference
         tag: {{ registry_tag }}
-        # ip/port mapping
-        ip: {{ registry_ip }}
-        host_port: {{ host_port }}
-        container_port: 5000
         # application env vars..
         env_vars:
           S3_BUCKET: {{ bucket_name }}
           AWS_ACCESS_KEY_ID: {{ access_key }}
           AWS_SECRET_ACCESS_KEY: {{ secret_key }}
         docker_args:
+          - '--publish {{ registry_ip }}:{{ host_port }}:5000'
           - '-e SETTINGS_FLAVOR=prod'
           - '-e STORAGE_PATH=/v1'
           - '-e S3_BUCKET=$S3_BUCKET'

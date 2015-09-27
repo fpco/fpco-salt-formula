@@ -66,10 +66,8 @@ prometheus-upstart:
         # the image tag to reference
         tag: {{ tag }}
         # ip/port mapping
-        ip: 127.0.0.1
-        host_port: {{ port }}
-        container_port: 9090
         docker_args:
+          - '--publish 127.0.0.1:{{ port }}:9090'
           - '--volume /etc/prometheus.yml:/etc/prometheus/prometheus.yml'
           - '--volume {{ home }}:/prometheus-data'
     - require:
