@@ -42,3 +42,4 @@ s3-static-registry-upstart:
     - enable: True
     - watch:
         - file: s3-static-registry-upstart
+
