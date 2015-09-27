@@ -32,7 +32,8 @@ consul-tpl-template-{{ name }}:
     - user: root
     - group: root
     - mode: 640
-    - source: salt://{{ template_src }}
+    - template: jinja
+    - source: {{ template_src }}
     - watch_in:
         - service: consul-tpl-service
     - require:

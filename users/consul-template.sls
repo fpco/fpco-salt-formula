@@ -6,7 +6,7 @@
 {#- variables to pass to the macro when rendering the salt states #}
 {%- set formula = "users" %}
 {%- set cmd = "salt-call --local state.sls users" %}
-{%- set tpl = "users/consul-template.tpl" %}
+{%- set tpl = "salt://users/consul-template.tpl" %}
 
 {#- call the macro to render the salt states for this monitor #}
 {{ render_consul_monitor(formula, cmd, tpl) }}
