@@ -7,6 +7,7 @@
 
 include:
   - .config
+  - consul.agent
 
 
 consul-tpl-service:
@@ -40,3 +41,27 @@ consul-tpl-templates-path:
     - user: {{ user }}
     - group: root
     - mode: 750
+
+
+consul-tpl-consul-service:
+  file.managed:
+    - name: /home/consul/conf.d/consul_template_service.json
+    - user: consul
+    - group: consul
+    - mode: 640
+    - contents: |
+        {
+          "service": {
+            "name": "consul-template",
+            "tags": [],
+            "checks": [
+              {
+                "script": "service consul-template status",
+                "interval": "30s"
+              }
+            ]
+          }
+        }
+    - watch_in:
+        - service: consul-upstart
+
