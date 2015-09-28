@@ -11,6 +11,7 @@ base:
     - consul
     - consul.dnsmasq
     - consul.template-tool
+    - consul.tools
     - stack.ppa
     - stack.docker_cleanup
     - salt.minion.base
