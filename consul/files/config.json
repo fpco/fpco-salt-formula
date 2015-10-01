@@ -1,3 +1,4 @@
+{%- set home = '/home/consul' %}
 {%- set leaders = salt['pillar.get']('consul:leaders', []) %}
 {%- set dc = salt['pillar.get']('consul:datacenter', []) %}
 {%- set client_token = salt['pillar.get']('consul:client_token', False) %}
@@ -5,11 +6,13 @@
 {%- set log_level = salt['pillar.get']('consul:log_level', 'INFO') %}
 {%- set master_token = salt['pillar.get']('consul:master_token', '') %}
 {%- set disable_remote_exec = salt['pillar.get']('consul:disable_remote_exec', True) %}
+{%- set leader_count = salt['pillar.get']('consul:leader_count', False) %}
 
-{%- if server %}
+{%- if leader_count %}
   {#- JSON does not want to see True/False #}
   {%- set server = 'true' %}
-  {%- set http_ip = ip %}
+  {#- use external/private IP when running server mode #}
+  {%- set http_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 {%- else %}
   {%- set server = 'false' %}
   {%- set http_ip = '127.0.0.1' %}
