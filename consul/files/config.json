@@ -7,12 +7,13 @@
 {%- set master_token = salt['pillar.get']('consul:master_token', '') %}
 {%- set disable_remote_exec = salt['pillar.get']('consul:disable_remote_exec', True) %}
 {%- set leader_count = salt['pillar.get']('consul:leader_count', False) %}
+{%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 
 {%- if leader_count %}
   {#- JSON does not want to see True/False #}
   {%- set server = 'true' %}
   {#- use external/private IP when running server mode #}
-  {%- set http_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+  {%- set http_ip = ext_ip %}
 {%- else %}
   {%- set server = 'false' %}
   {%- set http_ip = '127.0.0.1' %}
@@ -28,7 +29,7 @@
   "acl_default_policy": "deny",
   {%- endif %}
   "acl_token": "{{ client_token }}",
-  "bind_addr": "{{ ip }}",
+  "bind_addr": "{{ ext_ip }}",
   "datacenter": "{{ dc }}",
   "data_dir": "{{ home }}/tmp/",
   "disable_update_check": true,
