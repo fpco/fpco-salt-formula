@@ -4,6 +4,7 @@
 {%- set secret_key = salt['pillar.get']('consul:secret_key', '') %}
 {%- set log_level = salt['pillar.get']('consul:log_level', 'INFO') %}
 {%- set master_token = salt['pillar.get']('consul:master_token', '') %}
+{%- set disable_remote_exec = salt['pillar.get']('consul:disable_remote_exec', True) %}
 
 {%- if server %}
   {#- JSON does not want to see True/False #}
@@ -28,7 +29,7 @@
   "datacenter": "{{ dc }}",
   "data_dir": "{{ home }}/tmp/",
   "disable_update_check": true,
-  "disable_remote_exec": true,
+  "disable_remote_exec": {% if disable_remote_exec %}true{% else %}false{% endif %},
   "enable_syslog": true,
   "encrypt": "{{ secret_key }}",
   "log_level": "{{ log_level }}",
