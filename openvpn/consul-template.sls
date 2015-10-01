@@ -87,6 +87,7 @@ consul-tpl-template-openvpn-server-config:
     - contents: {% raw %}{{ key "openvpn-server/config" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
+        - file: consul-tpl-openvpn-server-template-path
     - watch_in:
         - service: consul-tpl-service
 
@@ -99,6 +100,7 @@ consul-tpl-template-ovpn-env-sh:
     - contents: {% raw %}{{ key "openvpn-server/ovpn_env" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
+        - file: consul-tpl-openvpn-server-template-path
     - watch_in:
         - service: consul-tpl-service
 
@@ -111,6 +113,7 @@ consul-tpl-template-openvpn-ca-cert:
     - contents: {% raw %}{{ key "openvpn-server/ca_crt" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
+        - file: consul-tpl-openvpn-server-template-path
     - watch_in:
         - service: consul-tpl-service
 
@@ -123,6 +126,7 @@ consul-tpl-template-openvpn-dh-pem:
     - contents: {% raw %}{{ key "openvpn-server/dh_pem" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
+        - file: consul-tpl-openvpn-server-template-path
     - watch_in:
         - service: consul-tpl-service
 
@@ -135,6 +139,7 @@ consul-tpl-template-openvpn-ta-key:
     - contents: {% raw %}{{ key "openvpn-server/ta_key" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
+        - file: consul-tpl-openvpn-server-template-path
     - watch_in:
         - service: consul-tpl-service
 
@@ -147,6 +152,7 @@ consul-tpl-template-openvpn-vpn-crt:
     - contents: {% raw %}{{ key "openvpn-server/vpn_crt" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
+        - file: consul-tpl-openvpn-server-template-path
     - watch_in:
         - service: consul-tpl-service
 
@@ -159,6 +165,7 @@ consul-tpl-template-openvpn-vpn-key:
     - contents: {% raw %}{{ key "openvpn-server/vpn_key" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
+        - file: consul-tpl-openvpn-server-template-path
     - watch_in:
         - service: consul-tpl-service
 
