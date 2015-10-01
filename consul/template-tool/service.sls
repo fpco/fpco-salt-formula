@@ -4,7 +4,7 @@
 {%- set user = 'consul' %}
 {%- set service_name = 'consul-template' %}
 {%- set template_path = '/srv/consul-templates' %}
-{%- set consul_addr = salt['pillar.get']('consul-template:consul_addr', '127.0.0.1:8500') %}
+{%- set consul_addr = salt['pillar.get']('consul_template:consul_addr', '127.0.0.1:8500') %}
 
 include:
   - .config
