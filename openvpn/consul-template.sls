@@ -84,7 +84,8 @@ consul-tpl-template-openvpn-server-config:
     - user: root
     - group: root
     - mode: 640
-    - contents: {% raw %}{{ key "openvpn-server/config" }}{% endraw %}
+    - contents: |
+        {% raw %}{{ key "openvpn-server/config" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
         - file: consul-tpl-openvpn-server-template-path
@@ -97,7 +98,8 @@ consul-tpl-template-ovpn-env-sh:
     - user: root
     - group: root
     - mode: 640
-    - contents: {% raw %}{{ key "openvpn-server/ovpn_env" }}{% endraw %}
+    - contents: |
+        {% raw %}{{ key "openvpn-server/ovpn_env" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
         - file: consul-tpl-openvpn-server-template-path
@@ -110,7 +112,8 @@ consul-tpl-template-openvpn-ca-cert:
     - user: root
     - group: root
     - mode: 640
-    - contents: {% raw %}{{ key "openvpn-server/ca_crt" }}{% endraw %}
+    - contents: |
+        {% raw %}{{ key "openvpn-server/ca_crt" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
         - file: consul-tpl-openvpn-server-template-path
@@ -123,7 +126,8 @@ consul-tpl-template-openvpn-dh-pem:
     - user: root
     - group: root
     - mode: 640
-    - contents: {% raw %}{{ key "openvpn-server/dh_pem" }}{% endraw %}
+    - contents: |
+        {% raw %}{{ key "openvpn-server/dh_pem" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
         - file: consul-tpl-openvpn-server-template-path
@@ -136,7 +140,8 @@ consul-tpl-template-openvpn-ta-key:
     - user: root
     - group: root
     - mode: 640
-    - contents: {% raw %}{{ key "openvpn-server/ta_key" }}{% endraw %}
+    - contents: |
+        {% raw %}{{ key "openvpn-server/ta_key" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
         - file: consul-tpl-openvpn-server-template-path
@@ -149,7 +154,8 @@ consul-tpl-template-openvpn-vpn-crt:
     - user: root
     - group: root
     - mode: 640
-    - contents: {% raw %}{{ key "openvpn-server/vpn_crt" }}{% endraw %}
+    - contents: |
+        {% raw %}{{ key "openvpn-server/vpn_crt" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
         - file: consul-tpl-openvpn-server-template-path
@@ -162,7 +168,8 @@ consul-tpl-template-openvpn-vpn-key:
     - user: root
     - group: root
     - mode: 640
-    - contents: {% raw %}{{ key "openvpn-server/vpn_key" }}{% endraw %}
+    - contents: |
+        {% raw %}{{ key "openvpn-server/vpn_key" }}{% endraw %}
     - require:
         - file: consul-tpl-templates-path
         - file: consul-tpl-openvpn-server-template-path
