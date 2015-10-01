@@ -1,8 +1,8 @@
 # Run kylemanna/docker-openvpn Docker image as a service
 #
 # More details are documented in pillar:
-{%- set image = salt['pillar.get']('openvpn:image', 'kylemanna/docker-openvpn') %}
-{%- set tag = salt['pillar.get']('openvpn:tag', 'latest') %}
+{%- set image = salt['pillar.get']('openvpn:image', 'kylemanna/openvpn') %}
+{%- set tag = salt['pillar.get']('openvpn:tag', 'alpine') %}
 {%- set port = salt['pillar.get']('openvpn:port', '1194') %}
 {%- set ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 
