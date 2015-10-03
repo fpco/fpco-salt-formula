@@ -4,7 +4,8 @@
 {%- set image = salt['pillar.get']('openvpn:image', 'kylemanna/openvpn') %}
 {%- set tag = salt['pillar.get']('openvpn:tag', 'alpine') %}
 {%- set port = salt['pillar.get']('openvpn:port', '1194') %}
-{%- set ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set default_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set ip = salt['pillar.get']('openvpn:ip', default_ip) %}
 
 {%- set cname = 'openvpn' %}
 
