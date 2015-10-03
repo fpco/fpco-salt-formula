@@ -59,7 +59,7 @@ consul-tpl-config-openvpn-server:
         }
         template {
           source = "{{ template_path }}/openvpn-server/ta.key.tpl"
-          destination = "{{ ovpn_conf_path }}/ta.key"
+          destination = "{{ ovpn_conf_path }}/pki/ta.key"
           command = "service openvpn restart"
         }
         template {
