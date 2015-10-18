@@ -15,6 +15,7 @@ base:
     - stack.ppa
     - stack.docker_cleanup
     - salt.minion.base
+    - salt.minion.consul
     - salt.master
     - salt.file_roots.consul-template
     - users.consul-template
