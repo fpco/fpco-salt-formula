@@ -10,9 +10,7 @@
 {%- set checksum = '38c763773bec6e5f7e8b0765bdae875afa8477b99e544a8b685b14a23520c2409c8b885e8ec7abcd7574cd6be2dd836f28b1aa670bd8c10ada872bd4d63a445c' %}
 
 include:
-  - consul.agent
-  - consul.user
-  - unzip
+  - consul.service
 
 
 consul-webui-archive:

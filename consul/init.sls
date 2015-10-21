@@ -1,3 +1,4 @@
+# this ought to be renamed to consul.install, but that change ought to come later
 # install and setup consul
 # download to master, from https://dl.bintray.com/mitchellh/consul/0.4.1_linux_amd64.zip
 # unzip and drop into /srv/salt/consul/files/
