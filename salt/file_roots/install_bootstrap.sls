@@ -3,7 +3,7 @@
 # SSH key for git checkout
 {%- set ssh_key_path = salt['pillar.get']('file_roots_bootstrap:ssh_key_path', '/root/.ssh/id_rsa') %}
 # where to checkout to, root path
-{%- set roots_root = salt['pillar.get']('file_roots_bootstrap:roots_root', '/srv/salt-bootstrap-formula') %}
+{%- set roots_root = salt['pillar.get']('file_roots_bootstrap:roots_root', '/srv/bootstrap-salt-formula') %}
 # name/url/rev for each repo to use as file_roots
 {%- set url = salt['pillar.get']('file_roots_bootstrap:url', 'git@github.com:fpco/bootstrap-salt-formula.git') %}
 {%- set rev = salt['pillar.get']('file_roots_bootstrap:rev', 'master') %}
@@ -48,8 +48,8 @@ install-salt-formula-bootstrap-formula:
         salt-call --local                                 \
                   --config-dir {{ roots_root }}/conf      \
                   --pillar-root {{ roots_root }}/pillar   \
-                  --file_root {{roots_root }}/formula     \
-                  state.sls salt.file_roots
+                  --file-root {{roots_root }}/formula     \
+                  state.highstate
   cmd.run:
     - name: 'echo "use /usr/local/sbin/bootstrap-salt-formula.sh to run the file_roots bootstrap formula"'
     - require:
