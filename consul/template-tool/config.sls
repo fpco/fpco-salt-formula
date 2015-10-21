@@ -19,7 +19,7 @@ consul-tpl-conf-path:
 consul-tpl-base-config:
   file.managed:
     - name: {{ conf_path }}/00-consul-template.hcl
-    - user: root
+    - user: consul
     - group: {{ user }}
     - mode: 640
     - source: salt://consul/template-tool/files/base_config.hcl
