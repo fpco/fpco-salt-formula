@@ -54,7 +54,7 @@ consul-tpl-consul-service:
         {
           "service": {
             "name": "consul-template",
-            "tags": [],
+            "tags": ["core", "consul"],
             "checks": [
               {
                 "script": "service consul-template status",
