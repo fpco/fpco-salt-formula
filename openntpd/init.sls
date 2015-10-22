@@ -4,6 +4,9 @@
 # the first external IP (private interface on AWS).
 # See the `openntpd.consul_template` formula for a client-side helper.
 # apply `openntpd.drop_insecure_ntpd` 
+# use `openntpd:date_reset` pillar key (boolean), to hard reset date to
+# sync with others immediately, rather than over time
+{%- set reset = salt['pillar.get']('openntpd:date_reset', False) %}
 
 openntpd:
   pkg.latest:
@@ -20,3 +23,19 @@ openntpd:
     - watch:
         - file: openntpd
         - pkg: openntpd
+
+openntpd_default:
+  file.managed:
+    - name: /etc/default/openntpd
+    - user: root
+    - group: root
+    - mode: 644
+    - watch_in:
+        - service: openntpd
+    - contents: |
+        # /etc/default/openntpd
+        #
+        # Append '-s' to set the system time when starting in case the offset
+        # between the local clock and the servers is more than 180 seconds.
+        # For other options, see man ntpd(8).
+        DAEMON_OPTS="-f /etc/openntpd/ntpd.conf {% if reset %}-s{% endif %}"
