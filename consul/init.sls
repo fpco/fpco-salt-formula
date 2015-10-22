@@ -61,3 +61,15 @@ consul-conf-d:
         - user: consul-user
         - file: consul-user
 
+consul-sudoers-conf:
+  file.managed:
+    - name: /etc/sudoers.d/consul
+    - user: root
+    - group: root
+    - mode: 644
+    - contents: |
+        # define a command alias for the list of commands the agent can run
+        Cmnd_Alias  AGENT_CMD = /usr/sbin/service
+        # the consul user can run the list of approved commands on any host,
+        # no password is required
+        consul ALL = NOPASSWD: AGENT_CMD
