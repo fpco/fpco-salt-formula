@@ -10,7 +10,7 @@ consul-user:
     - system: True
     - gid_from_name: True
     - home: {{ home }}
-    - shell: /usr/sbin/nologin
+    - shell: /bin/sh
   file.directory:
     - name: {{ home }}
     - user: {{ user }}
