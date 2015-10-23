@@ -1,7 +1,7 @@
 # this top.sls defines a map for all hosts (*) to default formula
 base:
   '*':
-    - common
+    - apps.common
     - python.pip
     - ufw.default_deny
     - ufw.allow_ssh
@@ -19,4 +19,3 @@ base:
     - salt.master
     - salt.file_roots.consul-template
     - users.consul-template
-    - zsh
