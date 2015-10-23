@@ -9,7 +9,7 @@
 {%- set checksum = 'f56a5cd689dfb9947d30870723e4dab492a83b342fdd202c3c763de716aba8397ffbcc7485c238eb6944c116adddb05653deb3e84b41630ffb2fcf1bb5b29e00' %}
 
 include:
-  - unzip
+  - apps.unzip
 
 
 packer-bin:

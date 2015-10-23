@@ -16,7 +16,7 @@
 include:
   - consul.python
   - consul.user
-  - unzip
+  - apps.unzip
 
 
 consul-archive:
