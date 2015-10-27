@@ -4,7 +4,6 @@
 {%- set user = 'consul' %}
 {%- set service_name = 'consul-template' %}
 {%- set template_path = '/srv/consul-templates' %}
-{%- set consul_addr = salt['pillar.get']('consul_template:consul_addr', '127.0.0.1:8500') %}
 
 include:
   - .config
@@ -22,7 +21,7 @@ consul-tpl-service:
     - defaults:
         description: "Consul Template Service"
         bin_path: /usr/local/bin/consul-template
-        bin_opts: -config {{ conf_path }} -consul {{ consul_addr }}
+        bin_opts: -config {{ conf_path }}
         runas_user: root
         runas_group: {{ user }}
         chdir: {{ consul_home }}

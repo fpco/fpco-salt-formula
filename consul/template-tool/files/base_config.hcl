@@ -1,12 +1,11 @@
 # config docs: https://github.com/hashicorp/consul-template#configuration-files
 
 {#- configure consul-template, to be run as a service -#}
-{%- set consul_addr = salt['pillar.get']('consul_template:consul', '127.0.0.1:8500') %}
+{%- set consul_addr = salt['pillar.get']('consul_template:consul_addr', '127.0.0.1:8500') %}
 {%- set consul_token = salt['pillar.get']('consul_template:client_token', 'CONSUL_TOKEN') %}
 {%- set retry = salt['pillar.get']('consul_template:retry', '10s') %}
 {%- set max_stale = salt['pillar.get']('consul_template:max_stale', '10m') %}
 {%- set log_level = salt['pillar.get']('consul_template:log_level', 'warn') %}
-
 consul = "{{ consul_addr }}"
 token = "{{ consul_token }}" {# May also use the env var CONSUL_TOKEN #}
 retry = "10s"
