@@ -1,0 +1,74 @@
+{%- set home = '/var/lib/nomad' %}
+{%- set region = salt['pillar.get']('nomad:region', 'us') %}
+{%- set dc = salt['pillar.get']('nomad:datacenter', 'dc') %}
+{%- set syslog_facility = salt['pillar.get']('nomad:syslog_facility', 'LOCAL0') %}
+{%- set enable_debug = salt['pillar.get']('nomad:enable_debug', 'false') %}
+{%- set secret_key = salt['pillar.get']('nomad:secret_key', '') %}
+{%- set log_level = salt['pillar.get']('nomad:log_level', 'INFO') %}
+{%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set http_ip = ext_ip %}
+
+{#- server-specific #}
+{%- set server = salt['pillar.get']('nomad:server', False) %}
+{%- set num_schedulers = salt['pillar.get']('nomad:num_schedulers', False) %}
+{%- set enabled_schedulers = salt['pillar.get']('nomad:enabled_schedulers', False) %}
+
+{#- agent-specific #}
+{%- set default_server = 'nomad.service.consul.' %}
+{%- set servers = salt['pillar.get']('nomad:servers', [default_server]) %}
+{%- set node_id = salt['pillar.get']('nomad:node_id', False) %}
+{%- set node_class = salt['pillar.get']('nomad:node_class', False) %}
+{%- set meta = salt['pillar.get']('nomad:meta', {}) %}
+{%- set opts = salt['pillar.get']('nomad:options', {}) %}
+{%- set net_iface = salt['pillar.get']('nomad:network_interface', False) %}
+
+{%- if server %}
+  {#- use external/private IP when running server mode #}
+  {%- set rpc_ip = ext_ip %}
+  {%- set serf_ip = ext_ip %}
+{%- else %}
+  {%- set rpc_ip = False %}
+  {%- set serf_ip = False %}
+{%- endif -%}
+
+{
+  "addresses": {
+    {%- if serf_ip %}"serf": "{{ serf_ip }}",{% endif %}
+    {%- if rpc_ip %}"rpc": "{{ rpc_ip }}",{% endif %}
+    "http": "{{ http_ip }}"
+  },
+  "datacenter": "{{ dc }}",
+  "data_dir": "{{ home }}/tmp/",
+  "disable_anonymous_signature": true,
+  "disable_update_check": true,
+  "enable_debug": {{ enable_debug }},
+  "enable_syslog": true,
+  "log_level": "{{ log_level }}",
+  "name": "{{ salt['grains.get']('id') }}",
+  "region": "{{ region }}",
+  "syslog_facility": "{{ syslog_facility }}",
+  {%- if server %}
+  "server": {
+    {%- if num_schedulers %}"num_schedulers": "{{ num_schedulers }}",{% endif %}
+    {%- if enabled_schedulers %}"enabled_schedulers": "{{ enabled_schedulers }}",{% endif %}
+    "enabled": true
+  }
+  {%- else %}
+  "client": {
+    "servers": [
+      {% for s in servers %}"{{ s }}"{%- if not loop.last %},{%- endif %}
+      {% endfor -%}
+    ],
+    {% if meta %}"meta": { {%- for k,v in meta.items() %}
+      "{{ k }}": "{{ v }}"{% if not loop.last %},{% endif %}
+    {% endfor %}},{% endif %}
+    {% if net_iface %}"network_interface": "{{ net_iface }}",{% endif %}
+    {% if node_class %}"node_class": "{{ node_class }}",{% endif %}
+    {% if node_id %}"node_id": "{{ node_id }}",{% endif %}
+    {% if opts %}"options": { {%- for k,v in opts.items() %}
+      "{{ k }}": "{{ v }}"{% if not loop.last %},{% endif %}
+    {% endfor %}},{% endif %}
+    "enabled": true
+  }
+  {%- endif %}
+}
