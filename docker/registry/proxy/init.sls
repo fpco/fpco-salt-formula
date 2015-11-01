@@ -9,7 +9,7 @@
 {%- set port = salt['pillar.get']('rproxy:port', '5000') %}
 {%- set bucket = salt['pillar.get']('rproxy:bucket', 'registry.example.com') %}
 {%- set s3_baseurl = salt['pillar.get']('rproxy:s3_baseurl', 's3.amazonaws.com') %}
-{%- set s3_backend = s3_baseurl + '/' + bucket %}
+{%- set s3_backend = s3_baseurl ~ '/' ~ bucket %}
 
 {%- set cname = 'docker-registry' %}
 

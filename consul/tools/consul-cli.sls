@@ -3,8 +3,8 @@
 #
 {%- set version = '0.1.0' %}
 {%- set base_url = 'https://github.com/CiscoCloud/consul-cli/releases/download' %}
-{%- set release_archive = version + '/consul-cli_' + version + '_linux_amd64.tar.gz' %}
-{%- set release_url = base_url + '/v' + release_archive %}
+{%- set release_archive = version ~ '/consul-cli_' ~ version ~ '_linux_amd64.tar.gz' %}
+{%- set release_url = base_url ~ '/v' ~ release_archive %}
 {%- set bin_path = '/usr/local/bin/consul-cli' %}
 {%- set checksum = 'ac0c14e7143be86e69a338dd1b97ff7139956766d1cd975e39ceae69148cff1e8090a1636f303b2dd738178f92eeb2903a07005f89248149200ed81616dbc595' %}
 

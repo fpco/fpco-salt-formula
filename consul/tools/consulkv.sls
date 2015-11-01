@@ -3,8 +3,8 @@
 #
 {%- set version = '0.1.0' %}
 {%- set base_url = 'https://github.com/spiritloose/consulkv/releases/download' %}
-{%- set release_archive = version + '/consulkv_' + version + '_linux_amd64.tar.gz' %}
-{%- set release_url = base_url + '/v' + release_archive %}
+{%- set release_archive = version ~ '/consulkv_' ~ version ~ '_linux_amd64.tar.gz' %}
+{%- set release_url = base_url ~ '/v' ~ release_archive %}
 {%- set bin_path = '/usr/local/bin/consulkv' %}
 {%- set checksum = '8094a3ecf4497120e4611cf8174beb27397201d57930e7c916f2b707cc5f1ef8743681e2e453f8ebcfadda17fed791f94a632cb115579515593b706f24cadf7d' %}
 

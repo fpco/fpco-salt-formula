@@ -1,5 +1,5 @@
 {%- set consul_home = '/home/consul' %}
-{%- set conf_path = consul_home + '/template-tool' %}
+{%- set conf_path = consul_home ~ '/template-tool' %}
 {%- set user = 'consul' %}
 
 include:

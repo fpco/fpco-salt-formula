@@ -7,10 +7,10 @@
 {%- set home = '/home/consul' %}
 {%- set user = 'consul' %}
 {%- set bin_root = '/usr/local/bin/' %}
-{%- set consul_bin = bin_root + 'consul' %}
+{%- set consul_bin = bin_root ~ 'consul' %}
 {%- set version = '0.5.2' %}
-{%- set install_path = bin_root + 'consul-' + version %}
-{%- set release_url = 'https://dl.bintray.com/mitchellh/consul/' + version + '_linux_amd64.zip' %}
+{%- set install_path = bin_root ~ 'consul-' ~ version %}
+{%- set release_url = 'https://dl.bintray.com/mitchellh/consul/' ~ version ~ '_linux_amd64.zip' %}
 {%- set checksum = '7bab204e9891d81a19422e70e20bbb527b7bb0b14c406f77ca38ca8dc11249fe5e45075e31a8eaed4bfce03f4af524b2603f4dcfe4c8b6ab0dfe367a5605553b' %}
 
 include:

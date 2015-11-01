@@ -3,12 +3,12 @@
 {%- set home = '/home/consul' %}
 {%- set user = 'consul' %}
 {%- set webui = salt['pillar.get']('consul:webui', False) %}
-{%- set default_args = 'agent -config-dir ' + home + '/conf.d/' %}
+{%- set default_args = 'agent -config-dir ' ~ home ~ '/conf.d/' %}
 {%- set leader_count = salt['pillar.get']('consul:leader_count', False) %}
 
 {%- if leader_count %}
-  {%- set bootstrap_args = ' -bootstrap-expect ' + str(leader_count) %}
-  {%- set args = default_args + bootstrap_args %}
+  {%- set bootstrap_args = ' -bootstrap-expect ' ~ leader_count %}
+  {%- set args = default_args ~ bootstrap_args %}
   {%- set desc = 'Consul Leader' %}
 {%- else %}
   {%- set args = default_args %}

@@ -3,8 +3,8 @@
 #
 {%- set version = 'v0.4.0' %}
 {%- set base_url = 'https://github.com/vsco/jsonconsul/releases/download/' %}
-{%- set release_archive = version + '/jsonconsul_' + version + '_linux_amd64.tar.gz' %}
-{%- set release_url = base_url + release_archive %}
+{%- set release_archive = version ~ '/jsonconsul_' ~ version ~ '_linux_amd64.tar.gz' %}
+{%- set release_url = base_url ~ release_archive %}
 {%- set bin_path = '/usr/local/bin/jsonconsul' %}
 {%- set checksum = 'adb2dfc2ad00e15c3bc0de86080a478a8d23bb55efec7ac70749c01c619a11f8ff148691678e917e8d7ef6c8998821a4f5db84f0238a558c1ef4d6073bf3aab5' %}
 

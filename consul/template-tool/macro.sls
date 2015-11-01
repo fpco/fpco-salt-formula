@@ -2,8 +2,8 @@
 
 {%- set consul_home = '/home/consul' %}
 {%- set user = 'consul' %}
-{%- set consul_conf_path = consul_home + 'conf.d' %}
-{%- set tpl_conf_path = consul_home + '/template-tool' %}
+{%- set consul_conf_path = consul_home ~ 'conf.d' %}
+{%- set tpl_conf_path = consul_home ~ '/template-tool' %}
 {%- set template_path = '/srv/consul-templates' %}
 {%- set pillar_path = '/srv/pillar' %}
 

@@ -1,7 +1,7 @@
 {%- set bin_path = '/usr/local' %}
 {%- set version = '1.4.2' %}
-{%- set go_path = bin_path + '/go' %}
-{%- set release_url = 'https://storage.googleapis.com/golang/go' + version + '.linux-amd64.tar.gz' %}
+{%- set go_path = bin_path ~ '/go' %}
+{%- set release_url = 'https://storage.googleapis.com/golang/go' ~ version ~ '.linux-amd64.tar.gz' %}
 {%- set checksum = 'ea9982698d306e98e8236de1515bbdc1bce7290f6db9f61c5171cb10ec6d4619361ba7108c1d4c58d269403ce32cc5de6c70859441da2e22b5cce0d4ebc69c7a' %}
 {%- set go_executables = ['go', 'godoc', 'gofmt'] %}
 

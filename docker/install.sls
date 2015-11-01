@@ -3,7 +3,7 @@
 
 {%- set aufs = salt['pillar.get']('docker:aufs', True) %}
 {%- set linux_version = salt['cmd.run']('uname -r') %}
-{%- set default_aufs_tools_pkg = 'linux-image-extra-' + linux_version %}
+{%- set default_aufs_tools_pkg = 'linux-image-extra-' ~ linux_version %}
 {%- set aufs_tools = salt['pillar.get']('docker:aufs_tools', default_aufs_tools_pkg) %}
 {%- set default_opts = '' %}
 {%- set dm_opts = '--storage-opt dm.basesize=20G' %}

@@ -4,11 +4,11 @@
 {%- set version = '0.11.1' %}
 {%- set root = '/root' %}
 {%- set install_to = '/usr/local/bin' %}
-{%- set bin_path = install_to + '/consul-template' %}
-{%- set base_url = 'https://releases.hashicorp.com/consul-template/' + version %}
-{%- set archive_basename = 'consul-template_' + version + '_linux_amd64' %}
-{%- set archive_filename = archive_basename + '.zip' %}
-{%- set release_url = base_url + '/' + archive_filename %}
+{%- set bin_path = install_to ~ '/consul-template' %}
+{%- set base_url = 'https://releases.hashicorp.com/consul-template/' ~ version %}
+{%- set archive_basename = 'consul-template_' ~ version ~ '_linux_amd64' %}
+{%- set archive_filename = archive_basename ~ '.zip' %}
+{%- set release_url = base_url ~ '/' ~ archive_filename %}
 {%- set checksum = '57d9f07a004512910280b46b357c9d2dd2d810f822a6652c6ae7914f0642952b24c615a71b4a51da615c7789017498c340d61ec7eb935ee79ae966ef02c0c0ca' %}
 
 include:
