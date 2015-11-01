@@ -24,4 +24,7 @@ jq-bin:
     - target: {{ bin_path }}-{{ version }}
     - require:
         - file: jq-release
-
+  cmd.run:
+    - name: jq --version
+    - require:
+        - file: jq-bin
