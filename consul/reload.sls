@@ -5,7 +5,7 @@
 {%- set user = 'consul' %}
 
 
-consul-service-reload:
+consul-service-check-reload:
   cmd.run:
     - name: consul reload
     - chdir: {{ home }}

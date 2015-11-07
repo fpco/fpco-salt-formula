@@ -1,7 +1,7 @@
 {%- set ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 
 include:
-  - consul.agent
+  - consul.reload
 
 salt-master-consul-service:
   file.managed:
@@ -25,4 +25,4 @@ salt-master-consul-service:
           }
         }
     - watch_in:
-        - service: consul-upstart
+        - service: consul-service-check-reload

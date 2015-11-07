@@ -1,26 +1,26 @@
-# create service definition and check config for SSH
+# create service definition and check config for the consul webui
 
 {%- set home = '/home/consul' %}
 {%- set user = 'consul' %}
 
 include:
   - consul
-  - consul.services
+  - consul.reload
 
 
-consul-service-ssh:
+consul-service-consul-webui:
   file.managed:
-    - name: {{ home }}/conf.d/ssh.json
+    - name: {{ home }}/conf.d/consul-webui.json
     - source: salt://consul/files/service.json
     - template: jinja
     - user: {{ user }}
     - group: {{ user }}
     - mode: 640
     - context:
-        name: ssh
+        name: consul-webui
         tags:
-          - ssh
-        port: 22
+          - consul-webui
+        port: 8500
         check:
           script: 'true'
           interval: '30s'
@@ -28,4 +28,4 @@ consul-service-ssh:
         - user: consul-user
         - file: consul-conf-d
     - watch_in:
-        - cmd: consul-service-reload
+        - cmd: consul-service-check-reload
