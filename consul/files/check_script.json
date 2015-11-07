@@ -1,0 +1,8 @@
+{
+  "check": {
+    "id": "{{ id }}",
+    "name": "{{ name }}",
+    "script": "{{ script }}",
+    "interval": "{{ interval }}"
+  }
+}

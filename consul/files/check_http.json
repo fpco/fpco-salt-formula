@@ -1,0 +1,9 @@
+{
+  "check": {
+    "name": "{{ name }}",
+    "http": "{{ url }}",
+    "timeout": "{{ timeout }}",
+    "interval": "{{ interval }}"
+  }
+}
+
