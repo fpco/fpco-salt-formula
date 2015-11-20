@@ -1,4 +1,3 @@
-{%- set api_key = salt['pillar.get']('newrelic:apikey', 'REPLACE_WITH_REAL_KEY') %}
 
 include:
   - newrelic.install
@@ -9,10 +8,10 @@ newrelic-sysmond:
     - require:
         - pkgrepo: newrelic
 
-  file.replace:
+  file.managed:
     - name: /etc/newrelic/nrsysmond.cfg
-    - pattern: "license_key=REPLACE_WITH_REAL_KEY"
-    - repl: "license_key={{ api_key }}"
+    - source: salt://newrelic/files/nrsysmond.cfg
+    - template: jinja
     - require:
         - pkg: newrelic-sysmond
 
