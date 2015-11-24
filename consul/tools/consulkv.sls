@@ -56,3 +56,27 @@ consulkv-bin:
     - name: 'consulkv --version || true'
     - require:
         - file: consulkv-bin
+
+
+consulkv-py-helper-script:
+  # this script is helpful when combined with the git-file-monitor and
+  # consulkv to auto-load arbitrary text/config into consul's KV
+  file.managed:
+    - name: /usr/local/bin/consulkv-helper.py
+    - user: root
+    - group: root
+    - mode: 755
+    - contents: |
+        #!/usr/bin/python
+        # helper script to use with consulkv and git-file-monitor
+        # put simply, this script accepts the full path to the file the user wishes
+        # to load into consul with `consulkv put`, and the full path to the git
+        # repo that file is located in. The difference between these two paths is
+        # the path to the key to put into consul.
+        #
+        # use: consulkv-helper.py /path/to/repo/path/to/file.ext /path/to/repo
+        import sys, os
+        file_path = sys.argv[1]
+        repo_root = sys.argv[2]
+        path_diff = os.path.relpath(os.path.splitext(file_path)[0], repo_root)
+        print path_diff
