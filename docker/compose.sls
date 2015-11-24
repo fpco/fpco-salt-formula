@@ -1,7 +1,8 @@
 # install docker-compose from github
 
-{%- set checksum = 'e25d0f2a63bde97e43973f4e085c089e957a7538fd371b2846ddc308b34f35812aee5c032cd4df63a58a90498e88adfcd00c0985ba41661c607d6ecbd9ff3af7' %}
-{%- set version = '1.2.0' %}
+{%- set default_checksum = 'e25d0f2a63bde97e43973f4e085c089e957a7538fd371b2846ddc308b34f35812aee5c032cd4df63a58a90498e88adfcd00c0985ba41661c607d6ecbd9ff3af7' %}
+{%- set checksum = salt['pillar.get']('docker-compose:checksum', default_checksum) %}
+{%- set version = salt['pillar.get']('docker-compose:version', '1.2.0') %}
 
 compose-executable:
   file.managed:
