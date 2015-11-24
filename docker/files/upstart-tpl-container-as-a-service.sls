@@ -46,10 +46,10 @@ env {{ var }}={{ val }}
 {%- endif %}
 
 pre-start script
+    /usr/bin/docker pull {{ img }}:{{ tag }}
+
     /usr/bin/docker stop {{ container_name }} || true
     /usr/bin/docker rm {{ container_name }} || true
-
-    /usr/bin/docker pull {{ img }}:{{ tag }}
     /usr/bin/docker create \
         --name {{ container_name }} \
         {#- be careful with - around here... #}
