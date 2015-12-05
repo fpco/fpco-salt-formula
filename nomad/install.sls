@@ -1,13 +1,16 @@
 # installs nomad from .zip archive. Example:
 # https://releases.hashicorp.com/nomad/0.1.2/nomad_0.1.2_linux_amd64.zip
 #
-{%- set version = '0.1.2' %}
+{% from "nomad/checksum_map.jinja" import nomad_checksum_map with context %}
+{%- set default_version = '0.2.1' %}
+{%- set version = salt['pillar.get']('nomad:version', default_version) %}
+{%- set default_checksum = nomad_checksum_map[version] %}
+{%- set checksum = salt['pillar.get']('nomad:checksum', default_checksum) %}
 {%- set base_url = 'https://releases.hashicorp.com' %}
 {%- set app = 'nomad' %}
 {%- set release_archive = app ~ '_' ~ version ~ '_linux_amd64.zip' %}
 {%- set release_url = base_url ~ '/' ~ app ~ '/' ~ version ~ '/' ~ release_archive %}
 {%- set bin_path = '/usr/local/bin/' ~ app %}
-{%- set checksum = '8c6c447d8ca568720baa8fb5655e7e027f428331086c31c1daf52b681d9a5395b9de7106fa1172ed25546d5b6618845174145ad71fc30d52a43f758753c61d98' %}
 
 include:
   - apps.unzip
