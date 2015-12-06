@@ -18,7 +18,8 @@
 {#- agent-specific #}
 {%- set default_server = 'nomad.service.consul.' %}
 {%- set servers = salt['pillar.get']('nomad:servers', [default_server]) %}
-{%- set node_id = salt['pillar.get']('nomad:node_id', False) %}
+{%- set default_node_id = salt['grains.get']('id') %}
+{%- set node_id = salt['pillar.get']('nomad:node_id', default_node_id) %}
 {%- set node_class = salt['pillar.get']('nomad:node_class', False) %}
 {%- set meta = salt['pillar.get']('nomad:meta', {}) %}
 {%- set opts = salt['pillar.get']('nomad:options', {}) %}
