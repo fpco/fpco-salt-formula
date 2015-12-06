@@ -2,7 +2,9 @@
 {%- set region = salt['pillar.get']('nomad:region', 'us') %}
 {%- set dc = salt['pillar.get']('nomad:datacenter', 'dc') %}
 {%- set syslog_facility = salt['pillar.get']('nomad:syslog_facility', 'LOCAL0') %}
-{%- set enable_debug = salt['pillar.get']('nomad:enable_debug', 'false') %}
+{%- if salt['pillar.get']('nomad:enable_debug', False) %}{% set enable_debug = 'true' %}
+{%- else %}{% set enable_debug = 'false' %}
+{%- endif %}
 {%- set secret_key = salt['pillar.get']('nomad:secret_key', '') %}
 {%- set log_level = salt['pillar.get']('nomad:log_level', 'INFO') %}
 {%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
