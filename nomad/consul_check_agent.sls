@@ -4,7 +4,8 @@
 {%- set user = 'consul' %}
 {%- set server = salt['pillar.get']('nomad:server', False) %}
 {%- set service_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
-{%- set port = 4646 %}
+{%- set http_port = 4646 %}
+{%- set rpc_port = 4647 %}
 
 include:
   - consul.reload
@@ -23,10 +24,10 @@ consul-service-nomad-server:
             "name": "nomad-server",
             "tags": ["nomad-server"],
             "address": "{{ service_ip }}",
-            "port": {{ port }},
+            "port": {{ rpc_port }},
             "checks": [
               {
-                "http": "http://{{ service_ip }}:{{ port }}/v1/agent/self/",
+                "http": "http://{{ service_ip }}:{{ http_port }}/v1/agent/self/",
                 "interval": "30s"
               }
             ]
@@ -45,7 +46,7 @@ consul-check-nomad-agent:
     - mode: 640
     - context:
         name: 'nomad-agent'
-        url: 'http://{{ service_ip }}:{{ port }}/v1/agent/self/'
+        url: 'http://{{ service_ip }}:{{ http_port }}/v1/agent/self/'
         timeout: '2s'
         interval: '30s'
     - watch_in:
