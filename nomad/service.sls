@@ -7,6 +7,7 @@
 {%- set server = salt['pillar.get']('nomad:server', False) %}
 {%- set config_dir = '-config ' ~ conf_path ~ '/conf.d/' %}
 {%- set default_args = 'agent ' ~ config_dir %}
+{%- set service_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 
 {%- if server %}
   {%- set server_count = salt['pillar.get']('nomad:server_count', '3') %}
@@ -43,3 +44,8 @@ nomad-upstart:
     - watch:
         - file: nomad-config
         - file: nomad-upstart
+
+nomad-addr-system-env:
+  file.append:
+    - name: /etc/environment
+    - text: NOMAD_ADDR="http://{{ service_ip }}:4646"
