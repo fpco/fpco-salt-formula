@@ -6,6 +6,9 @@
 {%- set retry = salt['pillar.get']('consul_template:retry', '10s') %}
 {%- set max_stale = salt['pillar.get']('consul_template:max_stale', '10m') %}
 {%- set log_level = salt['pillar.get']('consul_template:log_level', 'warn') %}
+{%- set vault = salt['pillar.get']('consul_template:vault', False) %}
+{%- set vault_url = salt['pillar.get']('consul_template:vault_url', 'https://vault.service.consul:8200') %}
+{%- set vault_token = salt['pillar.get']('consul_template:vault_token', 'VAULT_TOKEN') %}
 consul = "{{ consul_addr }}"
 token = "{{ consul_token }}" {# May also use the env var CONSUL_TOKEN #}
 retry = "10s"
@@ -15,13 +18,14 @@ log_level = "warn"
 
 {%- if vault is defined %}
 vault {
-  address = "https://vault.service.consul:8200"
-  token = "abcd1234" // May also be specified via the envvar VAULT_TOKEN
+  address = "{{ vault_url }}"
+  token = "{{ vault_token }}"
+  renew = true
   ssl {
-    enabled = true
-    verify = true
-    cert = "/path/to/client/cert.pem"
-    ca_cert = "/path/to/ca/cert.pem"
+    enabled = false
+    verify = false
+#   cert = "/path/to/client/cert.pem"
+#   ca_cert = "/path/to/ca/cert.pem"
   }
 }
 {%- endif %}
