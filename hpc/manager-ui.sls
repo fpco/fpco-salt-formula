@@ -3,7 +3,7 @@
 {%- set image = salt['pillar.get']('hpc_manager:image', 'fpco/hpc-manager-ui') %}
 {%- set tag = salt['pillar.get']('hpc_manager:tag', 'latest') %}
 {%- set port = salt['pillar.get']('hpc_manager:port', '3000') %}
-{%- set approot = salt['pillar.get']('hpc_manager:approot', 'localhost:3000') %}
+{%- set approot = salt['pillar.get']('hpc_manager:approot', False) %}
 {%- set redis_host = salt['pillar.get']('hpc_manager:redis_host', 'localhost') %}
 {%- set prefix = salt['pillar.get']('hpc_manager:redis_prefix', False) %}
 
@@ -30,12 +30,13 @@ hpc-manager-docker-ui:
         docker_args:
           - '--publish 127.0.0.1:{{ port }}:3000'
           - '--workdir=/usr/local/lib/hpc-manager/'
-          - '-e HPC_REDIS_HOST:{{ redis_host }}'
-          {% if prefix %}- '-e HPC_REDIS_PREFIX:{{ prefix }}'{%- endif %}
-          {% if approot %}- '-e APPROOT:{{ approot }}'{%- endif %}
+          - '-e HPC_REDIS_HOST={{ redis_host }}'
+          {% if prefix %}- '-e HPC_REDIS_PREFIX={{ prefix }}'{%- endif %}
+          {% if approot %}- '-e APPROOT={{ approot }}'{%- endif %}
         cmd: hpc-manager
   service.running:
     - name: {{ cname }}
     - enable: True
     - watch:
         - file: hpc-manager-docker-ui
+
