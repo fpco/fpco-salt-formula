@@ -27,7 +27,7 @@ consul-service-nomad-server:
             "port": {{ rpc_port }},
             "checks": [
               {
-                "http": "http://{{ service_ip }}:{{ http_port }}/v1/agent/self/",
+                "script": "service nomad status",
                 "interval": "30s"
               }
             ]
