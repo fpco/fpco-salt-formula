@@ -25,6 +25,10 @@
 {%- set opts = salt['pillar.get']('nomad:options', {}) %}
 {%- set net_iface = salt['pillar.get']('nomad:network_interface', False) %}
 
+{#- consul-specific #}
+{%- set consul_addr = salt['pillar.get']('nomad:consul:addr', 'consul.service.consul:8500') %}
+{%- set consul_token = salt['pillar.get']('nomad:consul:token', 'CONSUL_TOKEN_FOR_NOMAD') %}
+
 {%- if server %}
   {#- use external/private IP when running server mode #}
   {%- set rpc_ip = ext_ip %}
@@ -40,6 +44,8 @@
     {%- if rpc_ip %}"rpc": "{{ rpc_ip }}",{% endif %}
     "http": "{{ http_ip }}"
   },
+  "consul.address": "{{ consul_addr }}",
+  "consul.token": "{{ consul_token }}",
   "datacenter": "{{ dc }}",
   "data_dir": "{{ home }}/tmp/",
   "disable_anonymous_signature": true,
