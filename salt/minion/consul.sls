@@ -14,7 +14,7 @@ salt-minion-consul:
                   "type": "service",
                   "service": "salt-master",
                   "passingonly": true,
-                  "handler": "salt-call --local state.sls salt.minion.base"
+                  "handler": "sudo service salt-minion restart"
                 }
             ]
         }
