@@ -69,7 +69,7 @@ consul-sudoers-conf:
     - mode: 644
     - contents: |
         # define a command alias for the list of commands the agent can run
-        Cmnd_Alias  AGENT_CMD = /usr/sbin/service
+        Cmnd_Alias  AGENT_CMD = /usr/sbin/service, /usr/bin/salt-call
         # the consul user can run the list of approved commands on any host,
         # no password is required
         consul ALL = NOPASSWD: AGENT_CMD
