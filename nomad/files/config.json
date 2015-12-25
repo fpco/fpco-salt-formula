@@ -14,6 +14,7 @@
 {%- set server = salt['pillar.get']('nomad:server', False) %}
 {%- set num_schedulers = salt['pillar.get']('nomad:num_schedulers', False) %}
 {%- set enabled_schedulers = salt['pillar.get']('nomad:enabled_schedulers', False) %}
+{%- set bootstrap_expect = salt['pillar.get']('nomad:bootstrap_expect', 3) %}
 
 {#- agent-specific #}
 {%- set default_server = 'nomad-server.service.consul:4647' %}
@@ -58,8 +59,13 @@
   "syslog_facility": "{{ syslog_facility }}",
   {%- if server %}
   "server": {
+    "bootstrap_expect": {{ bootstrap_expect }},
     {%- if num_schedulers %}"num_schedulers": "{{ num_schedulers }}",{% endif %}
     {%- if enabled_schedulers %}"enabled_schedulers": "{{ enabled_schedulers }}",{% endif %}
+    "retry_join": [
+      {% for s in servers %}"{{ s }}"{%- if not loop.last %},{%- endif %}
+      {% endfor -%}
+    ],
     "enabled": true
   }
   {%- else %}
