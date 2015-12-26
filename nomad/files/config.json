@@ -15,6 +15,7 @@
 {%- set num_schedulers = salt['pillar.get']('nomad:num_schedulers', False) %}
 {%- set enabled_schedulers = salt['pillar.get']('nomad:enabled_schedulers', False) %}
 {%- set bootstrap_expect = salt['pillar.get']('nomad:bootstrap_expect', 3) %}
+{%- set retry_interval = salt['pillar.get']('nomad:retry_interval', '15s') %}
 
 {#- agent-specific #}
 {%- set default_server = 'nomad-server.service.consul:4647' %}
@@ -66,6 +67,7 @@
       {% for s in servers %}"{{ s }}"{%- if not loop.last %},{%- endif %}
       {% endfor -%}
     ],
+    "retry_interval": "{{ retry_interval }}",
     "enabled": true
   }
   {%- else %}
