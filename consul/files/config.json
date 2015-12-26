@@ -8,6 +8,7 @@
 {%- set disable_remote_exec = salt['pillar.get']('consul:disable_remote_exec', True) %}
 {%- set leader_count = salt['pillar.get']('consul:leader_count', False) %}
 {%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set retry_interval = salt['pillar.get']('consul:retry_interval', '15s') %}
 
 {%- if leader_count %}
   {#- JSON does not want to see True/False #}
@@ -40,10 +41,11 @@
   "node_name": "{{ salt['grains.get']('id') }}",
   "server": {{ server }},
   {%- if leaders %}
-  "start_join": [
+  "retry_join": [
     {% for leader in leaders %}"{{ leader }}"{%- if not loop.last %},{%- endif %}
     {% endfor -%}
   ],
+  "retry_interval": "{{ retry_interval }}",
   {%- endif %}
   "watches": []
 }
