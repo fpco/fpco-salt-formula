@@ -9,6 +9,7 @@
 {%- set log_level = salt['pillar.get']('nomad:log_level', 'INFO') %}
 {%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 {%- set http_ip = ext_ip %}
+{%- set default_server = 'nomad-server.service.consul' %}
 
 {#- server-specific #}
 {%- set server = salt['pillar.get']('nomad:server', False) %}
@@ -16,10 +17,12 @@
 {%- set enabled_schedulers = salt['pillar.get']('nomad:enabled_schedulers', False) %}
 {%- set bootstrap_expect = salt['pillar.get']('nomad:bootstrap_expect', 3) %}
 {%- set retry_interval = salt['pillar.get']('nomad:retry_interval', '15s') %}
+{%- set join_servers = salt['pillar.get']('nomad:servers', [default_server]) %}
 
 {#- agent-specific #}
-{%- set default_server = 'nomad-server.service.consul:4647' %}
-{%- set servers = salt['pillar.get']('nomad:servers', [default_server]) %}
+{#- the agent requires the port when referencing it in the config #}
+{%- set default_agent_server = default_server ~ ':4647' %}
+{%- set agent_servers = salt['pillar.get']('nomad:servers', [default_agent_server]) %}
 {%- set default_node_id = salt['grains.get']('id') %}
 {%- set node_id = salt['pillar.get']('nomad:node_id', default_node_id) %}
 {%- set node_class = salt['pillar.get']('nomad:node_class', False) %}
@@ -64,7 +67,7 @@
     {%- if num_schedulers %}"num_schedulers": "{{ num_schedulers }}",{% endif %}
     {%- if enabled_schedulers %}"enabled_schedulers": "{{ enabled_schedulers }}",{% endif %}
     "retry_join": [
-      {% for s in servers %}"{{ s }}"{%- if not loop.last %},{%- endif %}
+      {% for s in join_servers %}"{{ s }}"{%- if not loop.last %},{%- endif %}
       {% endfor -%}
     ],
     "retry_interval": "{{ retry_interval }}",
@@ -73,7 +76,7 @@
   {%- else %}
   "client": {
     "servers": [
-      {% for s in servers %}"{{ s }}"{%- if not loop.last %},{%- endif %}
+      {% for s in agent_servers %}"{{ s }}"{%- if not loop.last %},{%- endif %}
       {% endfor -%}
     ],
     {% if meta %}"meta": { {%- for k,v in meta.items() %}
