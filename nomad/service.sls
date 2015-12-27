@@ -3,7 +3,6 @@
 {%- set home = '/var/lib/nomad' %}
 {%- set conf_path = '/etc/nomad' %}
 {%- set conf_file = conf_path ~ '/config.json' %}
-{%- set user = 'nomad' %}
 {%- set server = salt['pillar.get']('nomad:server', False) %}
 {%- set config_dir = '-config ' ~ conf_path ~ '/conf.d/' %}
 {%- set default_args = 'agent ' ~ config_dir %}
@@ -14,9 +13,13 @@
   {%- set bootstrap_args = ' -bootstrap-expect ' ~ server_count %}
   {%- set args = default_args ~ bootstrap_args %}
   {%- set desc = 'Nomad Server' %}
+  {#- run nomad server as nomad user, nothing here requires root #}
+  {%- set user = 'nomad' %}
 {%- else %}
   {%- set args = default_args %}
   {%- set desc = 'Nomad Agent' %}
+  {#- run nomad agent as root user, required for raw_exec driver #}
+  {%- set user = 'root' %}
 {%- endif %}
 
 include:
