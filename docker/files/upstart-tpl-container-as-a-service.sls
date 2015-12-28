@@ -10,6 +10,8 @@
  #       - source: salt://docker/files/upstart-tpl-container-as-a-service.sls
  #       - template: jinja
  #       - context:
+ #           # enables "respawn" and "limit unlimited"
+ #           respawn_forever: True
  #           desc: Warp HTTP Server
  #           author: the-ops-ninjas@fpcomplete.com
  #           # the name of the container instance
@@ -37,7 +39,10 @@ description "{{ desc }}"
 author "{{ author }}"
 start on filesystem and started docker
 stop on runlevel [!2345]
+{%- if respawn_forever %}
 respawn
+respawn limit unlimited
+{%- endif %}
 
 {%- if env_vars is defined %}
 {%- for var, val in env_vars.items() %}
