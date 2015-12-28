@@ -16,7 +16,7 @@ max_stale = "10m"
 log_level = "warn"
 #pid_file = "/var/run/consul-template.pid"
 
-{%- if vault is defined %}
+{%- if vault %}
 vault {
   address = "{{ vault_url }}"
   token = "{{ vault_token }}"
