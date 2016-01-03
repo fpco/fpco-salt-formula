@@ -10,9 +10,13 @@
   {%- set bootstrap_args = ' -bootstrap-expect ' ~ leader_count %}
   {%- set args = default_args ~ bootstrap_args %}
   {%- set desc = 'Consul Leader' %}
+  {%- set http_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+  {%- set rpc_ip = '127.0.0.1' %}
 {%- else %}
   {%- set args = default_args %}
   {%- set desc = 'Consul Agent' %}
+  {%- set http_ip = '127.0.0.1' %}
+  {%- set rpc_ip = '127.0.0.1' %}
 {%- endif %}
 
 include:
@@ -41,3 +45,11 @@ consul-upstart:
         - file: consul-user
         - file: consul-config
         - file: consul-upstart
+
+
+consul-addr-system-env:
+  file.append:
+    - name: /etc/environment
+    - text: |
+        CONSUL_HTTP_ADDR="{{ http_ip }}:8500"
+        CONSUL_RPC_ADDR="{{ rpc_ip }}:8400"
