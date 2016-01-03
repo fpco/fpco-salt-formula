@@ -24,7 +24,7 @@ test-{{ executable }}:
   cmd.run:
     - name: "{{ executable }} --version"
     - require:
-        - cmd: install-{{ executable }}-from-docker
+        - cmd: install-from-docker-{{ executable }}
   {%- endfor %}
 
 {%- endfor %}
