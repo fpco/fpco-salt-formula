@@ -37,8 +37,8 @@ stack-cron-docker-cleanup:
     - name: {{ cleanup_script }}
     - identifier: stack-docker-cleanup
     - user: root
-    - hour: {{ hour }}
-    - minute: {{ minute }}
+    - hour: '{{ hour }}'
+    - minute: '{{ minute }}'
     - require:
         - file: stack-cron-docker-cleanup
 
