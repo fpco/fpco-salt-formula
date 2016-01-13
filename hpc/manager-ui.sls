@@ -20,6 +20,7 @@ hpc-manager-docker-ui:
     - context:
         desc: hpc manager ui
         author: the-ops-ninjas@fpcomplete.com
+        respawn_forever: True
         # the name of the container instance
         container_name: {{ cname }}
         # the Docker image to use
