@@ -8,10 +8,12 @@
 {%- set user = 'consul' %}
 {%- set bin_root = '/usr/local/bin/' %}
 {%- set consul_bin = bin_root ~ 'consul' %}
-{%- set version = '0.5.2' %}
+{%- set version = '0.6.3' %}
 {%- set install_path = bin_root ~ 'consul-' ~ version %}
-{%- set release_url = 'https://dl.bintray.com/mitchellh/consul/' ~ version ~ '_linux_amd64.zip' %}
-{%- set checksum = '7bab204e9891d81a19422e70e20bbb527b7bb0b14c406f77ca38ca8dc11249fe5e45075e31a8eaed4bfce03f4af524b2603f4dcfe4c8b6ab0dfe367a5605553b' %}
+{%- set base_url = 'https://releases.hashicorp.com/consul/' ~ version %}
+{%- set release_archive = 'consul_' ~ version ~ '_linux_amd64.zip' %}
+{%- set release_url = base_url ~ '/' ~ release_archive %}
+{%- set checksum = 'fcf96d2955f45b8acba019b8f9b49ce95cea0c66cca8417ddcafe72890974d130c97367a616e234661c85307afbb636887c75a1756edd7952dbf4c1094abf84d' %}
 
 include:
   - consul.python

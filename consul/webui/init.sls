@@ -2,12 +2,12 @@
 
 {%- set home = '/home/consul' %}
 {%- set user = 'consul' %}
-{%- set version = '0.5.2' %}
+{%- set version = '0.6.3' %}
 {%- set webui_root = home ~ '/webui-' ~ version %}
-{%- set base_url = 'https://dl.bintray.com/mitchellh/consul/' %}
-{%- set webui_archive = version ~ '_web_ui.zip' %}
-{%- set release_url = base_url ~ webui_archive %}
-{%- set checksum = '38c763773bec6e5f7e8b0765bdae875afa8477b99e544a8b685b14a23520c2409c8b885e8ec7abcd7574cd6be2dd836f28b1aa670bd8c10ada872bd4d63a445c' %}
+{%- set base_url = 'https://releases.hashicorp.com/consul/' ~ version %}
+{%- set webui_archive = 'consul_' ~ version ~ '_web_ui.zip' %}
+{%- set release_url = base_url ~ '/' ~ webui_archive %}
+{%- set checksum = 'ff93e4f7b373dae6412366fc241377d916baf4675b2113c2e289d337d3193f0ebbca7387e1fb783a38126f4e04d1d94c8b144d88fc326357d30dcf8b9ee3aaa5' %}
 
 include:
   - consul.service
