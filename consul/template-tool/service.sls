@@ -7,7 +7,7 @@
 
 include:
   - .config
-  - consul.agent
+  - consul.reload
 
 
 consul-tpl-service:
@@ -62,6 +62,7 @@ consul-tpl-consul-service:
             ]
           }
         }
-    - watch_in:
-        - service: consul-upstart
+    # reload consul config after this service.json is in place
+    - require_in:
+        - cmd: consul-service-check-reload
 

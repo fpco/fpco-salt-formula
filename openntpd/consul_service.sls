@@ -1,7 +1,7 @@
 {%- set ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 
 include:
-  - consul.agent
+  - consul.reload
 
 ntpd-consul-service:
   file.managed:
@@ -24,5 +24,6 @@ ntpd-consul-service:
             ]
           }
         }
-    - watch_in:
-        - service: consul-upstart
+    # reload consul config after this service.json is in place
+    - require_in:
+        - cmd: consul-service-check-reload

@@ -1,7 +1,7 @@
 {%- set ip = '127.0.0.1' %}
 
 include:
-  - consul.agent
+  - consul.reload
 
 openldap-consul-service:
   file.managed:
@@ -24,6 +24,7 @@ openldap-consul-service:
             ]
           }
         }
-    - watch_in:
-        - service: consul-upstart
+    # reload consul config after this service.json is in place
+    - require_in:
+        - cmd: consul-service-check-reload
 
