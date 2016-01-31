@@ -1,7 +1,7 @@
 # installs consul-template from .tar.gz archive. Example:
 # https://github.com/hashicorp/consul-template/releases/download/v0.10.0/consul-template_0.10.0_linux_amd64.tar.gz
 #
-{%- set version = '0.11.1' %}
+{%- set version = '0.12.2' %}
 {%- set root = '/root' %}
 {%- set install_to = '/usr/local/bin' %}
 {%- set bin_path = install_to ~ '/consul-template' %}
@@ -9,7 +9,7 @@
 {%- set archive_basename = 'consul-template_' ~ version ~ '_linux_amd64' %}
 {%- set archive_filename = archive_basename ~ '.zip' %}
 {%- set release_url = base_url ~ '/' ~ archive_filename %}
-{%- set checksum = '57d9f07a004512910280b46b357c9d2dd2d810f822a6652c6ae7914f0642952b24c615a71b4a51da615c7789017498c340d61ec7eb935ee79ae966ef02c0c0ca' %}
+{%- set checksum = 'cae93fde050e7ef3abe2a1db75cc213afcf2bd10cb141a672e295b25212b562ce1205281804fa81b9ec93e606f9c42081563eeacca4b744bebee21e2b69f5363' %}
 
 include:
   - apps.unzip
