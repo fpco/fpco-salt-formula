@@ -4,6 +4,7 @@
 {%- set user = 'consul' %}
 {%- set service_name = 'consul-template' %}
 {%- set template_path = '/srv/consul-templates' %}
+{%- set log_level = salt['pillar.get']('consul_template:log_level', 'info') %}
 
 include:
   - .config
@@ -21,7 +22,7 @@ consul-tpl-service:
     - defaults:
         description: "Consul Template Service"
         bin_path: /usr/local/bin/consul-template
-        bin_opts: -config {{ conf_path }}
+        bin_opts: -config {{ conf_path }} -log-level={{ log_level }}
         runas_user: root
         runas_group: {{ user }}
         chdir: {{ consul_home }}
