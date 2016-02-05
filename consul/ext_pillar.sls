@@ -6,8 +6,8 @@
 #  - configure ext_pillar and consul for both minion/master
 #  - ensure the consul IP is correct
 {%- set ext_mod_path = '/srv/salt-ext' %}
-{%- set mod_src_url = 'https://github.com/saltstack/salt/raw/d4f9e2b6ee681c8f8799777c6da108416ccd26b2/salt/pillar/consul_pillar.py' %}
-{%- set mod_src_sha = 'ceed5a4b847747cc1b338c55a3c2633f9a55c0b33e67d0fd53a51f14a650f990f0c14b51588f6f50520ade051f7b493aca6543ea9ec432da0b1cd7331cfd8328' %}
+{%- set mod_src_url = 'https://raw.githubusercontent.com/ketzacoatl/salt/1f0f37283724df39ae0a6457a2386a6aed5b763f/salt/pillar/consul_pillar.py' %}
+{%- set mod_src_sha = 'a838135d7ec6e95ce9b5ebead9a0107f247167bf0d32722c7c328729f7a252a42d72848a221d136967957b5f0ad2abd30da90e9f37b2db508e20d4cc9681ef12' %}
 {%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 {%- set consul_port = '8500' %}
 
@@ -54,6 +54,6 @@ salt-consul-ext-pillar-config-{{ m }}:
 
         ext_pillar:
           - consul: consul_config root=salt/shared
-          - consul: consul_config root=salt/minion/%(minion_id)s
+          - consul: consul_config root=salt/roles/%(role)s
 {% endfor %}
 
