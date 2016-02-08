@@ -1,3 +1,6 @@
+{%- set size = salt['pillar.get']('size', 1) %}
+{%- set file_path = '/var/' ~ size ~ 'GB.swap' %}
+
 mkswap:
   file.managed:
     - name: /root/mkswap.sh
@@ -6,11 +9,11 @@ mkswap:
     - group: root
     - contents: |
         #!/bin/sh
-        dd if=/dev/zero of=/var/1GB.swap bs=1024 count=1048576
-        chmod 600 /var/1GB.swap
-        mkswap /var/1GB.swap
-        swapon /var/1GB.swap
-        echo "/var/1GB.swap none swap sw 0 0" >> /etc/fstab
+        dd if=/dev/zero of={{ file_path }} bs=1M count={{ size * 1024 }}
+        chmod 600 {{ file_path }}
+        mkswap {{ file_path }}
+        swapon {{ file_path }}
+        echo "{{ file_path }} none swap sw 0 0" >> /etc/fstab
   cmd.run:
     - name: /root/mkswap.sh
     - require:
