@@ -71,7 +71,9 @@ consul-sudoers-conf:
     - mode: 644
     - contents: |
         # define a command alias for the list of commands the agent can run
-        Cmnd_Alias  AGENT_CMD = /usr/sbin/service, /usr/bin/salt-call, /usr/bin/docker
+        {% set whitelist = ['/usr/sbin/service', '/usr/bin/salt-call',
+                            '/usr/bin/docker', '/usr/local/bin/nomad'] %}
+        Cmnd_Alias  AGENT_CMD = {% for bin in whitelist %}{{ bin }}, {% endfor %}
         # the consul user can run the list of approved commands on any host,
         # no password is required
         consul ALL = NOPASSWD: AGENT_CMD
