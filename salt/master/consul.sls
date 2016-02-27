@@ -25,4 +25,4 @@ salt-master-consul-service:
           }
         }
     - watch_in:
-        - service: consul-service-check-reload
+        - cmd: consul-service-check-reload
