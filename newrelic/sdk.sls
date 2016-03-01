@@ -12,3 +12,12 @@ newrelic-sdk-log-envvar:
   file.append:
     - name: /etc/environment
     - text: NEWRELIC_LOG_PROPERTIES_FILE=/etc/newrelic/sdk_log4cplus.cfg
+
+
+newrelic-sdk-log-path:
+  file.directory:
+    - name: /var/log/newrelic/sdk
+    - makedirs: True
+    - user: newrelic
+    - group: newrelic
+    - mode: 755
