@@ -36,6 +36,7 @@ registry-upstart:
         docker_args:
           - '--net host'
           - '--publish :{{ port }}'
+          - '--volume /etc/docker-registry.yml:/etc/docker/registry/config.yml'
           {%- for envvar, value in envvars.items() %}
           - '-e {{ envvar }}="{{ value }}"'
           {%- endfor %}
@@ -44,6 +45,7 @@ registry-upstart:
     - enable: True
     - watch:
         - file: registry-upstart
+        - file: registry-service-config
   cron.present:
     - name: salt-call --local state.sls docker.registry
     - identifier: salt-call-apply-registry-formula
@@ -51,6 +53,15 @@ registry-upstart:
     - hour: '*'
     - minute: '{{ cron_frequency }}'
 
+
+registry-service-config:
+  file.managed:
+    - name: /etc/docker-registry.yml
+    - mode: 640
+    - user: root
+    - group: root
+    - contents: |
+        version: 0.1
 
 registry-ufw-app-config:
   file.managed:
