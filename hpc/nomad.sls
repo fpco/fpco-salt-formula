@@ -10,6 +10,7 @@ hpc-manager-exec-wrapper:
     - mode: 755
     - contents: |
         #!/usr/bin/env python
+        import sys
         from docker import Client
         cli = Client(base_url='unix://var/run/docker.sock')
         cli.containers()
