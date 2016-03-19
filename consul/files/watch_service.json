@@ -1,0 +1,12 @@
+{
+    "watches": [
+        {
+          "type": "service",
+          "service": "{{ service }}",
+          {%- if passingonly is defined %}
+          "passingonly": {{ passingonly }},
+          {%- endif %}
+          "handler": "{{ handler }}"
+        }
+    ]
+}
