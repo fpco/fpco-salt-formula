@@ -1,37 +1,33 @@
 # Create the `config` and `credentials` files for AWS CLI utilities.
 #
-# aws:
-#   users:
-#     root:
-#       profiles:
-#         default:
-#           name: default
-#           access: FOO
-#           secret: FOOBAR
-#           output: json
-#           region: us-east-1
-#         profile2:
-#           name: profile2
-#           access: BAR
-#           secret: BARBAZ
-#           output: json
-#           region: us-west-1
-#     foobar:
-#       profiles:
-#         default:
-#           name: default
-#           access: FOOBAR
+# aws_users:
+#   root:
+#     profiles:
+#       default:
+#         access: FOO
+#         secret: FOOBAR
+#         output: json
+#         region: us-east-1
+#       profile2:
+#         access: BAR
+#         secret: BARBAZ
+#         output: json
+#         region: us-west-1
+#   foobar:
+#     profiles:
+#       default:
+#         access: FOOBAR
 #         ...
 
-{%- macro cred_entry(profile) %}
-  [{{ profile['name'] }}]
+{%- macro cred_entry(name, profile) %}
+  [{{ name }}]
   aws_access_key_id={{ profile['access'] }}
   aws_secret_access_key={{ profile['secret'] }}
 {%- endmacro %}
 
-{%- macro conf_entry(profile) %}
-  {%- if profile['name'] != "default" %}
-  [profile {{ profile['name'] }}]
+{%- macro conf_entry(name, profile) %}
+  {%- if name != "default" %}
+  [profile {{ name }}]
   {%- else %}
   [default]
   {%- endif %}
@@ -39,7 +35,7 @@
   output={{ profile['output'] }}
 {%- endmacro %}
 
-{%- set users = salt['pillar.get']('aws:users', {}) %}
+{%- set users = salt['pillar.get']('aws_users', {}) %}
 
 {%- for user, userdata in users.items() %}
   {%- set get_home = 'getent passwd "' ~ user ~'" | cut -d: -f6' %}
@@ -53,8 +49,8 @@ aws-credentials-{{ user }}:
     - mode: 600
     - makedirs: True
     - contents: |
-        {%- for profname, profile in userdata['profiles'].items() -%}
-        {{ cred_entry(profile) | indent(8) }}
+        {%- for name, profile in userdata['profiles'].items() -%}
+        {{ cred_entry(name, profile) | indent(8) }}
         {% endfor %}
 
 aws-config-{{ user }}:
@@ -65,8 +61,8 @@ aws-config-{{ user }}:
     - mode: 600
     - makedirs: True
     - contents: |
-        {%- for profname, profile in userdata['profiles'].items() -%}
-        {{ conf_entry(profile) | indent(8) }}
+        {%- for name, profile in userdata['profiles'].items() -%}
+        {{ conf_entry(name, profile) | indent(8) }}
         {% endfor %}
 
 {%- endfor %}
