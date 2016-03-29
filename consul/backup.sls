@@ -34,6 +34,7 @@ consul-backup-exec:
     - mode: 550
     - contents: |
         #!/bin/sh
+        PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
 
         ### Config
         NOW=$(date +"%Y%m%d_%H%M%S" -u)
