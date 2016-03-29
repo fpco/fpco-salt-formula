@@ -1,4 +1,6 @@
 # consul configs for the registry tier
+{%- set private_ip = salt['cmd.run']('ec2metadata --local-ipv4') %}
+{%- set host_ip = salt['pillar.get']('docker_registry:ip', private_ip) %}
 {%- set user = 'consul' %}
 {%- set consul_conf_path = '/home/consul/conf.d' %}
 
@@ -39,9 +41,10 @@ consul-service-config-registry-tier:
         name: registry
         tags:
           - registry
+        address: {{ host_ip }}
         port: 5000
         check:
-          script: 'curl 0.0.0.0:5000/ >/dev/null 2>&1'
+          script: 'curl {{ host_ip }}:5000/ >/dev/null 2>&1'
           interval: '30s'
     - watch_in:
         - cmd: consul-service-check-reload

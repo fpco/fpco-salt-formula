@@ -20,6 +20,7 @@ consul-service-consul-webui:
         name: consul-webui
         tags:
           - consul-webui
+        address: 127.0.0.1
         port: 8500
         check:
           script: 'true'
