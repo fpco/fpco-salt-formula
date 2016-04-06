@@ -1,4 +1,4 @@
-{%- set grains = salt['pillar.get']('grains, {}') %}
+{%- set grains = salt['pillar.get']('grains', {}) %}
 
 salt-grains-config:
   file.managed:
