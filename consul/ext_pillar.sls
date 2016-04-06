@@ -6,8 +6,8 @@
 #  - configure ext_pillar and consul for both minion/master
 #  - ensure the consul IP is correct
 {%- set ext_mod_path = '/srv/salt-ext' %}
-{%- set mod_src_url = 'https://raw.githubusercontent.com/saltstack/salt/afdcc8126da64da580b806e1f6d8eeef4815122a/salt/pillar/consul_pillar.py' %}
-{%- set mod_src_sha = 'fdd8198bca26432e4a597b5769b87e549614d71b1baf328f1ac796654d03792c47cb9191d95bd28d7496dbf6d38b802732659f080074c42533209a012ed16fba' %}
+{%- set mod_src_url = 'https://raw.githubusercontent.com/saltstack/salt/79d7e7059c133812d9bd5e3fe7a1ce5a97275024/salt/pillar/consul_pillar.py' %}
+{%- set mod_src_sha = '2b76d70aec6db8ebb8a4de26c276b1d4da147b8eb30c9abe87790f1b4cf1439779e7f2457fed2c7dcd6381a9b459cfffd9a0a901c2755f4c64b73e9eb0ca53d3' %}
 {%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 {%- set consul_port = '8500' %}
 
