@@ -29,6 +29,7 @@ hpc-manager-docker-ui:
         tag: {{ tag }}
         # ip/port mapping
         docker_args:
+          - '--net host'
           - '--publish 127.0.0.1:{{ port }}:3000'
           - '--workdir=/usr/local/lib/hpc-manager/'
           - '-e HPC_REDIS_HOST={{ redis_host }}'
