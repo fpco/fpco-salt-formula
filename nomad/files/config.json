@@ -56,7 +56,7 @@
   "enable_debug": {{ enable_debug }},
   "enable_syslog": true,
   "log_level": "{{ log_level }}",
-  "name": "{{ salt['grains.get']('id') }}",
+  "name": "{{ node_id }}",
   "region": "{{ region }}",
   "syslog_facility": "{{ syslog_facility }}",
   {%- if server %}
@@ -89,7 +89,6 @@
     {% endfor %}},{% endif %}
     {% if net_iface %}"network_interface": "{{ net_iface }}",{% endif %}
     {% if node_class %}"node_class": "{{ node_class }}",{% endif %}
-    {% if node_id %}"node_id": "{{ node_id }}",{% endif %}
     "enabled": true
   }
   {%- endif %}
