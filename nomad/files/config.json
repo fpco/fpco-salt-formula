@@ -49,8 +49,6 @@
     {%- if rpc_ip %}"rpc": "{{ rpc_ip }}",{% endif %}
     "http": "{{ http_ip }}"
   },
-  "consul.address": "{{ consul_addr }}",
-  "consul.token": "{{ consul_token }}",
   "datacenter": "{{ dc }}",
   "data_dir": "{{ home }}/tmp/",
   "disable_anonymous_signature": true,
@@ -75,6 +73,13 @@
   }
   {%- else %}
   "client": {
+    "options": {
+      "consul.address": "{{ consul_addr }}",
+      "consul.token": "{{ consul_token }}",
+      {%- for k,v in opts.items() %}
+      "{{ k }}": "{{ v }}"{% if not loop.last %},{% endif %}
+      {% endfor %}
+    },
     "servers": [
       {% for s in agent_servers %}"{{ s }}"{%- if not loop.last %},{%- endif %}
       {% endfor -%}
@@ -85,9 +90,6 @@
     {% if net_iface %}"network_interface": "{{ net_iface }}",{% endif %}
     {% if node_class %}"node_class": "{{ node_class }}",{% endif %}
     {% if node_id %}"node_id": "{{ node_id }}",{% endif %}
-    {% if opts %}"options": { {%- for k,v in opts.items() %}
-      "{{ k }}": "{{ v }}"{% if not loop.last %},{% endif %}
-    {% endfor %}},{% endif %}
     "enabled": true
   }
   {%- endif %}
