@@ -46,7 +46,7 @@ consul-check-nomad-agent:
     - mode: 640
     - context:
         name: 'nomad-agent'
-        url: 'http://{{ service_ip }}:{{ http_port }}/v1/agent/self/'
+        url: 'http://{{ service_ip }}:{{ http_port }}/v1/agent/self'
         timeout: '2s'
         interval: '30s'
     - watch_in:
