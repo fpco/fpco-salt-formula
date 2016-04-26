@@ -2,7 +2,7 @@
 # https://releases.hashicorp.com/nomad/0.1.2/nomad_0.1.2_linux_amd64.zip
 #
 {% from "nomad/checksum_map.jinja" import nomad_checksum_map with context %}
-{%- set default_version = '0.3.1' %}
+{%- set default_version = '0.3.2' %}
 {%- set version = salt['pillar.get']('nomad:version', default_version) %}
 {%- set default_checksum = nomad_checksum_map[version] %}
 {%- set checksum = salt['pillar.get']('nomad:checksum', default_checksum) %}
