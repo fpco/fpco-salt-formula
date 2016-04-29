@@ -31,7 +31,7 @@
 {%- set net_iface = salt['pillar.get']('nomad:network_interface', False) %}
 
 {#- consul-specific #}
-{%- set consul_addr = salt['pillar.get']('nomad:consul:addr', 'consul.service.consul:8500') %}
+{%- set consul_addr = salt['pillar.get']('nomad:consul:addr', 'localhost:8500') %}
 {%- set consul_token = salt['pillar.get']('nomad:consul:token', 'CONSUL_TOKEN_FOR_NOMAD') %}
 
 {%- if server %}
