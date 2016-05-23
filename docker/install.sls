@@ -62,13 +62,14 @@ docker:
     - name: docker
   # the pkgrepo state does not seem to be working 100%, what gives?
   pkgrepo.managed:
-    - name: 'deb http://get.docker.com/ubuntu docker main'
+    - name: 'deb https://apt.dockerproject.org/repo ubuntu-trusty main'
     - humanname: 'Docker Apt Repo'
     - file: '/etc/apt/sources.list.d/docker.list'
     - key_url: salt://docker/files/ppa.pgp
     - keyserver: keyserver.ubuntu.com
   pkg.installed:
-    - name: lxc-docker-{{ docker_version }}
+    - name: docker-engine
+    - version: {{ docker_version }}
     - require:
         - pkgrepo: docker
         - pkg: docker-dependencies
