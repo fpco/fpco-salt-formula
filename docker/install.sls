@@ -7,7 +7,7 @@
 {%- set aufs_tools = salt['pillar.get']('docker:aufs_tools', default_aufs_tools_pkg) %}
 {%- set default_opts = salt['pillar.get']('docker:default_opts', '') %}
 {%- set dm_opts = '--storage-opt dm.basesize=20G' %}
-{%- set docker_version = salt['pillar.get']('docker:version', '1.9.1') %}
+{%- set docker_version = salt['pillar.get']('docker:version', '1.10.3-0~trusty') %}
 
 {#- this ought to be fixed up, the logic is not clean #}
 {%- if aufs %}
