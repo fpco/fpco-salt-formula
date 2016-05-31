@@ -40,6 +40,7 @@ prometheus-upstart:
           - '--publish 127.0.0.1:{{ port }}:9090'
           - '--volume /etc/prometheus.yml:/etc/prometheus/prometheus.yml'
           - '--volume {{ home }}:/prometheus-data'
+        respawn_forever: True
     - require:
         - file: prometheus-config
   service.running:
