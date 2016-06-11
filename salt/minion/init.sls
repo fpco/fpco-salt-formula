@@ -1,7 +1,7 @@
-{#- set the service as either running or disabled #}
-{%- set status = salt['pillar.get']('salt:minion:service:status') %}
+{#- set the service as either running, disabled, or dead #}
+{%- set status = salt['pillar.get']('salt:minion:service:status', 'dead') %}
 {#- boolean - if enabled, the service starts on boot #}
-{%- set enabled = salt['pillar.get']('salt:minion:service:enabled') %}
+{%- set enabled = salt['pillar.get']('salt:minion:service:enabled', False) %}
 {#- pull hostname from pillar, fallback to the hostname from salt #}
 {%- set hostname = salt['pillar.get']('hostname', grains['host']) %}
 {#- the id (name) of the minion, fallback to hostname if not set #}
@@ -13,9 +13,10 @@ salt-minion:
   pkg.installed:
     - name: salt-minion
   file.managed:
-    - name: {{ config_path }}/minion
-    - template: jinja
-    - source: salt://salt/files/etc/salt/minion
+    - name: {{ config_path }}/minion.d/extra.conf
+    {#- source the contents of extra.conf from this pillar key #}
+    - contents_pillar: salt:minion:config
+    - allow_empty: True
   service:
     - {{ status }}
     - enable: {{ enabled }}

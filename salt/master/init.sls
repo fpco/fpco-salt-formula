@@ -8,9 +8,9 @@ salt-master:
   pkg.installed:
     - name: salt-master
   file.managed:
-    - name: /etc/salt/master
-    - template: jinja
-    - source: salt://salt/files/etc/salt/master
+    - name: /etc/salt/master.d/extra.conf
+    - contents_pillar: salt:master:config
+    - allow_empty: True
   service:
     - {{ status }}
     - enable: {{ enabled }}
