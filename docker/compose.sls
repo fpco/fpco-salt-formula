@@ -1,7 +1,7 @@
 # install docker-compose from github
 {% from "docker/compose_map.jinja" import compose_checksum_map with context %}
 
-{%- set default_version = '1.2.0' %}
+{%- set default_version = '1.7.1' %}
 {%- set version = salt['pillar.get']('docker-compose:version', default_version) %}
 {%- set default_checksum = compose_checksum_map[version] %}
 {%- set checksum = salt['pillar.get']('docker-compose:checksum', default_checksum) %}
