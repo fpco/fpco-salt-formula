@@ -1,3 +1,2 @@
-git:
-  pkg.latest:
-    - name: git
+include:
+  - git.latest

@@ -3,6 +3,8 @@
 {%- set git_group = salt['pillar.get']('src:git:group', 'root') %}
 {%- set git_pubkey = salt['pillar.get']('src:git:identity_file', '/root/.ssh/id_rsa') %}
 
+include:
+  - git.install
 
 src_git_home:
   file.directory:
@@ -23,7 +25,7 @@ src_git_home:
     - rev: {{ r.rev }}
     - target: {{ git_home }}/{{ repo }}/
     - user: {{ git_user }}
-    - identity: {{ identity_file }}
+    - identity: {{ git_pubkey }}
     - require:
        - file: src_git_home
 {% endfor %}
