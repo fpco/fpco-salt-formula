@@ -1,12 +1,12 @@
 # installs consul-cli util from .tar.gz archive (release on github). Example:
 # https://github.com/vsco/consul-cli/releases/download/v0.4.0/consul-cli_v0.4.0_linux_amd64.tar.gz
 #
-{%- set version = '0.1.0' %}
+{%- set version = '0.3.0' %}
 {%- set base_url = 'https://github.com/CiscoCloud/consul-cli/releases/download' %}
 {%- set release_archive = version ~ '/consul-cli_' ~ version ~ '_linux_amd64.tar.gz' %}
 {%- set release_url = base_url ~ '/v' ~ release_archive %}
 {%- set bin_path = '/usr/local/bin/consul-cli' %}
-{%- set checksum = 'ac0c14e7143be86e69a338dd1b97ff7139956766d1cd975e39ceae69148cff1e8090a1636f303b2dd738178f92eeb2903a07005f89248149200ed81616dbc595' %}
+{%- set checksum = '0b796f3eb73b1548d6c2ebe96289a67c4075be0aab0a90afc2b48f7e01c8df28831408ad9951470dd27d7cd1b0d3c0a32e3f06d7f602111eeeca80020cb2d3a2' %}
 
 
 # unpack the release archive from github/etc
@@ -17,7 +17,7 @@ consul-cli-archive:
     - source_hash: sha512={{ checksum }}
     - if_missing: {{ bin_path }}-{{ version }}/consul-cli
     - archive_format: tar
-    - tar_options: 'zvp --strip-components=1'
+    - tar_options: 'zp --strip-components=1'
   file.directory:
     - name: {{ bin_path }}-{{ version }}
     - user: root
@@ -53,6 +53,6 @@ consul-cli-bin:
         - file: consul-cli-active-bin
   # this confirms our success
   cmd.run:
-    - name: 'consul-cli --version'
+    - name: 'consul-cli version'
     - require:
         - file: consul-cli-bin
