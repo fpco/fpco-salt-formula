@@ -3,7 +3,7 @@
 # unless "openntpd:server" is True, in which case ntpd will listen on
 # the first external IP (private interface on AWS).
 # See the `openntpd.consul_template` formula for a client-side helper.
-# apply `openntpd.drop_insecure_ntpd` 
+# apply `ntp.drop_insecure_ntpd`
 # use `openntpd:date_reset` pillar key (boolean), to hard reset date to
 # sync with others immediately, rather than over time
 {%- set reset = salt['pillar.get']('openntpd:date_reset', False) %}
@@ -14,7 +14,7 @@ openntpd:
   file.managed:
     - name: /etc/openntpd/ntpd.conf
     - template: jinja
-    - source: salt://openntpd/files/ntpd.conf
+    - source: salt://ntp/files/openntpd.conf
     - user: root
     - group: ntpd
     - mode: 640
