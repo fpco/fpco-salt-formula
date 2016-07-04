@@ -67,6 +67,9 @@ def extracted(name,
     ret = {'name': name, 'result': None, 'changes': {}, 'comment': ''}
     valid_archives = ('tar', 'rar', 'zip')
 
+    # append trailing slash if it's not already there
+    name = os.path.join(name, '')
+
     if archive_format not in valid_archives:
         ret['result'] = False
         ret['comment'] = '{0} is not supported, valids: {1}'.format(
@@ -126,6 +129,7 @@ def extracted(name,
             source, name)
         return ret
 
+    log.debug('use "file.makedirs" on %s' % name)
     __salt__['file.makedirs'](name, user=archive_user)
 
     if archive_format in ('zip', 'rar'):
