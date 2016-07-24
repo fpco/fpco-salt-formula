@@ -11,10 +11,10 @@
 {%- set default_ip = salt['grains.get']('ipv4')[1] %}
 {%- set ip = salt['pillar.get']('prometheus:ip', default_ip) %}
 
-{%- set cname = 'pnode_exporter' %}
+{%- set cname = 'node-exporter' %}
 
 
-prometheus-node_exporter-upstart:
+node-exporter-upstart:
   file.managed:
     - name: /etc/init/{{ cname }}.conf
     - user: root
@@ -23,6 +23,7 @@ prometheus-node_exporter-upstart:
     - source: salt://docker/files/upstart-tpl-container-as-a-service.sls
     - template: jinja
     - context:
+        respawn_forever: True
         desc: Export stats from this node, for Prometheus Monitoring Service
         author: the-ops-ninjas@fpcomplete.com
         # the name of the container instance
@@ -39,6 +40,22 @@ prometheus-node_exporter-upstart:
     - name: {{ cname }}
     - enable: True
     - watch:
-        - file: prometheus-node_exporter-upstart
+        - file: node-exporter-upstart
 
-
+node-exporter-ufw-app-config:
+  file.managed:
+    - name: /etc/ufw/applications.d/node-exporter
+    - source: salt://ufw/files/etc/ufw/applications.d/app_config.jinja
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 640
+    - context:
+        app: node-exporter
+        title: node-exporter
+        description: Prometheus Node Exporter (collect stats for prom server to pull)
+        ports: 9100
+  cmd.run:
+    - name: 'ufw allow node-exporter'
+    - watch:
+        - file: node-exporter-ufw-app-config
