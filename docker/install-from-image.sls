@@ -17,7 +17,8 @@ pull-src-image:
 
   {%- for executable in to_install %}
   {%- set create_container = 'docker run --name tmp ' ~ img ~ ' true' %}
-  {%- set copy_executable = 'docker cp tmp:' ~ executable ~ ' ' ~ copy_to %}
+  {%- set local_path = copy_to ~ '`basename ' ~ executable ~ '`' %}
+  {%- set copy_executable = 'docker cp tmp:' ~ executable ~ ' ' ~ local_path %}
   {%- set remove_container = 'docker rm tmp' %}
   {%- set install_bin = create_container ~ ' && ' ~ copy_executable ~ ' && ' ~ remove_container %}
 
