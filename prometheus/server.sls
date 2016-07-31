@@ -5,6 +5,7 @@
 {%- set tag = salt['pillar.get']('prometheus:tag', 'latest') %}
 {%- set port = salt['pillar.get']('prometheus:port', '9090') %}
 {%- set home = salt['pillar.get']('prometheus:home', '/prometheus') %}
+{%- set conf = salt['pillar.get']('prometheus:config', False) %}
 
 {%- set cname = 'prometheus' %}
 
@@ -14,8 +15,13 @@ prometheus-config:
     - user: root
     - group: root
     - mode: 644
+    {% if conf %}
     # source this config file from pillar
     - contents_pillar: 'prometheus:config'
+    {% else %}
+    # serve up the default config
+    - source: salt://prometheus/files/default_config.yaml
+    {% endif %}
 
 
 prometheus-upstart:
