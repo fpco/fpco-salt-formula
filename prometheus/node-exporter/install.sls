@@ -13,6 +13,9 @@
 {%- set release_url = base_url ~ '/' ~ version ~ '/' ~ release_archive %}
 {%- set bin_path = '/usr/local/bin/' ~ app %}
 
+include:
+  - prometheus.node-exporter.ufw
+
 
 node_exporter-archive:
   archive.extracted:

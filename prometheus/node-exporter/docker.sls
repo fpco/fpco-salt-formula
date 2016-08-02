@@ -9,6 +9,9 @@
 
 {%- set cname = 'node-exporter' %}
 
+include:
+  - prometheus.node-exporter.ufw
+
 
 node-exporter-upstart:
   file.managed:
@@ -37,21 +40,3 @@ node-exporter-upstart:
     - enable: True
     - watch:
         - file: node-exporter-upstart
-
-node-exporter-ufw-app-config:
-  file.managed:
-    - name: /etc/ufw/applications.d/node-exporter
-    - source: salt://ufw/files/etc/ufw/applications.d/app_config.jinja
-    - template: jinja
-    - user: root
-    - group: root
-    - mode: 640
-    - context:
-        app: node-exporter
-        title: node-exporter
-        description: Prometheus Node Exporter (collect stats for prom server to pull)
-        ports: 9100
-  cmd.run:
-    - name: 'ufw allow node-exporter'
-    - watch:
-        - file: node-exporter-ufw-app-config
