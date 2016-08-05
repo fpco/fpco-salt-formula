@@ -7,7 +7,7 @@
 {%- set default_ip = salt['grains.get']('ipv4')[1] %}
 {%- set ip = salt['pillar.get']('grafana:ip', default_ip) %}
 {%- set conf = salt['pillar.get']('grafana:config', False) %}
-{%- set home = salt['pillar.get']('grafana:home', '/prometheus/grafana') %}
+{%- set home = salt['pillar.get']('grafana:home', '/var/prometheus/grafana') %}
 {%- set data_mount = home ~ '/data' %}
 {%- set conf_mount = home ~ '/conf' %}
 
