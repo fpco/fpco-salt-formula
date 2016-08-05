@@ -4,17 +4,21 @@
 {%- set image = salt['pillar.get']('prometheus:image', 'prom/prometheus') %}
 {%- set tag = salt['pillar.get']('prometheus:tag', 'latest') %}
 {%- set port = salt['pillar.get']('prometheus:port', '9090') %}
-{%- set home = salt['pillar.get']('prometheus:home', '/prometheus') %}
+{%- set home = salt['pillar.get']('prometheus:home', '/var/prometheus') %}
+{%- set data_dir = home ~ '/data' %}
+{%- set conf_dir = home ~ '/conf' %}
+{%- set conf_yml = conf_dir ~ '/prometheus.yml' %}
 {%- set conf = salt['pillar.get']('prometheus:config', False) %}
 
 {%- set cname = 'prometheus' %}
 
 prometheus-config:
   file.managed:
-    - name: /etc/prometheus.yml
+    - name: {{ conf_yml }}
     - user: root
     - group: root
-    - mode: 644
+    - mode: 640
+    - makedirs: True
     {% if conf %}
     # source this config file from pillar
     - contents_pillar: 'prometheus:config'
@@ -23,6 +27,18 @@ prometheus-config:
     - source: salt://prometheus/files/default_config.yaml
     {% endif %}
 
+prometheus-data:
+  file.directory:
+    - name: {{ data_dir }}
+    - user: root
+    - group: root
+    - makedirs: True
+    - file_mode: 640
+    - dir_mode: 750
+    - recurse:
+        - user
+        - group
+        - mode
 
 prometheus-upstart:
   file.managed:
@@ -44,9 +60,9 @@ prometheus-upstart:
         # ip/port mapping
         docker_args:
           - '--net host'
+          - '--volume {{ conf_yml }}:/etc/prometheus/prometheus.yml'
+          - '--volume {{ data_dir }}:/prometheus'
           - '--publish 127.0.0.1:{{ port }}:9090'
-          - '--volume /etc/prometheus.yml:/etc/prometheus/prometheus.yml'
-          - '--volume {{ home }}:/prometheus-data'
         respawn_forever: True
     - require:
         - file: prometheus-config
@@ -56,4 +72,6 @@ prometheus-upstart:
     - watch:
         - file: prometheus-upstart
         - file: prometheus-config
+    - require:
+        - file: prometheus-data
 
