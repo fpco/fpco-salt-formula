@@ -3,6 +3,8 @@
 # More details are documented in pillar:
 {%- set image = salt['pillar.get']('prometheus:image', 'prom/prometheus') %}
 {%- set tag = salt['pillar.get']('prometheus:tag', 'latest') %}
+{%- set default_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set ip = salt['pillar.get']('prometheus:ip', default_ip) %}
 {%- set port = salt['pillar.get']('prometheus:port', '9090') %}
 {%- set home = salt['pillar.get']('prometheus:home', '/var/prometheus') %}
 {%- set data_dir = home ~ '/data' %}
@@ -60,9 +62,9 @@ prometheus-upstart:
         # ip/port mapping
         docker_args:
           - '--net host'
+          - '--publish {{ ip }}:{{ port }}:9090'
           - '--volume {{ conf_yml }}:/etc/prometheus/prometheus.yml'
           - '--volume {{ data_dir }}:/prometheus'
-          - '--publish 127.0.0.1:{{ port }}:9090'
         respawn_forever: True
     - require:
         - file: prometheus-config

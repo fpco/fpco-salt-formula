@@ -1,5 +1,6 @@
 # this formula adds consul configs for the prometheus service
-{%- set ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set default_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set ip = salt['pillar.get']('prometheus:ip', default_ip) %}
 
 include:
   - consul.reload
