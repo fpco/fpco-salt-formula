@@ -46,7 +46,6 @@ consul-upstart:
     - name: consul
     - enable: True
     - watch:
-        - file: consul-bin
         - file: consul-user
         - file: consul-config
         - file: consul-upstart

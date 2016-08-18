@@ -4,7 +4,7 @@
 {%- set user = 'consul' %}
 
 include:
-  - consul
+  - consul.user
 
 
 consul-config:
