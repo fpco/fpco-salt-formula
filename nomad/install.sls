@@ -6,7 +6,8 @@
 {%- set version = salt['pillar.get']('nomad:version', default_version) %}
 {%- set default_checksum = nomad_checksum_map[version] %}
 {%- set checksum = salt['pillar.get']('nomad:checksum', default_checksum) %}
-{%- set base_url = 'https://releases.hashicorp.com' %}
+{%- set default_base_url = 'https://releases.hashicorp.com' %}
+{%- set base_url = salt['pillar.get']('nomad:base_url', default_base_url) %}
 {%- set app = 'nomad' %}
 {%- set release_archive = app ~ '_' ~ version ~ '_linux_amd64.zip' %}
 {%- set release_url = base_url ~ '/' ~ app ~ '/' ~ version ~ '/' ~ release_archive %}
