@@ -1,8 +1,8 @@
 {%- set bin_path = '/usr/local' %}
-{%- set version = '1.4.2' %}
-{%- set go_path = bin_path ~ '/go' %}
+{%- set version = '1.6.3' %}
+{%- set go_root = bin_path ~ '/go' %}
 {%- set release_url = 'https://storage.googleapis.com/golang/go' ~ version ~ '.linux-amd64.tar.gz' %}
-{%- set checksum = 'ea9982698d306e98e8236de1515bbdc1bce7290f6db9f61c5171cb10ec6d4619361ba7108c1d4c58d269403ce32cc5de6c70859441da2e22b5cce0d4ebc69c7a' %}
+{%- set checksum = '3f9766c242c76dc044ba963c4b5b0893885d0c958ff0945aeed893b0d12656fe6363c760a670ef7bf9ec1340156a8f403abc66c9f2cf352615ed521f5d7b027b' %}
 {%- set go_executables = ['go', 'godoc', 'gofmt'] %}
 
 
@@ -11,7 +11,7 @@ golang-bin:
     - name: {{ bin_path }}
     - source: {{ release_url }}
     - source_hash: sha512={{ checksum }}
-    - if_missing: {{ go_path }}/bin/go
+    - if_missing: {{ go_root }}/bin/go
     - archive_format: tar
     - tar_options: z
 
@@ -23,8 +23,9 @@ golang-environment:
     - group: root
     - mode: 644
     - contents: |
-        export PATH="$PATH:{{ go_path }}/bin"
         export GOPATH="$HOME/.go"
+        export GOROOT="{{ go_root }}"
+        export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 
 
 {#- iterate over the list of names we have for the go executables, create symlinks #}
