@@ -1,15 +1,20 @@
 # installs consul-template from .tar.gz archive. Example:
 # https://github.com/hashicorp/consul-template/releases/download/v0.10.0/consul-template_0.10.0_linux_amd64.tar.gz
 #
-{%- set version = '0.12.2' %}
+
+{% from "consul/template-tool/install/checksum_map.jinja" import consul_template_checksum_map with context %}
+{%- set default_version = '0.12.2' %}
+{%- set version = salt['pillar.get']('consul_template:version', default_version) %}
+{%- set default_checksum = consul_template_checksum_map[version] %}
+{%- set checksum = salt['pillar.get']('consul_template:checksum', default_checksum) %}
+{%- set default_base_url = 'https://releases.hashicorp.com' %}
+{%- set base_url = salt['pillar.get']('consul_template:base_url', default_base_url) %}
 {%- set root = '/root' %}
 {%- set install_to = '/usr/local/bin' %}
-{%- set bin_path = install_to ~ '/consul-template' %}
-{%- set base_url = 'https://releases.hashicorp.com/consul-template/' ~ version %}
-{%- set archive_basename = 'consul-template_' ~ version ~ '_linux_amd64' %}
-{%- set archive_filename = archive_basename ~ '.zip' %}
-{%- set release_url = base_url ~ '/' ~ archive_filename %}
-{%- set checksum = 'cae93fde050e7ef3abe2a1db75cc213afcf2bd10cb141a672e295b25212b562ce1205281804fa81b9ec93e606f9c42081563eeacca4b744bebee21e2b69f5363' %}
+{%- set app = 'consul-template' %}
+{%- set bin_path = install_to ~ '/' ~ app %}
+{%- set release_archive = app ~ '_' ~ version ~ '_linux_amd64.zip' %}
+{%- set release_url = base_url ~ '/' ~ app ~ '/' ~ version ~ '/' ~ release_archive %}
 
 include:
   - apps.unzip
