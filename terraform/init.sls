@@ -1,13 +1,13 @@
 # installs Terraform from .zip archive. Example:
 # https://dl.bintray.com/mitchellh/terraform/terraform_0.4.2_linux_amd64.zip
 #
-{%- set version = '0.6.11' %}
+{%- set version = '0.6.16' %}
 {%- set base_url = 'https://releases.hashicorp.com' %}
 {%- set app = 'terraform' %}
 {%- set release_archive = app ~ '_' ~ version ~ '_linux_amd64.zip' %}
 {%- set release_url = base_url ~ '/' ~ app ~ '/' ~ version ~ '/' ~ release_archive %}
 {%- set bin_path = '/usr/local/bin/' ~ app %}
-{%- set checksum = '1a893c1fccdea4a0f32b4370eb1d3681e399a5cf063623f3a5978dcd04bb64915160ba56f9eb6cee3192c4e8667558b5111df74245ca9ae426427f14bbc57474' %}
+{%- set checksum = '40fdfc999430c002dd5c88d6613aa91dab6c376cbf0b93e7ddb620aad292718bd85cdefd164470042f717b03764381361e855bddd346c50ca1b5a3a7b4a69a67' %}
 
 include:
   - apps.unzip
