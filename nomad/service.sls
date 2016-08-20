@@ -3,23 +3,24 @@
 {%- set home = '/var/lib/nomad' %}
 {%- set conf_path = '/etc/nomad' %}
 {%- set conf_file = conf_path ~ '/config.json' %}
-{%- set server = salt['pillar.get']('nomad:server', False) %}
-{%- set config_dir = '-config ' ~ conf_path ~ '/conf.d/' %}
-{%- set default_args = 'agent ' ~ config_dir %}
+{%- set conf_opt_file = '-config ' ~ conf_file %}
+{%- set conf_opt_dir = '-config ' ~ conf_path ~ '/conf.d/' %}
+{%- set default_args = conf_opt_file ~ ' ' ~ conf_opt_dir %}
 {%- set service_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 {%- set agent_ports = '4646' %}
 {%- set server_ports = '4646,4647,4648/tcp|4648/udp' %}
+{%- set server = salt['pillar.get']('nomad:server', False) %}
 
 {%- if server %}
   {%- set server_count = salt['pillar.get']('nomad:server_count', '3') %}
   {%- set bootstrap_args = ' -bootstrap-expect ' ~ server_count %}
-  {%- set args = default_args ~ bootstrap_args %}
+  {%- set args = 'agent -server ' ~ default_args ~ bootstrap_args %}
   {%- set desc = 'Nomad Server' %}
   {%- set ports = server_ports %}
   {#- run nomad server as nomad user, nothing here requires root #}
   {%- set user = 'nomad' %}
 {%- else %}
-  {%- set args = default_args %}
+  {%- set args = 'agent -client ' ~ default_args %}
   {%- set desc = 'Nomad Agent' %}
   # set ports based on `open_agent_ports` pillar, do we include those ports nomad
   # will allocate to tasks dynamically (default), or do we keep it tight?
@@ -50,7 +51,6 @@ nomad-upstart:
         args: {{ args }}
         run_as: {{ user }}
         home: {{ home }}
-        config: {{ conf_file }}
   service.running:
     - name: nomad
     - enable: True
