@@ -1,5 +1,8 @@
 # create service definition and check config for the nomad agent/server
 
+# ONLY USE THIS FOR NOMAD VERSION 0.3.2 OR OLDER
+#         0.4.x and newer auto-register
+
 {%- set consul_conf = '/home/consul' %}
 {%- set user = 'consul' %}
 {%- set server = salt['pillar.get']('nomad:server', False) %}

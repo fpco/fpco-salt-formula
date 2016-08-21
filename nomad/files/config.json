@@ -1,3 +1,6 @@
+{%- set default_version = '0.3.2' %}
+{%- set version = salt['pillar.get']('nomad:version', default_version) %}
+{%- set PRE_0_4_0=['0.1.2','0.2.0','0.2.1','0.2.2','0.2.3','0.3.0','0.3.1','0.3.2'] %}
 {%- set home = '/var/lib/nomad' %}
 {%- set region = salt['pillar.get']('nomad:region', 'us') %}
 {%- set dc = salt['pillar.get']('nomad:datacenter', 'dc') %}
@@ -9,7 +12,7 @@
 {%- set log_level = salt['pillar.get']('nomad:log_level', 'INFO') %}
 {%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 {%- set http_ip = ext_ip %}
-{%- set default_server = 'nomad-server.service.consul' %}
+{%- set default_server = 'nomad.service.consul' %}
 
 {#- server-specific #}
 {%- set server = salt['pillar.get']('nomad:server', False) %}
@@ -31,16 +34,30 @@
 {%- set net_iface = salt['pillar.get']('nomad:network_interface', False) %}
 
 {#- consul-specific #}
-{%- set consul_addr = salt['pillar.get']('nomad:consul:addr', 'localhost:8500') %}
-{%- set consul_token = salt['pillar.get']('nomad:consul:token', 'CONSUL_TOKEN_FOR_NOMAD') %}
+{%- set default_token = 'CONSUL_TOKEN_FOR_NOMAD' %}
+{%- set consul_token = salt['pillar.get']('nomad:consul:token', default_token) %}
+{%- set default_consul_port = '8500' %}
+{%- set default_consul_host = 'localhost' %}
+{%- set default_consul_addr = default_consul_host ~ ':' ~ default_consul_port %}
+{%- set consul_addr = salt['pillar.get']('nomad:consul:addr', False) %}
 
 {%- if server %}
   {#- use external/private IP when running server mode #}
   {%- set rpc_ip = ext_ip %}
   {%- set serf_ip = ext_ip %}
+  {#- as a nomad server, assume the host is also a consul leader,
+      unless the operator has provided a consul addr via pillar  #}
+  {%- if not consul_addr %}
+    {%- set consul_addr = ext_ip ~ ':' ~ default_consul_port %}
+  {%- endif %}
+{#- we have a nomad client #}
 {%- else %}
   {%- set rpc_ip = False %}
   {%- set serf_ip = False %}
+  {#- consul address not provided via pillar, use the default localhost:8500 #}
+  {%- if not consul_addr %}
+    {%- set consul_addr = default_consul_addr %}
+  {%- endif %}
 {%- endif -%}
 
 {
@@ -59,6 +76,17 @@
   "name": "{{ node_id }}",
   "region": "{{ region }}",
   "syslog_facility": "{{ syslog_facility }}",
+  {%- if version not in PRE_0_4_0 %}
+  "consul": {
+    "address": "{{ consul_addr }}",
+    "auto_advertise": true,
+    "client_auto_join": true,
+    "server_auto_join": true,
+    "server_service_name": "nomad",
+    "client_service_name": "nomad-client",
+    "token": "{{ consul_token }}"
+  }
+  {%- endif %}
   {%- if server %}
   "server": {
     "bootstrap_expect": {{ bootstrap_expect }},
@@ -74,8 +102,10 @@
   {%- else %}
   "client": {
     "options": {
+      {%- if version in PRE_0_4_0 %}
       "consul.address": "{{ consul_addr }}",
       "consul.token": "{{ consul_token }}",
+      {%- endif %}
       {%- for k,v in opts.items() %}
       "{{ k }}": "{{ v }}"{% if not loop.last %},{% endif %}
       {% endfor %}
