@@ -63,8 +63,12 @@ pre-start script
         {{ arg | indent(8) }} \
         {%- endfor %}
         {%- endif %}
-        {{ img }}:{{ tag }} {% if cmd is defined %} \
-        {{ cmd }}{% endif %}
+        {#- forgive me, but feel free to direct your frustrations towards docker #}
+        {{ img }}:{{ tag }} {% if cmd is defined %}\{% if cmd is string %}
+        {{ cmd }}{% else %}{%- for c in cmd %}
+        "{{ c }}"{% if not loop.last %} \{% endif %}
+        {%- endfor %}{% endif %}{% endif %}
+
     # we actually start the container here...
     /usr/bin/docker start {{ container_name }}
 end script
