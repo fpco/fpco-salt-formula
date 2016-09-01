@@ -1,7 +1,7 @@
 # install kubectl (client executable) from the kubernetes release tarball on github
 {% from "kubernetes/release_map.jinja" import kube_release_checksum_map with context %}
 
-{%- set default_version = '1.1.2' %}
+{%- set default_version = '1.3.6' %}
 {%- set version = salt['pillar.get']('kubernetes:version', default_version) %}
 {%- set default_checksum = kube_release_checksum_map[version] %}
 {%- set checksum = salt['pillar.get']('kubernetes:release_checksum', default_checksum) %}
