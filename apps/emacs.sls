@@ -12,7 +12,6 @@ emacs:
         #!/bin/bash
         cd ~
         mkdir emacs-src && cd emacs-src
-        # will download from http://ftp.gnu.org/gnu/emacs/emacs-24.5.tar.gz
         wget http://mirror.team-cymru.org/gnu/emacs/emacs-24.4.tar.gz
         tar xvf emacs-24.4.tar.gz
         cd emacs-24.4
