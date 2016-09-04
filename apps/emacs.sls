@@ -6,6 +6,7 @@
 build-emacs:
   pkg.installed:
     - pkgs:
+        - libncurses5-dev
         - build-essential
         - emacs24
   archive.extracted:
