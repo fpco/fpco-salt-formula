@@ -7,6 +7,9 @@
 {%- set config_args = ' -config ' ~ conf_file %}
 {%- set default_args = 'server' ~ config_args %}
 {%- set desc = 'Hashicorp Vault' %}
+{%- set default_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set http_ip = salt['pillar.get']('vault:ip', default_ip) %}
+{%- set http_port = salt['pillar.get']('vault:port', '8200') %}
 
 include:
   - vault.config
@@ -34,3 +37,9 @@ vault-upstart:
     - watch:
         - file: vault-config
         - file: vault-upstart
+
+
+vault-addr-system-env:
+  file.append:
+    - name: /etc/environment
+    - text: VAULT_ADDR="http://{{ http_ip }}:{{ http_port }}"
