@@ -1,13 +1,16 @@
 # installs Terraform from .zip archive. Example:
 # https://dl.bintray.com/mitchellh/terraform/terraform_0.4.2_linux_amd64.zip
 #
-{%- set version = '0.6.16' %}
+{% from "terraform/checksum_map.jinja" import terraform_checksum_map with context %}
+{%- set default_version = '0.7.1' %}
+{%- set version = salt['pillar.get']('terraform:version', default_version) %}
+{%- set default_checksum = terraform_checksum_map[version] %}
+{%- set checksum = salt['pillar.get']('terraform:checksum', default_checksum) %}
 {%- set base_url = 'https://releases.hashicorp.com' %}
 {%- set app = 'terraform' %}
 {%- set release_archive = app ~ '_' ~ version ~ '_linux_amd64.zip' %}
 {%- set release_url = base_url ~ '/' ~ app ~ '/' ~ version ~ '/' ~ release_archive %}
 {%- set bin_path = '/usr/local/bin/' ~ app %}
-{%- set checksum = '40fdfc999430c002dd5c88d6613aa91dab6c376cbf0b93e7ddb620aad292718bd85cdefd164470042f717b03764381361e855bddd346c50ca1b5a3a7b4a69a67' %}
 
 include:
   - apps.unzip
