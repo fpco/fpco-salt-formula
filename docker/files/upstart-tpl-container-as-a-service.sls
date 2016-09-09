@@ -39,7 +39,7 @@ description "{{ desc }}"
 author "{{ author }}"
 start on filesystem and started docker
 stop on runlevel [!2345]
-{%- if respawn_forever %}
+{%- if respawn_forever is not undefined and respawn_forever %}
 respawn
 respawn limit unlimited
 {%- endif %}
@@ -66,7 +66,8 @@ pre-start script
         {#- forgive me, but feel free to direct your frustrations towards docker #}
         {{ img }}:{{ tag }} {% if cmd is defined %}\{% if cmd is string %}
         {{ cmd }}{% else %}{%- for c in cmd %}
-        "{{ c }}"{% if not loop.last %} \{% endif %}
+        {#- wow, this has gone beyond yucky. process the cmd list as such, strip u'' #}
+        "{{ c|replace("u'", "")|replace("'", "") }}"{% if not loop.last %} \{% endif %}
         {%- endfor %}{% endif %}{% endif %}
 
     # we actually start the container here...
