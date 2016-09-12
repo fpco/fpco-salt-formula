@@ -1,4 +1,11 @@
+{%- set hostname = salt['grains.get']('id') %}
+{%- set default_ip = salt['grains.get']('ipv4')[1] %}
+{%- set ip = salt['pillar.get']('node_exporter:ip', default_ip) %}
 {%- set args = salt['pillar.get']('node_exporter:args', '') %}
+{%- set port = salt['pillar.get']('node_exporter:port', '9100') %}
+
+include:
+  - consul.reload
 
 node_exporter-upstart:
   file.managed:
@@ -22,3 +29,27 @@ node_exporter-upstart:
         - file: node_exporter-upstart
 
 
+node-exporter-consul-service:
+  file.managed:
+    - name: /home/consul/conf.d/node_exporter_service.json
+    - user: consul
+    - group: consul
+    - mode: 640
+    - contents: |
+        {
+          "service": {
+            "id": "node-exporter-{{ hostname }}",
+            "name": "node-exporter",
+            "tags": [],
+            "address": "{{ ip }}",
+            "port": {{ port }},
+            "checks": [
+              {
+                "script": "sudo service node_exporter status",
+                "interval": "30s"
+              }
+            ]
+          }
+        }
+    - watch_in:
+        - cmd: consul-service-check-reload
