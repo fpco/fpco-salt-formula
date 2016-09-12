@@ -5,7 +5,7 @@
 {%- set port = salt['pillar.get']('node_exporter:port', '9100') %}
 {%- set home = salt['pillar.get']('node_exporter:home', '/prometheus') %}
 {%- set default_ip = salt['grains.get']('ipv4')[1] %}
-{%- set ip = salt['pillar.get']('prometheus:ip', default_ip) %}
+{%- set ip = salt['pillar.get']('node_exporter:ip', default_ip) %}
 
 {%- set cname = 'node-exporter' %}
 
