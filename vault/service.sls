@@ -37,6 +37,14 @@ vault-upstart:
     - watch:
         - file: vault-config
         - file: vault-upstart
+    - require:
+        - cmd: vault-enable-mlock
+
+
+# see https://vaultproject.io/docs/config/index.html
+vault-enable-mlock:
+  cmd.run:
+    - name: "setcap cap_ipc_lock=+ep $(readlink -f $(which vault))"
 
 
 vault-addr-system-env:
