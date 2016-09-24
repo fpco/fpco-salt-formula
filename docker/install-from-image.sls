@@ -11,7 +11,7 @@
 {%- for img, to_install in docker_images.items() %}
   {%- set pull_image = 'docker pull ' ~ img %}
 
-pull-src-image:
+pull-src-image-{{ img }}:
   cmd.run:
     - name: "{{ pull_image }}"
 
@@ -27,7 +27,7 @@ install-from-docker-{{ executable }}:
     - name: "{{ install_bin }}"
     - unless: {{ executable }}
     - require:
-        - cmd: pull-src-image
+        - cmd: pull-src-image-{{ img }}
 
 test-{{ executable }}:
   cmd.run:
