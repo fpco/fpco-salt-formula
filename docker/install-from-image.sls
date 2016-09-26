@@ -16,7 +16,7 @@ pull-src-image-{{ img }}:
     - name: "{{ pull_image }}"
 
   {%- for executable in to_install %}
-  {%- set create_container = 'docker run --name tmp ' ~ img ~ ' true' %}
+  {%- set create_container = 'docker run --entrypoint=/bin/bash --name tmp ' ~ img ~ ' -c true' %}
   {%- set local_path = copy_to ~ '`basename ' ~ executable ~ '`' %}
   {%- set copy_executable = 'docker cp tmp:' ~ executable ~ ' ' ~ local_path %}
   {%- set remove_container = 'docker rm tmp' %}
@@ -31,7 +31,7 @@ install-from-docker-{{ executable }}:
 
 test-{{ executable }}:
   cmd.run:
-    - name: "{{ executable }} --version"
+    - name: "{{ local_path }} --version"
     - require:
         - cmd: install-from-docker-{{ executable }}
   {%- endfor %}
