@@ -33,6 +33,6 @@ golang-environment:
 {{ exec }}-bin-symlink:
   file.symlink:
     - name: /usr/local/bin/{{ exec }}
-    - target: {{ go_path }}/bin/{{ exec }}
+    - target: {{ go_root }}/bin/{{ exec }}
 {%- endfor %}
 
