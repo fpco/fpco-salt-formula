@@ -2,7 +2,7 @@
 
 {% from "apps/ops/checksum_map.jinja" import ops_checksum_map with context %}
 
-{%- set default_version = '0.1.1' %}
+{%- set default_version = '0.1.2' %}
 {%- set version = salt['pillar.get']('ops:version', default_version) %}
 
 {%- set default_checksum = ops_checksum_map[version] %}
