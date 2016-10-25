@@ -7,3 +7,4 @@ This section documents the details of the salt formula from the
 ### List of Formula
 
 * [Common Application Installers](apps)
+* [Add Swap File](swap)
