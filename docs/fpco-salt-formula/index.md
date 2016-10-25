@@ -8,3 +8,4 @@ This section documents the details of the salt formula from the
 
 * [Common Application Installers](apps)
 * [Add Swap File](swap)
+* [Redis Client](redis-client)
