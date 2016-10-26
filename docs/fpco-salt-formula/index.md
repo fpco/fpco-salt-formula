@@ -9,6 +9,7 @@ This section documents the details of the salt formula from the
 * [Hostname Management](hostname)
 * [Common Application Installers](apps)
 * [Sysdig for System Introspection](sysdig)
+* [AWS Utilities](aws)
 * [Add Swap File](swap)
 * [Redis Client](redis-client)
 * [Ruby and Gems](ruby)
