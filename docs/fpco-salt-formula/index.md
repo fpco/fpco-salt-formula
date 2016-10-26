@@ -13,3 +13,4 @@ This section documents the details of the salt formula from the
 * [Add Swap File](swap)
 * [Redis Client](redis-client)
 * [Ruby and Gems](ruby)
+* [Fabio (load balancer)](fabio)
