@@ -11,3 +11,4 @@ This section documents the details of the salt formula from the
 * [Sysdig for System Introspection](sysdig)
 * [Add Swap File](swap)
 * [Redis Client](redis-client)
+* [Ruby and Gems](ruby)
