@@ -2,17 +2,17 @@
 {% set agent = salt['pillar.get']('glances:agent', True) %}
 {% set webui = salt['pillar.get']('glances:webui', False) %}
 {% set docker = salt['pillar.get']('glances:docker', False) %}
-{% set mode = '' %}
+{% set opts = salt['pillar.get']('glances:opts', '') %}
 {%- if agent %}
-{% set mode = mode ~ '-s ' %}
+{% set opts = opts ~ '-s ' %}
 {% set glances_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 {%- endif %}
 {%- if webui %}
-{% set mode = mode ~ '-w ' %}
+{% set opts = opts ~ '-w ' %}
 {% set glances_ip = '127.0.0.1' %}
 {%- endif %}
 {%- if browser %}
-{% set mode = mode ~ '--browser ' %}
+{% set opts = opts ~ '--browser ' %}
 {% set glances_ip = '127.0.0.1' %}
 {%- endif %}
 
@@ -33,7 +33,7 @@ glances-upstart:
         container_port: '{% if webui %}61208-{% endif %}61209'
         cmd: /usr/local/bin/glances
         docker_args:
-          - '-e GLANCE_OPTS="{{ mode }}"'
+          - '-e GLANCE_OPTS="{{ opts }}"'
           - '--pid=host'
           - '--volume /var/run/docker.sock:/var/run/docker.sock:ro'
     {%- else %}
