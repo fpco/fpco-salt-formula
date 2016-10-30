@@ -7,6 +7,7 @@ This section documents the details of the salt formula from the
 ### List of Formula
 
 * [Hostname Management](hostname)
+* [Managing Git Repositories](git)
 * [Common Application Installers](apps)
 * [Sysdig for System Introspection](sysdig)
 * [Monitoring with Glances](glances)
