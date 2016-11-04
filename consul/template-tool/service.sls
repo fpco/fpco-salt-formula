@@ -57,7 +57,7 @@ consul-tpl-consul-service:
             "tags": ["core", "consul"],
             "checks": [
               {
-                "script": "service consul-template status",
+                "script": "pgrep consul-template",
                 "interval": "30s"
               }
             ]
