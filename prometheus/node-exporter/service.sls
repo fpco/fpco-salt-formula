@@ -45,7 +45,7 @@ node-exporter-consul-service:
             "port": {{ port }},
             "checks": [
               {
-                "script": "sudo service node_exporter status",
+                "script": "pgrep node_exporter",
                 "interval": "30s"
               }
             ]
