@@ -5,6 +5,7 @@
 {%- set service_name = 'consul-template' %}
 {%- set template_path = '/srv/consul-templates' %}
 {%- set log_level = salt['pillar.get']('consul_template:log_level', 'info') %}
+{%- set hostname = salt['grains.get']('id') %}
 
 include:
   - .config
@@ -53,6 +54,7 @@ consul-tpl-consul-service:
     - contents: |
         {
           "service": {
+            "id": "consul-template-{{ hostname }}",
             "name": "consul-template",
             "tags": ["core", "consul"],
             "checks": [
