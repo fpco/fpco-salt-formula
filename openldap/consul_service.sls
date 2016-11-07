@@ -18,7 +18,7 @@ openldap-consul-service:
             "port": 389,
             "checks": [
               {
-                "script": "sudo service slapd status",
+                "script": "pgrep -u openldap slapd",
                 "interval": "30s"
               }
             ]

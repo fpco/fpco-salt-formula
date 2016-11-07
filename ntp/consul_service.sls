@@ -18,7 +18,7 @@ ntpd-consul-service:
             "port": 123,
             "checks": [
               {
-                "script": "sudo service openntpd status",
+                "script": "pgrep -u ntpd ntpd",
                 "interval": "30s"
               }
             ]
