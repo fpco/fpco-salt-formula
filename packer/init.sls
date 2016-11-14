@@ -17,7 +17,7 @@ include:
   - apps.unzip
 
 
-packer-bin:
+packer-archive:
   archive.extracted:
     - name: {{ bin_path }}-{{ version }}
     - source: {{ release_url }}
@@ -26,9 +26,24 @@ packer-bin:
     - archive_format: zip
     - require:
         - pkg: unzip
+  file.directory:
+    - name: {{ bin_path }}-{{ version }}
+    - user: root
+    - group: root
+    - file_mode: 755
+    - dir_mode: 755
+    - makedirs: True
+    - recurse:
+        - user
+        - group
+        - mode
+    - require:
+        - archive: {{ app }}-archive
+
+packer-bin:
   file.symlink:
     - name: {{ bin_path }}
     - target: {{ bin_path }}-{{ version }}/{{ app }}
     - require:
-        - archive: packer-bin
+        - archive: {{ app }}-archive
 
