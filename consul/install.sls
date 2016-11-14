@@ -4,16 +4,22 @@
 # unzip and drop into /srv/salt/consul/files/
 # this has no assurance on the version installed.
 
-{%- set home = '/home/consul' %}
-{%- set user = 'consul' %}
+{% from "consul/checksum_map.jinja" import consul_checksum_map with context %}
+{%- set default_version = '0.6.4' %}
+{%- set version = salt['pillar.get']('consul:version', default_version) %}
+{%- set default_checksum = consul_checksum_map[version] %}
+{%- set checksum = salt['pillar.get']('consul:checksum', default_checksum) %}
+{%- set default_base_url = 'https://releases.hashicorp.com' %}
+{%- set base_url = salt['pillar.get']('consul:base_url', default_base_url) %}
+{%- set app = 'consul' %}
+{%- set release_archive = app ~ '_' ~ version ~ '_linux_amd64.zip' %}
+{%- set release_url = base_url ~ '/' ~ app ~ '/' ~ version ~ '/' ~ release_archive %}
+{%- set bin_path = '/usr/local/bin/' ~ app %}
+{%- set home = '/home/' ~ app %}
+{%- set user = app %}
 {%- set bin_root = '/usr/local/bin/' %}
-{%- set consul_bin = bin_root ~ 'consul' %}
-{%- set version = '0.6.4' %}
-{%- set install_path = bin_root ~ 'consul-' ~ version %}
-{%- set base_url = 'https://releases.hashicorp.com/consul/' ~ version %}
-{%- set release_archive = 'consul_' ~ version ~ '_linux_amd64.zip' %}
-{%- set release_url = base_url ~ '/' ~ release_archive %}
-{%- set checksum = '8a33d5797140721c428c6a49e86c103fb5a82ea90aac667591ff332fe2280d767d6d408297ab25162cf18c3a60abe2a05dcd3eec0aeaefd3e9dd352537da540b' %}
+{%- set consul_bin = bin_root ~ app %}
+{%- set install_path = bin_root ~ app ~ '-' ~ version %}
 
 include:
   - consul.python
@@ -26,7 +32,7 @@ consul-archive:
     - name: {{ install_path }}
     - source: {{ release_url }}
     - source_hash: sha512={{ checksum }}
-    - if_missing: {{ install_path }}/consul
+    - if_missing: {{ install_path }}/{{ app }}
     - archive_format: zip
     - require:
         - pkg: unzip
@@ -42,15 +48,15 @@ consul-archive:
         - group
         - mode
     - require:
-        - archive: consul-archive
+        - archive: {{ app }}-archive
 
 
 consul-bin:
   file.symlink:
     - name: {{ consul_bin }}
-    - target: {{ install_path }}/consul
+    - target: {{ install_path }}/{{ app }}
     - require:
-        - file: consul-archive
+        - file: {{ app }}-archive
 
 
 consul-conf-d:
