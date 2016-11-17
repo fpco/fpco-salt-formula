@@ -12,6 +12,7 @@
 {%- set log_level = salt['pillar.get']('nomad:log_level', 'INFO') %}
 {%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 {%- set http_ip = ext_ip %}
+{%- set rpc_ip = ext_ip %}
 {%- set default_server = 'nomad.service.consul' %}
 
 {#- server-specific #}
@@ -43,7 +44,6 @@
 
 {%- if server %}
   {#- use external/private IP when running server mode #}
-  {%- set rpc_ip = ext_ip %}
   {%- set serf_ip = ext_ip %}
   {#- as a nomad server, assume the host is also a consul leader,
       unless the operator has provided a consul addr via pillar  #}
@@ -52,7 +52,6 @@
   {%- endif %}
 {#- we have a nomad client #}
 {%- else %}
-  {%- set rpc_ip = False %}
   {%- set serf_ip = False %}
   {#- consul address not provided via pillar, use the default localhost:8500 #}
   {%- if not consul_addr %}
@@ -63,7 +62,7 @@
 {
   "addresses": {
     {%- if serf_ip %}"serf": "{{ serf_ip }}",{% endif %}
-    {%- if rpc_ip %}"rpc": "{{ rpc_ip }}",{% endif %}
+    "rpc": "{{ rpc_ip }}",
     "http": "{{ http_ip }}"
   },
   "datacenter": "{{ dc }}",
