@@ -2,7 +2,7 @@
 
 {%- set home = '/var/lib/nomad' %}
 {%- set conf_path = '/etc/nomad' %}
-{%- set conf_file = conf_path ~ '/config.json' %}
+{%- set conf_file = conf_path ~ '/config' %}
 {%- set conf_opt_file = '-config ' ~ conf_file %}
 {%- set conf_opt_dir = '-config ' ~ conf_path ~ '/conf.d/' %}
 {%- set default_args = conf_opt_file ~ ' ' ~ conf_opt_dir %}

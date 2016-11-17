@@ -6,8 +6,8 @@
 
 nomad-config:
   file.managed:
-    - name: {{ conf_path }}/config.json
-    - source: salt://nomad/files/config.json
+    - name: {{ conf_path }}/config
+    - source: salt://nomad/files/config.hcl
     - user: {{ user }}
     - group: {{ user }}
     - mode: 640
