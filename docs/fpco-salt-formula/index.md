@@ -6,14 +6,34 @@ This section documents the details of the salt formula from the
 
 ### List of Formula
 
+#### Generic System Management
+
 * [Hostname Management](hostname)
 * [Managing Git Repositories](git)
+* [Add Swap File](swap)
+
+
+#### Applications (Install, Configure, etc)
+
 * [Common Application Installers](apps)
+* [AWS Utilities](aws)
+* [Packer](packer)
+* [Redis Client](redis-client)
+
+
+#### Programming Languages and Build Environments
+
+* [Golang](golang)
+* [Python and Pip](python)
+* [Ruby and Gems](ruby)
+
+
+#### Cluster Services
+
+* [Fabio (load balancer)](fabio)
+
+
+#### Monitoring Tools
+
 * [Sysdig for System Introspection](sysdig)
 * [Monitoring with Glances](glances)
-* [AWS Utilities](aws)
-* [Add Swap File](swap)
-* [Redis Client](redis-client)
-* [Ruby and Gems](ruby)
-* [Python and Pip](python)
-* [Fabio (load balancer)](fabio)
