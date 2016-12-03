@@ -23,6 +23,7 @@ This section documents the details of the salt formula from the
 
 #### Programming Languages and Build Environments
 
+* [Haskell Stack](stack)
 * [Golang](golang)
 * [Python and Pip](python)
 * [Ruby and Gems](ruby)
