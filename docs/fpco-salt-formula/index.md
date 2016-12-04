@@ -18,6 +18,7 @@ This section documents the details of the salt formula from the
 * [Common Application Installers](apps)
 * [AWS Utilities](aws)
 * [Packer](packer)
+* [Terraform](terraform)
 * [Redis Client](redis-client)
 
 
