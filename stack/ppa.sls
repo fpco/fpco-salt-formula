@@ -4,7 +4,7 @@
 #     echo 'deb http://download.fpcomplete.com/ubuntu/`lsb_release -cs` stable main'|sudo tee /etc/apt/sources.list.d/fpco.list
 #     sudo apt-get update
 #     sudo apt-get install stack -y
-{% set version = salt['pillar.get']('stack:version', '1.1.2-0~trusty') %}
+{% set version = salt['pillar.get']('stack:version', '1.3.0-0~trusty') %}
 
 stack:
   pkgrepo.managed:
