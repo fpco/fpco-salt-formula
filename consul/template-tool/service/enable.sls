@@ -8,7 +8,7 @@
 {%- set hostname = salt['grains.get']('id') %}
 
 include:
-  - .config
+  - consul.template-tool.config
   - consul.reload
 
 
