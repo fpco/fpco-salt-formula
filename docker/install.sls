@@ -7,7 +7,13 @@
 {%- set aufs_tools = salt['pillar.get']('docker:aufs_tools', default_aufs_tools_pkg) %}
 {%- set default_opts = salt['pillar.get']('docker:default_opts', '') %}
 {%- set dm_opts = '--storage-opt dm.basesize=20G' %}
-{%- set docker_version = salt['pillar.get']('docker:version', '1.10.3-0~trusty') %}
+{%- set lsb = salt['grains.get']('lsb_distrib_codename') %}
+{% if lsb == 'trusty' %}
+{%- set default_docker_version = '1.10.3-0~' ~ lsb %}
+{% else %}
+{%- set default_docker_version = '1.11.2-0~' ~ lsb %}
+{% endif %}
+{%- set docker_version = salt['pillar.get']('docker:version', default_docker_version) %}
 
 {#- this ought to be fixed up, the logic is not clean #}
 {%- if aufs %}
@@ -62,7 +68,7 @@ docker:
     - name: docker
   # the pkgrepo state does not seem to be working 100%, what gives?
   pkgrepo.managed:
-    - name: 'deb https://apt.dockerproject.org/repo ubuntu-trusty main'
+    - name: 'deb https://apt.dockerproject.org/repo ubuntu-{{ lsb }} main'
     - humanname: 'Docker Apt Repo'
     - file: '/etc/apt/sources.list.d/docker.list'
     - key_url: salt://docker/files/ppa.pgp
