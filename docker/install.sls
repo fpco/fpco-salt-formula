@@ -63,6 +63,13 @@ docker-refresh_modules:
         - pip: docker-dependencies
         - pkg: docker
 
+# Pin/hold the package to prevent unwanted upgrades of the package
+apt-hold-docker:
+  cmd.wait:
+    - name: apt-mark hold docker-engine
+    - require:
+        - pkg: docker
+
 docker:
   group.present:
     - name: docker
@@ -94,4 +101,3 @@ docker:
     - mode: 640
     - contents: |
         DOCKER_OPTS="{{ opts }}"
-
