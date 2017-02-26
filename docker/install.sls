@@ -65,7 +65,7 @@ docker-refresh_modules:
 
 # Pin/hold the package to prevent unwanted upgrades of the package
 apt-hold-docker:
-  cmd.wait:
+  cmd.run:
     - name: apt-mark hold docker-engine
     - require:
         - pkg: docker
