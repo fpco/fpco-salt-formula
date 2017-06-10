@@ -3,5 +3,6 @@ include:
   - .jq
   - .ops
   - .htop
+  - .traceroute
   - .unzip
   - .emacs
