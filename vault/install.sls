@@ -2,7 +2,7 @@
 # https://releases.hashicorp.com/vault/0.3.1/vault_0.3.1_linux_amd64.zip
 #
 {% from "vault/checksum_map.jinja" import vault_checksum_map with context %}
-{%- set default_version = '0.6.1' %}
+{%- set default_version = '0.8.3' %}
 {%- set version = salt['pillar.get']('vault:version', default_version) %}
 {%- set default_checksum = vault_checksum_map[version] %}
 {%- set checksum = salt['pillar.get']('vault:checksum', default_checksum) %}
