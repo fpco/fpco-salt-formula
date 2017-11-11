@@ -3,7 +3,7 @@
 #
 
 {% from "consul/template-tool/install/checksum_map.jinja" import consul_template_checksum_map with context %}
-{%- set default_version = '0.12.2' %}
+{%- set default_version = '0.19.4' %}
 {%- set version = salt['pillar.get']('consul_template:version', default_version) %}
 {%- set default_checksum = consul_template_checksum_map[version] %}
 {%- set checksum = salt['pillar.get']('consul_template:checksum', default_checksum) %}
