@@ -25,6 +25,7 @@ vault-archive:
     - source_hash: sha512={{ checksum }}
     - if_missing: {{ bin_path }}-{{ version }}/{{ app }}
     - archive_format: zip
+    - enforce_toplevel: False
     - require:
         - pkg: unzip
   file.directory:
