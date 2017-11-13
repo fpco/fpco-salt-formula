@@ -19,4 +19,4 @@ salt-minion-consul:
             ]
         }
     - watch_in:
-        - service: consul-upstart
+        - service: consul-service
