@@ -46,7 +46,7 @@ consul-service:
     - defaults: 
         description: {{ desc }}
         bin_path: /usr/local/bin/consul
-        args: {{ args }}
+        bin_opts: {{ args }}
         runas_user: {{ user }}
         runas_group: {{ user }}
         chdir: {{ home }}
