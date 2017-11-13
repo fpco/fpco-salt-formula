@@ -1,11 +1,21 @@
 {#- setup and run the consul-template service via upstart -#}
+{%- set os_release = salt['grains.get']('oscodename') %}
 {%- set consul_home = '/home/consul' %}
 {%- set conf_path = consul_home ~ '/template-tool' %}
-{%- set user = 'consul' %}
+{%- set user = 'root' %}
+{%- set group = 'consul' %}
 {%- set service_name = 'consul-template' %}
 {%- set template_path = '/srv/consul-templates' %}
 {%- set log_level = salt['pillar.get']('consul_template:log_level', 'info') %}
 {%- set hostname = salt['grains.get']('id') %}
+
+{%- if os_release == 'trusty' %}
+  {%- set service_config = '/etc/init/' ~ service_name ~ '.conf' %}
+  {%- set service_tpl = 'salt://upstart/files/generic.conf' %}
+{%- else %}
+  {%- set service_config = '/etc/systemd/system/' ~ service_name ~ '.service' %}
+  {%- set service_tpl = 'salt://systemd/files/basic.service.tpl' %}
+{%- endif %}
 
 include:
   - consul.template-tool.config
@@ -14,8 +24,8 @@ include:
 
 consul-tpl-service:
   file.managed:
-    - name: /etc/init/{{ service_name }}.conf
-    - source: salt://upstart/files/generic.conf
+    - name: {{ service_config }}
+    - source: {{ service_tpl }}
     - mode: 640
     - user: root
     - group: root
@@ -24,8 +34,8 @@ consul-tpl-service:
         description: "Consul Template Service"
         bin_path: /usr/local/bin/consul-template
         bin_opts: -config {{ conf_path }} -log-level={{ log_level }}
-        runas_user: root
-        runas_group: {{ user }}
+        runas_user: {{ user }}
+        runas_group: {{ group }}
         chdir: {{ consul_home }}
         respawn: True
   service.running:
