@@ -1,5 +1,6 @@
 # setup consul service as an agent
 
+{%- set os_release = salt['grains.get']('oscodename') %}
 {%- set home = '/home/consul' %}
 {%- set user = 'consul' %}
 {%- set webui = salt['pillar.get']('consul:webui', False) %}
@@ -24,13 +25,21 @@
   {%- set rpc_ip = '127.0.0.1' %}
 {%- endif %}
 
+{%- if os_release == 'trusty' %}
+  {%- set service_config = '/etc/init/consul.conf' %}
+  {%- set service_tpl = 'salt://consul/files/upstart.conf' %}
+{%- else %}
+  {%- set service_config = '/etc/systemd/system/consul.service' %}
+  {%- set service_tpl = 'salt://systemd/files/basic.service.tpl' %}
+{%- endif %}
+
 include:
   - consul.config
 
-consul-upstart:
+consul-service:
   file.managed:
-    - name: /etc/init/consul.conf
-    - source: salt://consul/files/upstart.conf
+    - name: {{ service_config }}
+    - source: {{ service_tpl }}
     - mode: 640
     - user: root
     - group: root
@@ -38,17 +47,16 @@ consul-upstart:
     - defaults: 
         description: {{ desc }}
         bin_path: /usr/local/bin/consul
-        cmd_args: {{ args }}
+        args: {{ args }}
         run_as: {{ user }}
-        home: {{ home }}
-        webui: {{ webui }}
+        chdir: {{ home }}
   service.running:
     - name: consul
     - enable: True
     - watch:
         - file: consul-user
         - file: consul-config
-        - file: consul-upstart
+        - file: consul-service
 
 
 consul-addr-system-env:
