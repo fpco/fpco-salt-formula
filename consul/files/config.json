@@ -37,7 +37,7 @@
   "data_dir": "{{ home }}/tmp/",
   "disable_update_check": true,
   "disable_remote_exec": {% if disable_remote_exec %}true{% else %}false{% endif %},
-  "enable_script_checks": {{ enable_script_checks }},
+  "enable_script_checks": {% if enable_script_checks %}true{% else %}false{% endif %},
   "enable_syslog": true,
   "encrypt": "{{ secret_key }}",
   "log_level": "{{ log_level }}",
