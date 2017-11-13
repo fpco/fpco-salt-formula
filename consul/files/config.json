@@ -6,6 +6,7 @@
 {%- set log_level = salt['pillar.get']('consul:log_level', 'INFO') %}
 {%- set master_token = salt['pillar.get']('consul:master_token', '') %}
 {%- set disable_remote_exec = salt['pillar.get']('consul:disable_remote_exec', True) %}
+{%- set enable_script_checks = salt['pillar.get']('consul:enable_script_checks', True) %}
 {%- set leader_count = salt['pillar.get']('consul:leader_count', False) %}
 {%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
 {%- set retry_interval = salt['pillar.get']('consul:retry_interval', '15s') %}
@@ -35,6 +36,7 @@
   "data_dir": "{{ home }}/tmp/",
   "disable_update_check": true,
   "disable_remote_exec": {% if disable_remote_exec %}true{% else %}false{% endif %},
+  "enable_script_checks": {{ enable_script_checks }},
   "enable_syslog": true,
   "encrypt": "{{ secret_key }}",
   "log_level": "{{ log_level }}",
