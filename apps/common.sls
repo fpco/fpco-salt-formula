@@ -4,4 +4,3 @@ include:
   - .ops
   - .htop
   - .unzip
-  - .emacs
