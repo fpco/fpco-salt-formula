@@ -56,7 +56,7 @@ nomad-service:
     - template: jinja
     - defaults: 
         description: {{ desc }}
-        bin: /usr/local/bin/nomad
+        bin_path: /usr/local/bin/nomad
         args: {{ args }}
         run_as: {{ user }}
         home: {{ home }}
