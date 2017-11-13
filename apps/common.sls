@@ -5,4 +5,3 @@ include:
   - .htop
   - .traceroute
   - .unzip
-  - .emacs
