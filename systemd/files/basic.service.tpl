@@ -2,10 +2,11 @@
 Description={{ description }}
 
 [Service]
-ExecStart={{ bin_path }} {{ args }}
+ExecStart={{ bin_path }} {{ bin_opts }}
 Restart=on-failure
-{% if chdir is undefined %}WorkingDirectory={{ chdir }}{% endif %}
-{% if run_as is undefined %}User={{ run_as }}{% endif %}
+{% if chdir is defined %}WorkingDirectory={{ chdir }}{% endif %}
+{% if runas_user is defined %}User={{ runas_user }}{% endif %}
+{% if runas_group is defined %}Group={{ runas_group }}{% endif %}
 
 [Install]
 WantedBy=multi-user.target
