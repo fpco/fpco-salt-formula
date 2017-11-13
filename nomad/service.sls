@@ -1,5 +1,6 @@
 # setup nomad service as an agent
 
+{%- set os_release = salt['grains.get']('oscodename') %}
 {%- set home = '/var/lib/nomad' %}
 {%- set conf_path = '/etc/nomad' %}
 {%- set conf_file = conf_path ~ '/config' %}
@@ -33,21 +34,29 @@
   {%- set user = 'root' %}
 {%- endif %}
 
+{%- if os_release == 'trusty' %}
+  {%- set service_config = '/etc/init/nomad.conf' %}
+  {%- set service_tpl = 'salt://nomad/files/upstart.conf' %}
+{%- else %}
+  {%- set service_config = '/etc/systemd/system/nomad.service' %}
+  {%- set service_tpl = 'salt://systemd/files/basic.service.tpl' %}
+{%- endif %}
+
 include:
   - nomad.config
 
 
-nomad-upstart:
+nomad-service:
   file.managed:
-    - name: /etc/init/nomad.conf
-    - source: salt://nomad/files/upstart.conf
+    - name: {{ service_config }}
+    - source: {{ service_tpl }}
     - mode: 640
     - user: root
     - group: root
     - template: jinja
     - defaults: 
         description: {{ desc }}
-        bin: /usr/local/bin/nomad
+        bin_path: /usr/local/bin/nomad
         args: {{ args }}
         run_as: {{ user }}
         home: {{ home }}
@@ -56,7 +65,7 @@ nomad-upstart:
     - enable: True
     - watch:
         - file: nomad-config
-        - file: nomad-upstart
+        - file: nomad-service
 
 nomad-addr-system-env:
   file.append:
