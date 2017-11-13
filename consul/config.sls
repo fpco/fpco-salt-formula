@@ -15,6 +15,7 @@ consul-config:
     - group: {{ user }}
     - mode: 640
     - template: jinja
+    - makedirs: True
     - require:
         - user: consul-user
         - file: consul-user
