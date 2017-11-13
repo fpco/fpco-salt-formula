@@ -27,7 +27,7 @@
 
 {%- if os_release == 'trusty' %}
   {%- set service_config = '/etc/init/consul.conf' %}
-  {%- set service_tpl = 'salt://consul/files/upstart.conf' %}
+  {%- set service_tpl = 'salt://upstart/files/generic.conf' %}
 {%- else %}
   {%- set service_config = '/etc/systemd/system/consul.service' %}
   {%- set service_tpl = 'salt://systemd/files/basic.service.tpl' %}
@@ -48,7 +48,8 @@ consul-service:
         description: {{ desc }}
         bin_path: /usr/local/bin/consul
         args: {{ args }}
-        run_as: {{ user }}
+        runas_user: {{ user }}
+        runas_group: {{ user }}
         chdir: {{ home }}
   service.running:
     - name: consul
