@@ -9,12 +9,13 @@ include:
 
 consul-config:
   file.managed:
-    - name: {{ home }}/config.json
+    - name: {{ home }}/conf.d/00-config.json
     - source: salt://consul/files/config.json
     - user: {{ user }}
     - group: {{ user }}
     - mode: 640
     - template: jinja
+    - makedirs: True
     - require:
         - user: consul-user
         - file: consul-user
