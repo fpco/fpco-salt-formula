@@ -2,7 +2,7 @@
 Description={{ description }}
 
 [Service]
-ExecStart={{ bin_path }} {{ cmd_args }}
+ExecStart={{ bin_path }} {{ args }}
 WorkingDirectory={{ chdir }}
 Restart=on-failure
 User={{ run_as }}
