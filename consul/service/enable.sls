@@ -3,7 +3,6 @@
 {%- set os_release = salt['grains.get']('oscodename') %}
 {%- set home = '/home/consul' %}
 {%- set user = 'consul' %}
-{%- set webui = salt['pillar.get']('consul:webui', False) %}
 {%- set default_args = 'agent -config-dir ' ~ home ~ '/conf.d/' %}
 {%- set leader_count = salt['pillar.get']('consul:leader_count', False) %}
 {%- set agent_ports = '8301' %}
