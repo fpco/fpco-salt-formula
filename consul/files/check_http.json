@@ -2,6 +2,9 @@
   "check": {
     "name": "{{ name }}",
     "http": "{{ url }}",
+    "method": "{{ method }}",
+    {% if header is defined %}"header": {{ header | json_decode_dict }},{% endif %}
+    {% if tls_skip_verify is defined %}"tls_skip_verify": {{ tls_skip_verify }},{% endif %}
     "timeout": "{{ timeout }}",
     "interval": "{{ interval }}"
   }
