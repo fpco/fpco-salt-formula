@@ -3,9 +3,9 @@ Description={{ description }}
 
 [Service]
 ExecStart={{ bin_path }} {{ args }}
-WorkingDirectory={{ chdir }}
 Restart=on-failure
-User={{ run_as }}
+{% if chdir %}WorkingDirectory={{ chdir }}{% endif %}
+{% if run_as %}User={{ run_as }}{% endif %}
 
 [Install]
 WantedBy=multi-user.target
