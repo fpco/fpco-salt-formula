@@ -36,7 +36,7 @@
 
 {%- if os_release == 'trusty' %}
   {%- set service_config = '/etc/init/nomad.conf' %}
-  {%- set service_tpl = 'salt://nomad/files/upstart.conf' %}
+  {%- set service_tpl = 'salt://upstart/file/generic.conf' %}
 {%- else %}
   {%- set service_config = '/etc/systemd/system/nomad.service' %}
   {%- set service_tpl = 'salt://systemd/files/basic.service.tpl' %}
@@ -57,8 +57,9 @@ nomad-service:
     - defaults: 
         description: {{ desc }}
         bin_path: /usr/local/bin/nomad
-        args: {{ args }}
-        run_as: {{ user }}
+        bin_opts: {{ args }}
+        runas_user: {{ user }}
+        runas_group: {{ group }}
         home: {{ home }}
   service.running:
     - name: nomad
