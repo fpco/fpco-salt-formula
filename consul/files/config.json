@@ -1,4 +1,5 @@
 {%- set home = '/home/consul' %}
+{%- set webui = salt['pillar.get']('consul:webui', False) %}
 {%- set leaders = salt['pillar.get']('consul:leaders', []) %}
 {%- set dc = salt['pillar.get']('consul:datacenter', []) %}
 {%- set client_token = salt['pillar.get']('consul:client_token', False) %}
@@ -49,5 +50,6 @@
   ],
   "retry_interval": "{{ retry_interval }}",
   {%- endif %}
+  {%- if webui %}"ui": true,{% endif %}
   "watches": []
 }
