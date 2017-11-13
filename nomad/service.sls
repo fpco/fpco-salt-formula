@@ -11,6 +11,7 @@
 {%- set agent_ports = '4646' %}
 {%- set server_ports = '4646,4647,4648/tcp|4648/udp' %}
 {%- set server = salt['pillar.get']('nomad:server', False) %}
+{%- set group = salt['pillar.get']('nomad:group', 'nomad') %}
 
 {%- if server %}
   {%- set server_count = salt['pillar.get']('nomad:server_count', '3') %}
@@ -19,7 +20,7 @@
   {%- set desc = 'Nomad Server' %}
   {%- set ports = server_ports %}
   {#- run nomad server as nomad user, nothing here requires root #}
-  {%- set user = 'nomad' %}
+  {%- set user = salt['pillar.get']('nomad:user', 'nomad') %}
 {%- else %}
   {%- set args = 'agent -client ' ~ default_args %}
   {%- set desc = 'Nomad Agent' %}
@@ -30,8 +31,8 @@
   {%- else %}
     {%- set ports = agent_ports %}
   {%- endif %}
-  {#- run nomad agent as root user, required for raw_exec driver #}
-  {%- set user = 'root' %}
+  {#- run nomad agent as root user by default, required for raw_exec driver #}
+  {%- set user = salt['pillar.get']('nomad:user', 'root') %}
 {%- endif %}
 
 {%- if os_release == 'trusty' %}
