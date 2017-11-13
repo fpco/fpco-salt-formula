@@ -21,7 +21,8 @@ base:
     - sysdig
     - stack.ppa
     - stack.docker_cleanup
-#   - salt.minion
+    - salt.minion.install
+    - salt.minion
 #   - salt.minion.consul
 #   - salt.file_roots.consul-template
     - docker.install-from-image

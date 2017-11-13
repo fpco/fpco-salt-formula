@@ -10,8 +10,6 @@
 {%- set config_path = '/etc/salt' %}
 
 salt-minion:
-  pkg.installed:
-    - name: salt-minion
   file.managed:
     - name: {{ config_path }}/minion.d/extra.conf
     {#- source the contents of extra.conf from this pillar key #}
@@ -21,7 +19,6 @@ salt-minion:
     - {{ status }}
     - enable: {{ enabled }}
     - watch:
-        - pkg: salt-minion
         - file: salt-minion
         - file: salt-minion-id
 
