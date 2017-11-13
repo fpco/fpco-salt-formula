@@ -9,7 +9,7 @@ include:
 
 consul-config:
   file.managed:
-    - name: {{ home }}/config.json
+    - name: {{ home }}/conf.d/00-config.json
     - source: salt://consul/files/config.json
     - user: {{ user }}
     - group: {{ user }}
