@@ -18,7 +18,7 @@
 {%- set bind_ip = salt['pillar.get']('nomad:bind_ip', ext_ip) %}
 {%- set http_ip = salt['pillar.get']('nomad:http_ip', False) %}
 {%- set rpc_ip = salt['pillar.get']('nomad:rpc_ip', False) %}
-{%- set default_server = 'nomad.service.consul' %}
+{%- set default_server = 'nomad-server.service.consul' %}
 
 {#- server-specific #}
 {%- set server = salt['pillar.get']('nomad:server', False) %}
