@@ -2,7 +2,8 @@
   "check": {
     "id": "{{ id }}",
     "name": "{{ name }}",
-    "script": "{{ script }}",
-    "interval": "{{ interval }}"
+    "args": {{ args | json_decode_list }},
+    "interval": "{{ interval }}",
+    "timeout": "{{ timeout }}"
   }
 }
