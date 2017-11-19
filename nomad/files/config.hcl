@@ -126,6 +126,6 @@ client = {
   {% endfor %}}
   {%- endif %}
   {% if net_iface %}"network_interface = "{{ net_iface }}"{% endif %}
-  {% if node_class %}"node_class = "{{ node_class }}"{% endif %}
+  {% if node_class %}node_class = "{{ node_class }}"{% endif %}
 }
 {%- endif %}
