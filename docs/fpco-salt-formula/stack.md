@@ -87,5 +87,5 @@ Within the `stack` pillar, the following keys are supported:
 
 | Pillar Key | Default          | Required |             Notes               |
 | ---------- | ---------------- |:--------:| ------------------------------- |
-| `version`  | `1.2.0-0~trusty` | N | Sets the `version` for `pkg.installed` |
+| `version`  | `'1.5.1-0~' ~ lsb_codename` | N | Sets the `version` for `pkg.installed` |
 
