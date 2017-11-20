@@ -26,14 +26,6 @@ Within the `stack` pillar, the following keys are supported:
 | `group`    | `root`   | N | Linux group (in setting file mode)          |
 
 
-### `stack.deb`
-
-**deprecated**
-
-Installs `stack` from a `.deb` file hosted on `download.fpcomplete.com`. This
-formula is currently hardcoded to install an older version of `stack`.
-
-
 ### `stack.docker_cleanup`
 
 This formula generates a script in `/usr/local/bin/stack-docker-cleanup` and
