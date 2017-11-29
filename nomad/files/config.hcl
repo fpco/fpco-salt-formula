@@ -1,5 +1,5 @@
 # vim: sts=2 ts=2 sw=2 ft=jinja et ai
-{%- set default_version = '0.3.2' %}
+{%- set default_version = '0.7.0' %}
 {%- set version = salt['pillar.get']('nomad:version', default_version) %}
 {%- set PRE_0_4_0=['0.1.2','0.2.0','0.2.1','0.2.2','0.2.3','0.3.0','0.3.1','0.3.2'] %}
 {%- set home = '/var/lib/nomad' %}
