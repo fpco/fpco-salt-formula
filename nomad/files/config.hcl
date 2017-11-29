@@ -66,7 +66,7 @@
 {%- endif %}
 
 bind_addr = "{{ bind_ip }}"
-addresses = {
+addresses {
     {% if serf_ip %}serf = "{{ serf_ip }}"{% endif %}
     {% if http_ip %}http = "{{ http_ip }}"{% endif %}
 }
@@ -82,7 +82,7 @@ region = "{{ region }}"
 syslog_facility = "{{ syslog_facility }}"
 
 {%- if version not in PRE_0_4_0 %}
-consul = {
+consul {
   address = "{{ consul_addr }}"
   auto_advertise = true
   client_auto_join = true
@@ -94,7 +94,7 @@ consul = {
 {%- endif %}
 
 {%- if server %}
-server = {
+server {
   enabled = true
   bootstrap_expect = {{ bootstrap_expect }}
     {%- if num_schedulers %}"num_schedulers = "{{ num_schedulers }}"{% endif %}
@@ -106,9 +106,9 @@ server = {
   retry_interval = "{{ retry_interval }}"
 }
 {%- else %}
-client = {
+client {
   enabled = true
-  options = {
+  options {
     {%- if version in PRE_0_4_0 %}
     consul.address = "{{ consul_addr }}"
     consul.token = "{{ consul_token }}"
