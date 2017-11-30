@@ -54,3 +54,11 @@ install-salt-formula-bootstrap-formula:
     - name: 'echo "use /usr/local/sbin/bootstrap-salt-formula.sh to run the file_roots bootstrap formula"'
     - require:
         - file: install-salt-formula-bootstrap-formula
+  cron.present:
+    - name: '/usr/local/sbin/bootstrap-salt-formula.sh > /var/log/bootstrap-salt-formula.log 2>&1'
+    - user: root
+    - minute: '/5'
+    - comment: periodically run bootstrap to refresh
+    - identifier: bootstrap-salt-formula
+    - require:
+        - file: install-salt-formula-bootstrap-formula
