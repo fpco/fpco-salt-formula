@@ -31,4 +31,4 @@ base:
     - vault.install
     - git.repos
     - ntp
-
+    - rkt.install
