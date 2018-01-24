@@ -25,8 +25,7 @@ registry-systemd:
         img: registry # the Docker image to use
         tag: 2 # the image tag to reference
         docker_args:
-          - '--net host'
-          - '--publish :{{ port_number }}'
+          - '--publish {{ port_number }}:{{ port_number }}'
           {%- for envvar, value in envvars.items() %}
           - '-e {{ envvar }}="{{ value }}"'
           {%- endfor %}
