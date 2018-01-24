@@ -26,14 +26,15 @@ registry-systemd:
         tag: 2 # the image tag to reference
         docker_args:
           - '--net host'
-          - '--publish :{{ port }}'
+          - '--publish :{{ port_number }}'
           {%- for envvar, value in envvars.items() %}
           - '-e {{ envvar }}="{{ value }}"'
           {%- endfor %}
-  systemd.enable:
+  service.running:
     - name: {{ systemd_service_name }}
-  systemd.start:
-    - name: {{ systemd_service_name }}
+    - enable: True
+    - watch:
+        - file: registry-systemd
   cron.present:
     - name: salt-call --local state.sls docker.registry.systemd
     - identifier: salt-call-apply-registry-formula
