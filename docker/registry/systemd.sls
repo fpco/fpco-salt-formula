@@ -2,7 +2,6 @@
 {%- set image = salt['pillar.get']('docker:registry:', '') %}
 {%- set port_number = '5000' %}
 {%- set container_name = 'registry' %}
-{%- set host_ip = '0.0.0.0' %}
 {%- set default_envvars = {
     }
 %}
@@ -25,7 +24,8 @@ registry-systemd:
         img: registry # the Docker image to use
         tag: 2 # the image tag to reference
         docker_args:
-          - '--publish {{ port_number }}:{{ port_number }}'
+          - '--net=host'
+          - '--publish 127.0.0.1:{{ port_number }}:{{ port_number }}'
           {%- for envvar, value in envvars.items() %}
           - '-e {{ envvar }}="{{ value }}"'
           {%- endfor %}
