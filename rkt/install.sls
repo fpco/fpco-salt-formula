@@ -40,7 +40,6 @@ projectatomic_ppa:
 
 projectatomic_packages:
   pkg.installed:
-    - fromrepo: ppa:projectatomic/ppa
     - pkgs:
         - buildah
         - skopeo
