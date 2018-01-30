@@ -37,10 +37,6 @@ projectatomic_ppa:
     - file: /etc/apt/sources.list.d/projectatomic.list
     - keyid: 018BA5AD9DF57A4448F0E6CF8BECF1637AD8C79D
     - keyserver: keyserver.ubuntu.com
-    - require_in:
-        - pkg:
-            - buildah
-            - skopeo
 
 projectatomic_packages:
   pkg.installed:
