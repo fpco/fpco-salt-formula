@@ -19,7 +19,6 @@ base:
     - nomad.install
     - nomad.config
     - sysdig
-    - stack.ppa
     - stack.docker_cleanup
     - salt.minion.install
     - salt.minion
