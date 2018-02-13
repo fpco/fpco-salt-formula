@@ -3,3 +3,4 @@
 *.slsc
 *.pyc
 *.pyo
+.vagrant
