@@ -1,6 +1,4 @@
 # setup nomad service as an agent
-
-{%- set os_release = salt['grains.get']('oscodename') %}
 {%- set home = '/var/lib/nomad' %}
 {%- set conf_path = '/etc/nomad' %}
 {%- set conf_file = conf_path ~ '/config' %}
@@ -35,39 +33,7 @@
   {%- set user = salt['pillar.get']('nomad:user', 'root') %}
 {%- endif %}
 
-{%- if os_release == 'trusty' %}
-  {%- set service_config = '/etc/init/nomad.conf' %}
-  {%- set service_tpl = 'salt://upstart/file/generic.conf' %}
-{%- else %}
-  {%- set service_config = '/etc/systemd/system/nomad.service' %}
-  {%- set service_tpl = 'salt://systemd/files/basic.service.tpl' %}
-{%- endif %}
-
-include:
-  - nomad.config
-
-
-nomad-service:
-  file.managed:
-    - name: {{ service_config }}
-    - source: {{ service_tpl }}
-    - mode: 640
-    - user: root
-    - group: root
-    - template: jinja
-    - defaults: 
-        description: {{ desc }}
-        bin_path: /usr/local/bin/nomad
-        bin_opts: {{ args }}
-        runas_user: {{ user }}
-        runas_group: {{ group }}
-        home: {{ home }}
-  service.running:
-    - name: nomad
-    - enable: True
-    - watch:
-        - file: nomad-config
-        - file: nomad-service
+{%- set conf_path = '/etc/nomad' %}
 
 nomad-addr-system-env:
   file.append:
@@ -75,20 +41,16 @@ nomad-addr-system-env:
     - text: NOMAD_ADDR="http://{{ service_ip }}:4646"
 
 
-nomad-ufw-app-config:
-  file.managed:
-    - name: /etc/ufw/applications.d/nomad.ufw
-    - source: salt://ufw/files/etc/ufw/applications.d/app_config.jinja
-    - user: root
-    - group: root
-    - mode: 0640
-    - context:
-        app: nomad
-        title: nomad
-        description: {{ desc }}
-        ports: {{ ports }}
-    - template: jinja
-  cmd.run:
-    - name: 'ufw allow nomad'
-    - watch:
-        - file: nomad-ufw-app-config
+{%- set app = "nomad" %}
+{%- set conf_path = '/etc/nomad/config' %}
+{%- set conf_src = 'salt://nomad/files/config.hcl' %}
+
+{%- from "hashicorp/macro.sls" import render_app_config_formula with context %}
+{%- from "hashicorp/macro.sls" import render_app_service_formula with context %}
+{%- from "hashicorp/macro.sls" import render_app_ufw_formula with context %}
+
+{{ render_app_config_formula(app, conf_path, conf_src, app, group) }}
+{{ render_app_service_formula(app, desc, user, group, home, args) }}
+{{ render_app_ufw_formula(app, desc, ports) }}
+
+
