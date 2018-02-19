@@ -1,0 +1,13 @@
+applications:
+  - pkg
+parameters:
+  pkg:
+    base_pkg:
+      - build-essential
+      - tmux
+      - vim
+      - git
+      - htop
+      - wget
+      - curl
+      - lynx-cur
