@@ -32,32 +32,6 @@
   {%- set service_tpl = 'salt://systemd/files/basic.service.tpl' %}
 {%- endif %}
 
-include:
-  - consul.config
-
-consul-service:
-  file.managed:
-    - name: {{ service_config }}
-    - source: {{ service_tpl }}
-    - mode: 640
-    - user: root
-    - group: root
-    - template: jinja
-    - defaults: 
-        description: {{ desc }}
-        bin_path: /usr/local/bin/consul
-        bin_opts: {{ args }}
-        runas_user: {{ user }}
-        runas_group: {{ user }}
-        chdir: {{ home }}
-  service.running:
-    - name: consul
-    - enable: True
-    - watch:
-        - file: consul-user
-        - file: consul-config
-        - file: consul-service
-
 
 consul-addr-system-env:
   file.append:
@@ -67,20 +41,16 @@ consul-addr-system-env:
         CONSUL_RPC_ADDR="{{ rpc_ip }}:8400"
 
 
-consul-ufw-app-config:
-  file.managed:
-    - name: /etc/ufw/applications.d/consul.ufw
-    - source: salt://ufw/files/etc/ufw/applications.d/app_config.jinja
-    - user: root
-    - group: root
-    - mode: 0640
-    - context:
-        app: consul
-        title: consul
-        description: {{ desc }}
-        ports: {{ ports }}
-    - template: jinja
-  cmd.run:
-    - name: 'ufw allow consul'
-    - watch:
-        - file: consul-ufw-app-config
+{%- set app = "consul" %}
+{%- set group = "root" %}
+{%- set conf_path = '/home/consul/conf.d/00-config.json' %}
+{%- set conf_src = 'salt://consul/files/config.json' %}
+
+{%- from "hashicorp/macro.sls" import render_app_config_formula with context %}
+{%- from "hashicorp/macro.sls" import render_app_service_formula with context %}
+{%- from "hashicorp/macro.sls" import render_app_ufw_formula with context %}
+
+{{ render_app_config_formula(app, conf_path, conf_src, app, group) }}
+{{ render_app_service_formula(app, desc, user, group, home, args) }}
+{{ render_app_ufw_formula(app, desc, ports) }}
+
