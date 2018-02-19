@@ -3,6 +3,6 @@ reclass:
     base: /vagrant
   localhost:
     classes:
-      - base
+      - vagrant
     parameters:
       foo: bar

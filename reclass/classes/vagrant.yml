@@ -1,0 +1,5 @@
+classes:
+  - base
+parameters:
+  nomad:
+    net_if: 'enp0s3'
