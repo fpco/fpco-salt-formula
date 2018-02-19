@@ -10,7 +10,9 @@
 {%- set disable_remote_exec = salt['pillar.get']('consul:disable_remote_exec', True) %}
 {%- set enable_script_checks = salt['pillar.get']('consul:enable_script_checks', True) %}
 {%- set leader_count = salt['pillar.get']('consul:leader_count', False) %}
-{%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set default_netif = 'eth0' %}
+{%- set network_interface = salt['pillar.get']('nomad:net_if', default_netif) %}
+{%- set ext_ip = salt['grains.get']('ip4_interfaces')[network_interface][0] %}
 {%- set retry_interval = salt['pillar.get']('consul:retry_interval', '15s') %}
 
 {%- if leader_count %}
