@@ -1,0 +1,20 @@
+applications:
+  - python.pip
+  - apps.common
+  - aws.cli.install
+  - ufw.default_deny
+  - ufw.allow_ssh
+  - ufw.enable
+  - docker
+  - dnsmasq
+  - sysdig
+  - salt.minion.install
+  - salt.minion
+  - ntp
+classes:
+  - ufw-allow-ssh
+  - reclass
+  - pkg
+parameters:
+  # foobar
+  foo: bar

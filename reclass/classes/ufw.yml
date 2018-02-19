@@ -1,0 +1,4 @@
+applications:
+  - ufw
+  - ufw.default_deny
+  - ufw.enable

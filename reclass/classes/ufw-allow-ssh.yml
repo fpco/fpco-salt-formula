@@ -1,0 +1,4 @@
+classes:
+  - ufw
+applications:
+  - ufw.allow_ssh
