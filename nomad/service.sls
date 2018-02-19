@@ -5,7 +5,9 @@
 {%- set conf_opt_file = '-config ' ~ conf_file %}
 {%- set conf_opt_dir = '-config ' ~ conf_path ~ '/conf.d/' %}
 {%- set default_args = conf_opt_file ~ ' ' ~ conf_opt_dir %}
-{%- set service_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set default_netif = 'eth0' %}
+{%- set network_interface = salt['pillar.get']('nomad:net_if', default_netif) %}
+{%- set service_ip = salt['grains.get']('ip4_interfaces')[network_interface][0] %}
 {%- set agent_ports = '4646' %}
 {%- set server_ports = '4646,4647,4648/tcp|4648/udp' %}
 {%- set server = salt['pillar.get']('nomad:server', False) %}

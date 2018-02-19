@@ -14,7 +14,9 @@
 {%- endif %}
 {%- set secret_key = salt['pillar.get']('nomad:secret_key', '') %}
 {%- set log_level = salt['pillar.get']('nomad:log_level', 'INFO') %}
-{%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set default_netif = 'eth0' %}
+{%- set network_interface = salt['pillar.get']('nomad:net_if', default_netif) %}
+{%- set ext_ip = salt['grains.get']('ip4_interfaces')[network_interface][0] %}
 {%- set bind_ip = salt['pillar.get']('nomad:bind_ip', ext_ip) %}
 {%- set http_ip = salt['pillar.get']('nomad:http_ip', False) %}
 {%- set rpc_ip = salt['pillar.get']('nomad:rpc_ip', False) %}
