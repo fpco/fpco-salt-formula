@@ -3,3 +3,6 @@ classes:
 parameters:
   nomad:
     net_if: 'enp0s3'
+  consul:
+    net_if: 'enp0s3'
+    datacenter: local
