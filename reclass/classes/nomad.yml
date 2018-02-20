@@ -1,5 +1,5 @@
 applications:
-  - nomad
+  - nomad.service
 #classes:
 #  - foo
 parameters:
