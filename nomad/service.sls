@@ -37,10 +37,23 @@
 
 {%- set conf_path = '/etc/nomad' %}
 
+{%- set tls = salt['pillar.get']('nomad:tls', {}) %}
+{%- if tls %}
+  {%- set ca_cert_path = tls['ca_file'] %}
+  {%- set client_cert_path = tls['cert_file'] %}
+  {%- set client_key_path = tls['key_file'] %}
+{%- endif %}
+
 nomad-addr-system-env:
   file.append:
     - name: /etc/environment
-    - text: NOMAD_ADDR="http://{{ service_ip }}:4646"
+    - text: |
+        NOMAD_ADDR="http://{{ service_ip }}:4646"
+        {%- if tls %}
+        NOMAD_CACERT="{{ ca_cert_path }}:" 
+        NOMAD_CLIENT_CERT="{{ client_cert_path }}:"
+        NOMAD_CLIENT_KEY="{{ client_key_path }}:"
+        {%- endif %}
 
 
 {%- set app = "nomad" %}
