@@ -1,0 +1,12 @@
+applications:
+  - nomad.tls
+classes:
+  - nomad
+parameters:
+  ca_file: '/etc/nomad/ssl/ca.pem'
+  cert_file: '/etc/nomad/ssl/cert.pem'
+  key_file: '/etc/nomad/ssl/key.pem'
+  http: 'true'
+  rpc: 'true'
+  verify_https_client: 'true'
+  verify_server_hostname: 'true'
