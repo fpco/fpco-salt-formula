@@ -1,0 +1,18 @@
+applications:
+  - stack.docker_cleanup
+  - consul.install
+  - consul.dnsmasq
+  - consul.ext_pillar
+  - consul.template-tool
+  - consul.tools
+  - nomad.install
+  - nomad.config
+  - stack.ppa
+  - salt.minion.consul
+  - salt.file_roots.consul-template
+  - docker.install-from-image
+  - prometheus.node-exporter
+  - users.consul-template
+  - vault.install
+  - git.repos
+  - swap

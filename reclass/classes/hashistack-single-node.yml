@@ -1,0 +1,10 @@
+classes:
+  - hashistack
+  - consul-server
+  - nomad-server
+  - nomad-tls
+parameters:
+  nomad:
+    server_count: 1
+  consul:
+    leader_count: 1

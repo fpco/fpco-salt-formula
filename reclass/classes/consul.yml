@@ -1,0 +1,5 @@
+applications:
+  - consul.service
+parameters:
+# consul:
+#   foo: 'baz'

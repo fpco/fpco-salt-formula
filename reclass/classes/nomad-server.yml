@@ -1,0 +1,5 @@
+classes:
+  - nomad
+parameters:
+  nomad:
+    server: True
