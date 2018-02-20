@@ -4,5 +4,6 @@ reclass:
   localhost:
     classes:
       - vagrant
+      - hashistack-single-node
     parameters:
       foo: bar
