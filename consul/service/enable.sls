@@ -14,7 +14,9 @@
   {%- set args = default_args ~ bootstrap_args %}
   {%- set desc = 'Consul Leader' %}
   {%- set ports = leader_ports %}
-  {%- set http_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+  {%- set default_netif = 'eth0' %}
+  {%- set network_interface = salt['pillar.get']('consul:net_if', default_netif) %}
+  {%- set http_ip = salt['grains.get']('ip4_interfaces')[network_interface][0] %}
   {%- set rpc_ip = '127.0.0.1' %}
 {%- else %}
   {%- set args = default_args %}
