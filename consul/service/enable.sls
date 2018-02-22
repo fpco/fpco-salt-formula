@@ -10,8 +10,22 @@
 {%- set leader_ports = '8300,8301,8400,8500,8600/tcp|8301,8600/udp' %}
 
 {%- if leader_count %}
+  {%- set auto_join_args = '' %}
+  {%- set auto_join_enabled = salt['pillar.get']('consul:auto_join:enabled', False) %}
+  {%- if  auto_join_enabled %}
+    {%- set default_tag_key_name = 'consul_cluster' %}
+    {%- set default_auto_join_provider = 'aws' %}
+    {%- set auto_join_tag_key = salt['pillar.get']('consul:auto_join:tag_key', default_tag_key_name) %}
+    {%- set auto_join_tag_val = salt['pillar.get']('consul:auto_join:tag_val', 'SET_CLUSTER_NAME') %}
+    {%- set auto_join_provider = salt['pillar.get']('consul:auto_join:provider', default_auto_join_provider) %}
+    {#- note the spaces here, they are important #}
+    {%- set auto_join_prov = 'provider=' ~ auto_join_provider %}
+    {%- set auto_join_tags = ' tag_key=' ~ auto_join_tag_key ~ ' tag_value=' ~ auto_join_tag_val %}
+    {%- set auto_join_conf = ' "' ~ auto_join_prov ~ auto_join_tags ~ '"' %}
+    {%- set auto_join_args = ' -retry-join' ~ auto_join_conf %}
+  {%- endif %}
   {%- set bootstrap_args = ' -bootstrap-expect ' ~ leader_count %}
-  {%- set args = default_args ~ bootstrap_args %}
+  {%- set args = default_args ~ auto_join_args ~ bootstrap_args %}
   {%- set desc = 'Consul Leader' %}
   {%- set ports = leader_ports %}
   {%- set default_netif = 'eth0' %}
