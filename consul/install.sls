@@ -22,7 +22,6 @@
 {%- set install_path = bin_root ~ app ~ '-' ~ version %}
 
 include:
-  - consul.python
   - consul.user
   - apps.unzip
 
