@@ -92,7 +92,7 @@ Vagrant.configure("2") do |config|
 
     # I also prefer to install from git so I can specify a version.
     salt.install_type = "git"
-    salt.install_args = "v2017.7.3"
+    salt.install_args = "v2018.3.0"
 
     # Run in verbose mode, so it will output all debug info to the console.
     # This is nice to have when you are testing things out. Once you know they
