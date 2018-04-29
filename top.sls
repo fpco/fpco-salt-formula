@@ -12,6 +12,4 @@ base:
   - docker
   - dnsmasq
   - sysdig
-  - salt.minion.install
-  - salt.minion
   - ntp
