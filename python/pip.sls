@@ -1,4 +1,6 @@
 # ensure pip is installed, through apt, and salt's modules are reloaded
+{%- set default_pip_version = "pip<10.0" %}
+{%- set pip_version = salt['pillar.get']('pip_version', default_pip_version) %}
 
 include:
   - python
@@ -7,7 +9,7 @@ include:
 # install pip with easy_install, if it is missing
 pip:
   cmd.run:
-    - name: easy_install -U pip
+    - name: easy_install -U pip "{{ pip_version }}"
     - unless: which pip
     - require:
         - pkg: python-setuptools
@@ -15,7 +17,7 @@ pip:
 # ensure pip is upgraded
 pip-upgrade:
   cmd.run:
-    - name: pip install --upgrade pip
+    - name: pip install --upgrade "{{ pip_version }}"
     - require:
         - cmd: pip
 
