@@ -84,7 +84,7 @@ Vagrant.configure("2") do |config|
     # On provision, run state.highstate (which installs packages, services, etc).
     # Highstate basicly means "comapre the VMs current machine state against
     # what it should be and make changes if necessary".
-    salt.run_highstate = true
+    salt.run_highstate = false
 
     # What version of salt to install, and from where.
     # Because by default it will install the latest, its better to explicetly
@@ -100,9 +100,10 @@ Vagrant.configure("2") do |config|
     salt.verbose = true
   end
 
-# config.vm.provision "shell", inline: <<-SHELL
-#   salt-call --local state.sls python.pip
-#   salt-call --local state.highstate
-# SHELL
+  config.vm.provision "shell", inline: <<-SHELL
+    salt-call --local state.sls python.pip
+    salt-call --local state.highstate
+
+  SHELL
 
 end
