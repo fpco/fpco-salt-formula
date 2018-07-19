@@ -5,6 +5,9 @@
 
 
 nomad-user:
+  group.present:
+    - name: {{ user }}
+    - system: True
   user.present:
     - name: {{ user }}
     - system: True
@@ -13,6 +16,8 @@ nomad-user:
     - shell: /bin/sh
     - groups:
         - docker
+    - require:
+        - group: nomad-user
   file.directory:
     - name: {{ home }}
     - user: {{ user }}
