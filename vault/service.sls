@@ -8,7 +8,9 @@
 {%- set config_args = ' -config ' ~ conf_file %}
 {%- set default_args = 'server' ~ config_args %}
 {%- set desc = 'Hashicorp Vault' %}
-{%- set default_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set default_netif = 'eth0' %}
+{%- set network_interface = salt['pillar.get']('vault:net_if', default_netif) %}
+{%- set default_ip = salt['grains.get']('ip4_interfaces')[network_interface][0] %}
 {%- set http_ip = salt['pillar.get']('vault:ip', default_ip) %}
 {%- set http_port = salt['pillar.get']('vault:port', '8200') %}
 

@@ -1,6 +1,8 @@
 {%- set home = '/var/lib/vault' %}
 {%- set default_file_backend = home ~ '/tmp' %}
-{%- set default_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set default_netif = 'eth0' %}
+{%- set network_interface = salt['pillar.get']('vault:net_if', default_netif) %}
+{%- set default_ip = salt['grains.get']('ip4_interfaces')[network_interface][0] %}
 {%- set dc = salt['pillar.get']('vault:datacenter', False) %}
 {%- set http_port = salt['pillar.get']('vault:port', '8200') %}
 {%- set http_ip = salt['pillar.get']('vault:ip', default_ip) %}

@@ -6,7 +6,9 @@
 {%- set consul_conf = '/home/consul' %}
 {%- set user = 'consul' %}
 {%- set server = salt['pillar.get']('nomad:server', False) %}
-{%- set service_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set default_netif = 'eth0' %}
+{%- set network_interface = salt['pillar.get']('nomad:net_if', default_netif) %}
+{%- set service_ip = salt['grains.get']('ip4_interfaces')[network_interface][0] %}
 {%- set http_port = 4646 %}
 {%- set rpc_port = 4647 %}
 
