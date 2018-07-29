@@ -72,6 +72,7 @@
         runas_user: {{ user }}
         runas_group: {{ group }}
         home: {{ home }}
+        requires: network-online.target
   service.running:
     - name: {{ app }}
     - enable: True
