@@ -59,8 +59,8 @@ consul-addr-system-env:
 
 {%- set app = "consul" %}
 {%- set group = "root" %}
-{%- set conf_path = '/home/consul/conf.d/00-config.json' %}
-{%- set conf_src = 'salt://consul/files/config.json' %}
+{%- set conf_path = '/home/consul/conf.d/00-config.hcl' %}
+{%- set conf_src = 'salt://consul/files/config.hcl' %}
 
 {%- from "hashicorp/macro.sls" import render_app_config_formula with context %}
 {%- from "hashicorp/macro.sls" import render_app_service_formula with context %}

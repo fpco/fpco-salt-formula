@@ -12,13 +12,15 @@
 {%- set enable_script_checks = salt['pillar.get']('consul:enable_script_checks', True) %}
 {%- set leader_count = salt['pillar.get']('consul:leader_count', False) %}
 {%- set default_netif = 'eth0' %}
-{%- set network_interface = salt['pillar.get']('nomad:net_if', default_netif) %}
+{%- set network_interface = salt['pillar.get']('consul:net_if', default_netif) %}
 {%- set ext_ip = salt['grains.get']('ip4_interfaces')[network_interface][0] %}
 {%- set retry_interval = salt['pillar.get']('consul:retry_interval', '15s') %}
 
 {%- if leader_count %}
   {#- JSON does not want to see True/False #}
   {%- set server = 'true' %}
+  {%- set default_domain = 'consul.' %}
+  {%- set domain = salt['pillar.get']('consul:domain', default_domain) %}
   {#- use external/private IP when running server mode #}
   {%- set http_ip = ext_ip %}
 {%- else %}
@@ -26,34 +28,39 @@
   {%- set http_ip = '127.0.0.1' %}
 {%- endif -%}
 
-{
-  {%- if server %}
-  "addresses": {
-    "http": "{{ http_ip }}"
-  },
-  "acl_datacenter": "{{ dc }}",
-  "acl_master_token": "{{ master_token }}",
-  {%- endif %}
-  "acl_agent_token": "{{ client_token }}",
-  {% if acl_default_policy %}"acl_default_policy": "{{ acl_default_policy }}",{%- endif %}
-  "bind_addr": "{{ ext_ip }}",
-  "datacenter": "{{ dc }}",
-  "data_dir": "{{ home }}/tmp/",
-  "disable_update_check": true,
-  "disable_remote_exec": {% if disable_remote_exec %}true{% else %}false{% endif %},
-  "enable_script_checks": {% if enable_script_checks %}true{% else %}false{% endif %},
-  "enable_syslog": true,
-  "encrypt": "{{ secret_key }}",
-  "log_level": "{{ log_level }}",
-  "node_name": "{{ salt['grains.get']('id') }}",
-  "server": {{ server }},
-  {%- if leaders %}
-  "retry_join": [
-    {% for leader in leaders %}"{{ leader }}"{%- if not loop.last %},{%- endif %}
-    {% endfor -%}
-  ],
-  "retry_interval": "{{ retry_interval }}",
-  {%- endif %}
-  {%- if webui %}"ui": true,{% endif %}
-  "watches": []
+{%- if server %}
+addresses = {
+  http = "{{ http_ip }}"
 }
+acl_datacenter = "{{ dc }}"
+acl_master_token = "{{ master_token }}"
+domain = "{{ domain }}"
+{%- endif %}
+
+acl_agent_token = "{{ client_token }}"
+
+{% if acl_default_policy %}acl_default_policy = "{{ acl_default_policy }}"{%- endif %}
+
+bind_addr = "{{ ext_ip }}"
+datacenter = "{{ dc }}"
+data_dir = "{{ home }}/tmp/"
+disable_update_check = true
+disable_remote_exec = {% if disable_remote_exec %}true{% else %}false{% endif %}
+enable_script_checks = {% if enable_script_checks %}true{% else %}false{% endif %}
+enable_syslog = true
+encrypt = "{{ secret_key }}"
+log_level = "{{ log_level }}"
+node_name = "{{ salt['grains.get']('id') }}"
+server = {{ server }}
+
+{%- if leaders %}
+retry_join = [
+  {% for leader in leaders %}"{{ leader }}"{%- if not loop.last %}
+  {% endif %}
+  {% endfor -%}
+]
+retry_interval = "{{ retry_interval }}"
+{%- endif %}
+
+{%- if webui %}ui = true{% endif %}
+watches = []
