@@ -2,7 +2,9 @@
 # in the salt-minion and salt-master configurations
 
 {%- set ext_mod_path = '/srv/salt-ext' %}
-{%- set ext_ip = salt['grains.get']('ip4_interfaces')['eth0'][0] %}
+{%- set default_netif = 'eth0' %}
+{%- set network_interface = salt['pillar.get']('consul:net_if', default_netif) %}
+{%- set ext_ip = salt['grains.get']('ip4_interfaces')[network_interface][0] %}
 {%- set consul_port = '8500' %}
 
 {#- use external/private IP when running server mode #}
