@@ -4,7 +4,7 @@
 {%- set PRE_0_4_0=['0.1.2','0.2.0','0.2.1','0.2.2','0.2.3','0.3.0','0.3.1','0.3.2'] %}
 {%- set home = '/var/lib/nomad' %}
 {%- set region = salt['pillar.get']('nomad:region', 'us') %}
-{%- set dc = salt['pillar.get']('nomad:datacenter', 'dc') %}
+{%- set dc = salt['pillar.get']('nomad:datacenter', 'dc1') %}
 {%- set syslog_facility = salt['pillar.get']('nomad:syslog_facility', 'LOCAL0') %}
 {%- if salt['pillar.get']('nomad:enable_debug', False) %}{% set enable_debug = 'true' %}
 {%- else %}{% set enable_debug = 'false' %}
