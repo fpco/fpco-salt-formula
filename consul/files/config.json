@@ -1,7 +1,8 @@
 {%- set home = '/home/consul' %}
 {%- set webui = salt['pillar.get']('consul:webui', False) %}
 {%- set leaders = salt['pillar.get']('consul:leaders', []) %}
-{%- set dc = salt['pillar.get']('consul:datacenter', []) %}
+{%- set default_dc = 'dc1' %}
+{%- set dc = salt['pillar.get']('consul:datacenter', default_dc) %}
 {%- set client_token = salt['pillar.get']('consul:client_token', False) %}
 {%- set secret_key = salt['pillar.get']('consul:secret_key', '') %}
 {%- set log_level = salt['pillar.get']('consul:log_level', 'INFO') %}
