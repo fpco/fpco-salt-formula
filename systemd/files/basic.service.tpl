@@ -1,5 +1,7 @@
 [Unit]
 Description={{ description }}
+Requires={{ requires }}
+After={{ requires }}
 
 [Service]
 ExecStart={{ bin_path }} {{ bin_opts }}
