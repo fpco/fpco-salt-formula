@@ -5,7 +5,7 @@
 # this has no assurance on the version installed.
 
 {% from "consul/checksum_map.jinja" import consul_checksum_map with context %}
-{%- set default_version = '1.1.0' %}
+{%- set default_version = '1.2.1' %}
 {%- set version = salt['pillar.get']('consul:version', default_version) %}
 {%- set default_checksum = consul_checksum_map[version] %}
 {%- set checksum = salt['pillar.get']('consul:checksum', default_checksum) %}
