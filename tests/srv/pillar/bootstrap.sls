@@ -14,6 +14,7 @@ reclass:
 nomad:
   net_if: enp0s3
   datacenter: vagrant
+  server_count: 1
   bootstrap_expect: 1
   server: True
 vault:
