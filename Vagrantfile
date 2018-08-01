@@ -103,8 +103,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     salt-call --local state.sls python.pip
     salt-call --local state.highstate
-    salt-call --local state.sls consul.install,nomad.install
-    salt-call --local state.sls consul.service,nomad.service
+    salt-call --local state.sls consul.install,nomad.install,vault.install
+    salt-call --local state.sls consul.service,nomad.service,vault.service
     service consul stop
     service nomad stop
     /usr/local/bin/consul agent -config-dir /home/consul/conf.d/ -bootstrap-expect 1 &
@@ -112,6 +112,10 @@ Vagrant.configure("2") do |config|
     consul members || true
     nomad server members || true
     nomad status || true
+    vault version || true
+    vault init; || true;
+    sleep 2
+    vault status || true
     echo "DONE! ssh in and get hacking: vagrant ssh"
   SHELL
 

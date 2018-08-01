@@ -17,8 +17,6 @@ nomad:
   server_count: 1
   bootstrap_expect: 1
   server: True
-vault:
-  net_if: enp0s3
 
 consul:
   net_if: enp0s3
@@ -31,6 +29,13 @@ consul:
   server: True
   # use `consul keygen` to generate some of these to pick from
   secret_key: '5BqoSqOrQwUuS4QywjePNg=='
+
+vault:
+  net_if: enp0s3
+  consul:
+    scheme: http
+    token: b684a56c-cf86-443b-a48f-52056f21986f
+  disable_tls: True
 
 # this is the name of the network interface used by vbox/vagrant
 # note that the specific name of your interface may differ.
