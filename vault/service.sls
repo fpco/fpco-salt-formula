@@ -35,13 +35,13 @@ vault-service:
     - group: root
     - template: jinja
     - defaults:
-        respawn: True
         description: {{ desc }}
         bin_path: /usr/local/bin/vault
         bin_opts: {{ default_args }}
         runas_user: {{ user }}
         runas_group: {{ user }}
         chdir: {{ home }}
+        requires: network-online.target
   service.running:
     - name: vault
     - enable: True
