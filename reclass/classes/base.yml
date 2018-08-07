@@ -1,3 +1,4 @@
+# top.sls - map to formula/states
 applications:
   - python.pip
   - apps.common
@@ -11,10 +12,11 @@ applications:
   - salt.minion.install
   - salt.minion
   - ntp
+# other classes in reclass
 classes:
   - ufw-allow-ssh
   - reclass
   - pkg
+# seeds pillar
 parameters:
-  # foobar
   foo: bar

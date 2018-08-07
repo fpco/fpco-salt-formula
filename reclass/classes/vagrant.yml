@@ -3,9 +3,17 @@ classes:
 parameters:
   nomad:
     net_if: 'enp0s3'
+    datacenter: vagrant
   consul:
     net_if: 'enp0s3'
-    datacenter: local
+    datacenter: vagrant
+    domain: vagrant
+  vault:
+    net_if: enp0s3
+
+  # this is the name of the network interface used by vbox/vagrant
+  # note that the specific name of your interface may differ.
+  network_interface: enp0s3
 
   salt:
     minion:

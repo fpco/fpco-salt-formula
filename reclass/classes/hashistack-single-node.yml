@@ -5,6 +5,13 @@ classes:
   - nomad-tls
 parameters:
   nomad:
+    bootstrap_expect: 1
     server_count: 1
+    server: True
   consul:
     leader_count: 1
+    server: True
+  vault:
+    consul:
+      scheme: http
+      disable_tls: True
