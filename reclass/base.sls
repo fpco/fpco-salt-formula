@@ -47,7 +47,7 @@ reclass-reclass_config:
 # complicated. funny enough, this is easier to sort out once reclass is in use.
 reclass-salt_config:
   file.managed:
-    - name: /etc/salt/minion.d/reclass
+    - name: /etc/salt/minion.d/reclass.conf
     - contents: |
         reclass: &reclass
           # the only currently supported
