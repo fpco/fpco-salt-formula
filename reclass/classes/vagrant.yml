@@ -6,3 +6,7 @@ parameters:
   consul:
     net_if: 'enp0s3'
     datacenter: local
+
+  salt:
+    minion:
+      config: {}
