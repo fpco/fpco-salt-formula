@@ -1,7 +1,6 @@
 # vim: sts=2 ts=2 sw=2 ft=jinja et ai
 {%- set default_version = '0.7.0' %}
 {%- set version = salt['pillar.get']('nomad:version', default_version) %}
-{%- set PRE_0_4_0=['0.1.2','0.2.0','0.2.1','0.2.2','0.2.3','0.3.0','0.3.1','0.3.2'] %}
 {%- set home = '/var/lib/nomad' %}
 {%- set region = salt['pillar.get']('nomad:region', 'us') %}
 {%- set dc = salt['pillar.get']('nomad:datacenter', 'dc1') %}
@@ -83,7 +82,6 @@ name = "{{ node_id }}"
 region = "{{ region }}"
 syslog_facility = "{{ syslog_facility }}"
 
-{%- if version not in PRE_0_4_0 %}
 consul {
   address = "{{ consul_addr }}"
   auto_advertise = true
@@ -93,7 +91,6 @@ consul {
   client_service_name = "nomad-client"
   token = "{{ consul_token }}"
 }
-{%- endif %}
 
 {%- if server %}
 server {
@@ -111,10 +108,6 @@ server {
 client {
   enabled = true
   options {
-    {%- if version in PRE_0_4_0 %}
-    consul.address = "{{ consul_addr }}"
-    consul.token = "{{ consul_token }}"
-    {%- endif %}
     {%- for k,v in opts.items() %}
     {{ k }} = "{{ v }}"
     {% endfor %}
