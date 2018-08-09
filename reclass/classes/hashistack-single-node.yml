@@ -2,7 +2,7 @@ classes:
   - hashistack
   - consul-server
   - nomad-server
-  - nomad-tls
+# - nomad-tls
 parameters:
   nomad:
     bootstrap_expect: 1
