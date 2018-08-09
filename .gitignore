@@ -5,3 +5,5 @@
 *.pyo
 .vagrant
 reclass/nodes/*.yml
+reclass-config.yml
+ubuntu-xenial-16.04-cloudimg-console*
