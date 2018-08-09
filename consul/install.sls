@@ -39,7 +39,7 @@ consul-archive:
         - pkg: unzip
   file.directory:
     - name: {{ install_path }}
-    - user: root
+    - user: consul
     - group: consul
     - file_mode: 750
     - dir_mode: 750
