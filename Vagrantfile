@@ -105,11 +105,10 @@ Vagrant.configure("2") do |config|
     salt-call --local state.sls reclass
     salt-call --local state.sls reclass.managed_tops
     salt-call --local state.highstate
-    service consul stop
     service nomad stop
-    /usr/local/bin/consul agent -config-dir /home/consul/conf.d/ -bootstrap-expect 1 &
     /usr/local/bin/nomad agent -server -config /etc/nomad/config -config /etc/nomad/conf.d/ -bootstrap-expect 1 &
-    consul members || true
+    # consul need sudo because it's owner of all his files instead of root
+    sudo consul members || true
     nomad server members || true
     nomad status || true
     vault version || true
