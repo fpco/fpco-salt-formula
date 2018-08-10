@@ -112,7 +112,7 @@ Vagrant.configure("2") do |config|
     nomad server members || true
     nomad status || true
     vault version || true
-    vault init; || true;
+    vault init || true
     sleep 2
     vault status || true
     echo "DONE! ssh in and get hacking: vagrant ssh"
