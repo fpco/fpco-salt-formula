@@ -12,7 +12,7 @@
 {%- set disable_mlock = salt['pillar.get']('vault:max_lease_ttl', False) %}
 {%- set disable_tls = salt['pillar.get']('vault:disable_tls', 'false') %}
 {%- set consul_backend = salt['pillar.get']('vault:consul:backend', True) %}
-{%- set telemetry = salt['pillar.get']('vault:telemetry', True) %}
+{%- set telemetry = salt['pillar.get']('vault:telemetry', False) %}
 
 {#- if enabled, init pillar for consul as a backend #}
 {%- if consul_backend %}

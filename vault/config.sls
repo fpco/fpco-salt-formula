@@ -14,8 +14,8 @@ vault-conf.d:
 
 vault-config:
   file.managed:
-    - name: {{ conf_path }}/config.json
-    - source: salt://vault/files/config.json
+    - name: {{ conf_path }}/config.hcl
+    - source: salt://vault/files/config.hcl
     - user: {{ user }}
     - group: {{ user }}
     - mode: 640
