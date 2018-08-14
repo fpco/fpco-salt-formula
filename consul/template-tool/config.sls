@@ -1,6 +1,7 @@
-{%- set consul_home = '/home/consul' %}
+{%- set consul_home = '/etc/consul' %}
 {%- set conf_path = consul_home ~ '/template-tool' %}
-{%- set user = 'consul' %}
+{%- set user = 'root' %}
+{%- set group = 'consul' %}
 
 include:
   - consul.user
@@ -9,7 +10,7 @@ consul-tpl-conf-path:
   file.directory:
     - name: {{ conf_path }}
     - user: {{ user }}
-    - group: {{ user }}
+    - group: {{ group }}
     - mode: 750
     - require:
         - user: consul-user
@@ -19,8 +20,8 @@ consul-tpl-conf-path:
 consul-tpl-base-config:
   file.managed:
     - name: {{ conf_path }}/00-consul-template.hcl
-    - user: consul
-    - group: {{ user }}
+    - user: {{ user }}
+    - group: {{ group }}
     - mode: 640
     - source: salt://consul/template-tool/files/base_config.hcl
     - template: jinja

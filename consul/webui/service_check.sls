@@ -1,7 +1,8 @@
 # create service definition and check config for the consul webui
 
-{%- set home = '/home/consul' %}
-{%- set user = 'consul' %}
+{%- set home = '/etc/consul' %}
+{%- set user = 'root' %}
+{%- set group = 'consul' %}
 
 include:
   - consul
@@ -10,11 +11,11 @@ include:
 
 consul-service-consul-webui:
   file.managed:
-    - name: {{ home }}/conf.d/consul-webui.json
+    - name: {{ home }} ~ '/conf.d/consul-webui.json'
     - source: salt://consul/files/service.json
     - template: jinja
     - user: {{ user }}
-    - group: {{ user }}
+    - group: {{ group }}
     - mode: 640
     - context:
         name: consul-webui

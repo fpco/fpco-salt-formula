@@ -1,7 +1,7 @@
 # setup consul service as an agent
 
 {%- set os_release = salt['grains.get']('oscodename') %}
-{%- set home = '/home/consul' %}
+{%- set home = '/etc/consul' %}
 {%- set user = 'consul' %}
 {%- set default_args = 'agent -config-dir ' ~ home ~ '/conf.d/' %}
 {%- set leader_count = salt['pillar.get']('consul:leader_count', False) %}
@@ -58,8 +58,9 @@ consul-addr-system-env:
 
 
 {%- set app = "consul" %}
-{%- set group = "root" %}
-{%- set conf_path = '/home/consul/conf.d/00-config.hcl' %}
+{%- set user = "root" %}
+{%- set group = "consul" %}
+{%- set conf_path = home ~ '/conf.d/00-config.hcl' %}
 {%- set conf_src = 'salt://consul/files/config.hcl' %}
 
 {%- from "hashicorp/macro.sls" import render_app_config_formula with context %}

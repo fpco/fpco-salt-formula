@@ -1,6 +1,6 @@
 {#- setup and run the consul-template service via upstart -#}
 {%- set os_release = salt['grains.get']('oscodename') %}
-{%- set consul_home = '/home/consul' %}
+{%- set consul_home = '/etc/consul' %}
 {%- set conf_path = consul_home ~ '/template-tool' %}
 {%- set user = 'root' %}
 {%- set group = 'consul' %}
@@ -27,8 +27,8 @@ consul-tpl-service:
     - name: {{ service_config }}
     - source: {{ service_tpl }}
     - mode: 640
-    - user: root
-    - group: root
+    - user: {{ user }}
+    - group: {{ group }}
     - template: jinja
     - defaults:
         description: "Consul Template Service"
@@ -52,14 +52,14 @@ consul-tpl-templates-path:
   file.directory:
     - name: {{ template_path }}
     - user: {{ user }}
-    - group: root
+    - group: {{ group }}
     - mode: 750
 
 
 consul-tpl-consul-service:
   file.managed:
-    - name: /home/consul/conf.d/consul_template_service.json
-    - user: consul
+    - name: "{{ consul_home }}/conf.d/consul_template_service.json"
+    - user: {{ user }}
     - group: {{ group }}
     - mode: 640
     - contents: |
