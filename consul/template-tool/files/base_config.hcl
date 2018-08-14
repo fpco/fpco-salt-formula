@@ -9,12 +9,13 @@
 {%- set vault = salt['pillar.get']('consul_template:vault', False) %}
 {%- set vault_url = salt['pillar.get']('consul_template:vault_url', 'https://vault.service.consul:8200') %}
 {%- set vault_token = salt['pillar.get']('consul_template:vault_token', 'VAULT_TOKEN') %}
+
 consul = "{{ consul_addr }}"
-token = "{{ consul_token }}" {# May also use the env var CONSUL_TOKEN #}
-retry = "10s"
+#token = "{{ consul_token }}" {# May also use the env var CONSUL_TOKEN #}
+#retry = "10s" {# doesn't work as HCL file format TODO: try as json file #}
 max_stale = "10m"
 log_level = "warn"
-#pid_file = "/var/run/consul-template.pid"
+pid_file = "/var/run/consul-template.pid"
 
 {%- if vault %}
 vault {
