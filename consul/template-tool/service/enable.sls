@@ -38,6 +38,7 @@ consul-tpl-service:
         runas_group: {{ group }}
         chdir: {{ consul_home }}
         respawn: True
+        requires: network-online.target
   service.running:
     - name: {{ service_name }}
     - enable: True
@@ -59,7 +60,7 @@ consul-tpl-consul-service:
   file.managed:
     - name: /home/consul/conf.d/consul_template_service.json
     - user: consul
-    - group: consul
+    - group: {{ group }}
     - mode: 640
     - contents: |
         {
@@ -67,9 +68,9 @@ consul-tpl-consul-service:
             "id": "consul-template-{{ hostname }}",
             "name": "consul-template",
             "tags": ["core", "consul"],
-            "checks": [
+            "check": [
               {
-                "script": "pgrep consul-template",
+                "args": ["pgrep","consul-template"],
                 "interval": "30s"
               }
             ]
@@ -78,4 +79,3 @@ consul-tpl-consul-service:
     # reload consul config after this service.json is in place
     - require_in:
         - cmd: consul-service-check-reload
-

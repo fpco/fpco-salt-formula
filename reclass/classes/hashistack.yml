@@ -3,7 +3,7 @@ applications:
   - consul.install
   - consul.dnsmasq
 # - consul.ext_pillar
-# - consul.template-tool
+  - consul.template-tool
   - consul.tools
   - nomad.install
 # - salt.minion.consul
