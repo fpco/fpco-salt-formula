@@ -1,0 +1,7 @@
+applications:
+  - vault.service
+#classes:
+#  - foo
+parameters:
+  vault:
+    disable_tls: 'true'

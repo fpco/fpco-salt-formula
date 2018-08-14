@@ -1,0 +1,5 @@
+classes:
+  - vault
+parameters:
+  vault:
+    server: True
