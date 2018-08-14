@@ -4,7 +4,7 @@
 {%- set home = '/var/lib/vault' %}
 {%- set user = 'vault' %}
 {%- set conf_path = '/etc/vault' %}
-{%- set conf_file = conf_path ~ '/config.json' %}
+{%- set conf_file = conf_path ~ '/config.hcl' %}
 {%- set config_args = ' -config ' ~ conf_file %}
 {%- set default_args = 'server' ~ config_args %}
 {%- set desc = 'Hashicorp Vault' %}
