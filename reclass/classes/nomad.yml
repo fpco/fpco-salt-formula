@@ -1,7 +1,5 @@
 applications:
   - nomad.service
-#classes:
-#  - foo
-parameters:
-  nomad:
-    foo: 'bar'
+classes:
+  - nomad-params
+parameters: {}

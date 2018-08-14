@@ -1,3 +1,3 @@
 include:
   - .install
-  - .service
+  - .service.reclass

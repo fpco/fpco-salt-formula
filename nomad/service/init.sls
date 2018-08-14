@@ -36,7 +36,7 @@
   {%- set args = 'agent -server ' ~ default_args ~ bootstrap_args %}
   # description for the service unit file
   {%- set desc = 'Nomad Server' %}
-  # list of ports for the server 
+  # list of ports for the server
   {%- set ports = server_ports %}
   {#- run nomad server as nomad user, nothing here requires root #}
   {%- set user = salt['pillar.get']('nomad:user', 'nomad') %}
@@ -72,7 +72,7 @@ nomad-addr-system-env:
     - text: |
         NOMAD_ADDR="http://{{ service_ip }}:4646"
         {%- if tls %}
-        NOMAD_CACERT="{{ ca_cert_path }}:" 
+        NOMAD_CACERT="{{ ca_cert_path }}:"
         NOMAD_CLIENT_CERT="{{ client_cert_path }}:"
         NOMAD_CLIENT_KEY="{{ client_key_path }}:"
         {%- endif %}
