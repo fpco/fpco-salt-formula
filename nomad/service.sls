@@ -1,28 +1,50 @@
 # setup nomad service as an agent
+# home directory for the user/service (runtime files)
 {%- set home = '/var/lib/nomad' %}
+# configuration files go here
 {%- set conf_path = '/etc/nomad' %}
+# primary config file
 {%- set conf_file = conf_path ~ '/config' %}
+# cli option for nomad, path to config file
 {%- set conf_opt_file = '-config ' ~ conf_file %}
+# cli option for nomad, directory for additional config files
 {%- set conf_opt_dir = '-config ' ~ conf_path ~ '/conf.d/' %}
+# default cli args, always included
 {%- set default_args = conf_opt_file ~ ' ' ~ conf_opt_dir %}
+# default network interface
 {%- set default_netif = 'eth0' %}
+# use default net interface if the operator hasn't provided one
 {%- set network_interface = salt['pillar.get']('nomad:net_if', default_netif) %}
+# lookup the first IP from the network interface specified
 {%- set service_ip = salt['grains.get']('ip4_interfaces')[network_interface][0] %}
+# list of ports for UFW, for the agent
 {%- set agent_ports = '4646' %}
+# list of ports for UFW, for the server, tcp/udp
 {%- set server_ports = '4646,4647,4648/tcp|4648/udp' %}
+# should we enable/run the server?
 {%- set server = salt['pillar.get']('nomad:server', False) %}
+# group to own files and run nomad as
 {%- set group = salt['pillar.get']('nomad:group', 'nomad') %}
 
+# when in server mode, we need to set a few more variables
 {%- if server %}
+  # the number of servers to expect for bootstrap election
   {%- set server_count = salt['pillar.get']('nomad:server_count', '3') %}
+  # cli option for -bootstrap-expect
   {%- set bootstrap_args = ' -bootstrap-expect ' ~ server_count %}
+  # cli option for running the nomad agent as a server
   {%- set args = 'agent -server ' ~ default_args ~ bootstrap_args %}
+  # description for the service unit file
   {%- set desc = 'Nomad Server' %}
+  # list of ports for the server 
   {%- set ports = server_ports %}
   {#- run nomad server as nomad user, nothing here requires root #}
   {%- set user = salt['pillar.get']('nomad:user', 'nomad') %}
+# else is agent mode, no server, XXX we should make it possible to run both?
 {%- else %}
+  # cli option for running the nomad agent as a client/worker
   {%- set args = 'agent -client ' ~ default_args %}
+  # description for the service unit file
   {%- set desc = 'Nomad Agent' %}
   # set ports based on `open_agent_ports` pillar, do we include those ports nomad
   # will allocate to tasks dynamically (default), or do we keep it tight?
