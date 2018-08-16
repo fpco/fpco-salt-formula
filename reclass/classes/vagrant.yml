@@ -1,5 +1,6 @@
 classes:
   - base
+  - hashistack-single-node
 parameters:
   nomad:
     net_if: 'enp0s3'
