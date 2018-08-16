@@ -53,13 +53,14 @@
 
 {%- set app = "nomad" %}
 {%- set conf_src = 'salt://nomad/files/config.hcl' %}
+{%- set bin_path = '/usr/local/bin/nomad' %}
 
 {%- from "hashicorp/macro.sls" import render_app_config_formula with context %}
 {%- from "hashicorp/macro.sls" import render_app_service_formula with context %}
 {%- from "hashicorp/macro.sls" import render_app_ufw_formula with context %}
 
 {{ render_app_config_formula(app, conf_file, conf_src, app, group) }}
-{{ render_app_service_formula(app, desc, user, group, home, args) }}
+{{ render_app_service_formula(app, desc, user, group, home, bin_path, args) }}
 {{ render_app_ufw_formula(app, desc, ports) }}
 
 
