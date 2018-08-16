@@ -1,5 +1,11 @@
+applicatons:
+  - nomad.service.server
 classes:
   - nomad
 parameters:
   nomad:
-    server: True
+    server_count: 3
+    server:
+      enable: True
+    systemd_desc: Nomad Server
+    systemd_name: nomad
