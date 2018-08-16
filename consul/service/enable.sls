@@ -61,12 +61,13 @@ consul-addr-system-env:
 {%- set group = "root" %}
 {%- set conf_path = '/home/consul/conf.d/00-config.hcl' %}
 {%- set conf_src = 'salt://consul/files/config.hcl' %}
+{%- set bin_path = '/usr/local/bin/consul' %}
 
 {%- from "hashicorp/macro.sls" import render_app_config_formula with context %}
 {%- from "hashicorp/macro.sls" import render_app_service_formula with context %}
 {%- from "hashicorp/macro.sls" import render_app_ufw_formula with context %}
 
 {{ render_app_config_formula(app, conf_path, conf_src, app, group) }}
-{{ render_app_service_formula(app, desc, user, group, home, args) }}
+{{ render_app_service_formula(app, desc, user, group, home, bin_path, args) }}
 {{ render_app_ufw_formula(app, desc, ports) }}
 
