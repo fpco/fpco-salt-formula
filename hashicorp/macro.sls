@@ -55,7 +55,7 @@
 
 
 # render a systemd service config and running state for the app
-{%- macro render_app_service_formula(app, description, user, group, home, args) %}
+{%- macro render_app_service_formula(app, desc, user, group, home, bin_path, args) %}
 
 {{ app }}-service:
   file.managed:
@@ -66,8 +66,8 @@
     - group: root
     - template: jinja
     - defaults: 
-        description: {{ description }}
-        bin_path: /usr/local/bin/{{ app }}
+        description: {{ desc }}
+        bin_path: {{ bin_path }}
         bin_opts: {{ args }}
         runas_user: {{ user }}
         runas_group: {{ group }}
