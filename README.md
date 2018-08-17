@@ -85,6 +85,16 @@ It'll take a while to run, about 15 minutes on an older desktop.
 When it's ready, ssh in with `vagrant ssh` and then `sudo su -l` to switch to
 the root user.
 
+### Hashistack test
+
+After finish setup the virtual machine and setup the formulas vagrant executes 
+scripts that test Consul and Nomad, making sure that these are up and processing requests.
+
+To execute the just the provision steps in the Vagranfile:
+```
+vagrant provision
+```
+
 ## Vault
 
 ### Initialize and Unseal Vault
