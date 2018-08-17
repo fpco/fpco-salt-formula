@@ -116,4 +116,5 @@ Vagrant.configure("2") do |config|
     echo "DONE! ssh in and get hacking: vagrant ssh"
   SHELL
 
+  config.vm.provision "shell", path: "tests/scripts/test-hashistack.sh"
 end
