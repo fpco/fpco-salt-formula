@@ -17,13 +17,15 @@
 {%- set bind_ip = salt['pillar.get']('nomad:server:bind_ip', ext_ip) %}
 {%- set http_ip = salt['pillar.get']('nomad:server:http_ip', False) %}
 {%- set rpc_ip = salt['pillar.get']('nomad:server:rpc_ip', False) %}
-{%- set default_server = 'nomad-server.service.consul' %}
+{%- set serf_ip = False %}
+{%- set default_server = 'nomad.service.consul' %}
+{%- set client = salt['pillar.get']('nomad:client:enabled', True) %}
 
 {#- server-specific #}
 {%- set server = salt['pillar.get']('nomad:server:enabled', False) %}
 {%- set num_schedulers = salt['pillar.get']('nomad:num_schedulers', False) %}
 {%- set enabled_schedulers = salt['pillar.get']('nomad:enabled_schedulers', False) %}
-{%- set bootstrap_expect = salt['pillar.get']('nomad:server_count', 3) %}
+{%- set bootstrap_expect = salt['pillar.get']('nomad:server:count', 3) %}
 {%- set retry_interval = salt['pillar.get']('nomad:retry_interval', '15s') %}
 {%- set join_servers = salt['pillar.get']('nomad:servers', [default_server]) %}
 
@@ -57,7 +59,6 @@
 {#- we have a nomad client #}
 {%- else %}
   {#- serf is server-only / not used by clients #}
-  {%- set serf_ip = False %}
   {#- consul address not provided via pillar, use the default localhost:8500 #}
   {%- if not consul_addr %}
     {%- set consul_addr = default_consul_addr %}
@@ -102,7 +103,9 @@ server {
   ]
   retry_interval = "{{ retry_interval }}"
 }
-{%- else %}
+{%- endif %}
+
+{%- if client %}
 client {
   enabled = true
   options {

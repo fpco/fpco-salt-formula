@@ -8,6 +8,8 @@ parameters:
   nomad:
     server:
       count: 1
+    client:
+      enabled: True
   consul:
     leader_count: 1
   vault:
