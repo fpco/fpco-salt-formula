@@ -4,8 +4,6 @@ classes:
   - nomad
 parameters:
   nomad:
-    server_count: 3
     server:
-      enable: True
-    systemd_desc: Nomad Server
-    systemd_name: nomad
+      enabled: True
+      count: 3

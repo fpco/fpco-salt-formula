@@ -6,12 +6,10 @@ classes:
 # - nomad-tls
 parameters:
   nomad:
-    bootstrap_expect: 1
-    server_count: 1
-    server: True
+    server:
+      count: 1
   consul:
     leader_count: 1
-    server: True
   vault:
     consul:
       scheme: http
