@@ -30,5 +30,3 @@
 
 {{ render_app_config_formula(app_name, conf_file, conf_src, user, group) }}
 {{ render_app_service_formula(app_name, desc, run_user, group, home, bin_path, args) }}
-
-
