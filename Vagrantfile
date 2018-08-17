@@ -105,10 +105,6 @@ Vagrant.configure("2") do |config|
     salt-call --local state.sls reclass
     salt-call --local state.sls reclass.managed_tops
     salt-call --local state.highstate
-    # consul need sudo because it's owner of all his files instead of root
-    sudo consul members || true
-    nomad server members || true
-    nomad status || true
     echo "$(vault version)" || true
     vault operator init || true
     sleep 2
