@@ -2,28 +2,36 @@ applications: []
 classes: []
 parameters:
   nomad:
-    home: /var/lib/nomad
     config_root: /etc/nomad
+    net_if: eth0
+    server:
+      enabled: False
+      count: 3
+    client:
+      enabled: True
+   # consul:
+   #   token:
+   #   addr:
     config_file: ${nomad:config_root}/config.hcl
     config_opt_file: -config ${nomad:config_file}
     config_opt_dir: -config ${nomad:config_root}/conf.d/
     default_args: ${nomad:config_opt_file} ${nomad:config_opt_dir}
-    net_if: eth0
+    systemd_bin_args: agent ${nomad:default_args}
+    systemd_desc: Nomad
+    systemd_name: nomad
+    home: /var/lib/nomad
+    group: nomad
+    user: nomad
+    run_as_user: nomad
     ports:
       http: 4646
       rpc:  4647
       serf: 4648
     ufw:
-      server_ports: ${nomad:ports:http},${nomad:ports:rpc},${nomad:ports:serf}/tcp|${nomad:ports:serf}/udp
-      agent_ports: ${nomad:ports:http}
-      agent_task_ports: 20000:60000/tcp|20000:60000/udp
-    server: False
-    group: nomad
-    user: nomad
-    server_count: 3
-    bootstrap_args: -bootstrap-expect ${nomad:server_count}
-    server_args: agent -server ${nomad:default_args} ${nomad:bootstrap_args}
-    server_systemd_desc: Nomad Server
-    client_args: agent -client ${nomad:default_args}
-    client_systemd_desc: Nomad Client
-    open_agent_ports: True
+      server: ${nomad:ports:http},${nomad:ports:rpc},${nomad:ports:serf}/tcp|${nomad:ports:serf}/udp
+      client: ${nomad:ports:http}
+      tasks: 20000:60000/tcp|20000:60000/udp
+      open_agent_ports: True
+    # other parameters available to be set
+    #node_id: hostname
+    #node_class:
