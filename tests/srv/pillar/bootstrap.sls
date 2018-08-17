@@ -11,7 +11,8 @@ reclass:
       foo: bar
 
 nomad:
-  foo: bar
+  consul:
+    token: "b684a56c-cf86-443b-a48f-52056f21986f"
 consul:
   # use `python -c "import uuid; print(uuid.uuid4())"` to generate some of these to pick from
   master_token: "b684a56c-cf86-443b-a48f-52056f21986f"
