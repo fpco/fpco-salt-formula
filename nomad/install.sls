@@ -48,3 +48,20 @@ nomad-bin:
     - target: {{ bin_path }}-{{ version }}/{{ app }}
     - require:
         - file: nomad-archive
+
+nomad-alias-conf:
+  file.managed:
+    - name: /etc/profile.d/nomad-alias.sh
+    - user: root
+    - group: root
+    - mode: 755
+    - contents: |
+          #!/usr/bin/env bash
+
+          alias ns='nomad status'
+          alias nas='nomad alloc-status'
+          alias nns='nomad node-status'
+          alias nr='nomad run'
+          alias n='nomad stop'
+          alias nfc='nomad fs cat'
+          alias n='nomad fs ls'
