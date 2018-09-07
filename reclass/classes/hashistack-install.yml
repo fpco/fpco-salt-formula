@@ -1,0 +1,7 @@
+applications:
+  - consul.install
+  - nomad.install
+  - vault.install
+classes:
+  - nomad-params
+parameters: {}
