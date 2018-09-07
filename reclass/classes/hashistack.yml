@@ -1,13 +1,13 @@
 classes:
   - consul
+  - nomad
+  - vault
 applications:
   - stack.docker_cleanup
-  - nomad.install
 # - salt.minion.consul
 # - salt.file_roots.consul-template
   - docker.install-from-image
 # - prometheus.node-exporter
 # - users.consul-template
-  - vault.install
   - git.repos
   - swap

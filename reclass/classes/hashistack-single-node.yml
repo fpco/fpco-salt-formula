@@ -1,8 +1,6 @@
 classes:
-  - hashistack
-  - consul-server
-  - nomad-server
-  - vault-server
+  - hashistack-install
+  - hashistack-server
 # - nomad-tls
 parameters:
   nomad:
