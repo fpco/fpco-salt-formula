@@ -1,0 +1,10 @@
+classes:
+  - hashistack
+  - consul-server
+  - nomad-server
+  - vault-server
+parameters:
+  vault:
+    consul:
+      scheme: http
+      disable_tls: True
