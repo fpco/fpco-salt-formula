@@ -30,3 +30,32 @@
 
 {{ render_app_config_formula(app_name, conf_file, conf_src, user, group) }}
 {{ render_app_service_formula(app_name, desc, run_user, group, home, bin_path, args) }}
+
+
+# default network interface
+{%- set default_netif = 'eth0' %}
+# use default net interface if the operator hasn't provided one
+{%- set network_interface = salt['pillar.get']('nomad:net_if', default_netif) %}
+# lookup the first IP from the network interface specified
+{%- set service_ip = salt['grains.get']('ip4_interfaces')[network_interface][0] %}
+#
+
+{%- set tls = salt['pillar.get']('nomad:tls', {}) %}
+{%- if tls %}
+  {%- set ca_cert_path = tls['ca_file'] %}
+  {%- set client_cert_path = tls['cert_file'] %}
+  {%- set client_key_path = tls['key_file'] %}
+{%- endif %}
+
+
+nomad-addr-system-env:
+  file.append:
+    - name: /etc/environment
+    - text: |
+        NOMAD_ADDR="http://{{ service_ip }}:4646"
+        {%- if tls %}
+        NOMAD_CACERT="{{ ca_cert_path }}:"
+        NOMAD_CLIENT_CERT="{{ client_cert_path }}:"
+        NOMAD_CLIENT_KEY="{{ client_key_path }}:"
+        {%- endif %}
+
