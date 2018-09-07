@@ -1,10 +1,7 @@
+classes:
+  - consul
 applications:
   - stack.docker_cleanup
-  - consul.install
-  - consul.dnsmasq
-# - consul.ext_pillar
-  - consul.template-tool
-  - consul.tools
   - nomad.install
 # - salt.minion.consul
 # - salt.file_roots.consul-template

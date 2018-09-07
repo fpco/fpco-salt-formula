@@ -1,5 +1,8 @@
 applications:
+  - consul.dnsmasq
+  - consul.install
   - consul.service
-parameters:
+  - consul.template-tool
+parameters: {}
 # consul:
 #   foo: 'baz'
