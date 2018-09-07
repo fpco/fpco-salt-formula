@@ -15,12 +15,12 @@
 {%- set network_interface = salt['pillar.get']('consul:net_if', default_netif) %}
 {%- set ext_ip = salt['grains.get']('ip4_interfaces')[network_interface][0] %}
 {%- set retry_interval = salt['pillar.get']('consul:retry_interval', '15s') %}
+{%- set default_domain = 'consul.' %}
+{%- set domain = salt['pillar.get']('consul:domain', default_domain) %}
 
 {%- if leader_count %}
   {#- JSON does not want to see True/False #}
   {%- set server = 'true' %}
-  {%- set default_domain = 'consul.' %}
-  {%- set domain = salt['pillar.get']('consul:domain', default_domain) %}
   {#- use external/private IP when running server mode #}
   {%- set http_ip = ext_ip %}
 {%- else %}
