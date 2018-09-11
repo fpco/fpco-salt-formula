@@ -1,5 +1,3 @@
-applicatons:
-  - nomad.service.client-server
 classes:
   - nomad
 parameters:
