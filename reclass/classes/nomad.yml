@@ -1,5 +1,6 @@
 applications:
   - nomad.service.client-server
+  - nomad.ufw
 classes:
   - nomad-params
 parameters: {}
