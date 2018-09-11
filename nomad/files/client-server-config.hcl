@@ -98,7 +98,7 @@ server {
     {%- if num_schedulers %}"num_schedulers = "{{ num_schedulers }}"{% endif %}
     {%- if enabled_schedulers %}"enabled_schedulers = "{{ enabled_schedulers }}"{% endif %}
   retry_join = [
-      {% for s in join_servers %}"{{ s }}"
+      {% for s in join_servers %}"{{ s }}",
       {% endfor -%}
   ]
   retry_interval = "{{ retry_interval }}"
@@ -114,7 +114,7 @@ client {
     {% endfor %}
   }
   servers = [
-      {% for s in agent_servers %}"{{ s }}"
+      {% for s in agent_servers %}"{{ s }}",
       {%- endfor %}
   ]
   {% if meta %}meta = { {%- for k,v in meta.items() %}
