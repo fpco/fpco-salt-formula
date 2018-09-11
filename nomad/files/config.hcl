@@ -113,7 +113,7 @@ client {
     {% endfor %}
   }
   servers = [
-      {% for s in agent_servers %}"{{ s }}"
+      {% for s in agent_servers %}"{{ s }}",
       {%- endfor %}
   ]
   {% if meta %}meta = { {%- for k,v in meta.items() %}
