@@ -3,6 +3,7 @@ classes: []
 parameters:
   nomad:
     config_root: /etc/nomad
+    home: /var/lib/nomad
     net_if: eth0
     server:
       enabled: False
