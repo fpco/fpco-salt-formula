@@ -7,7 +7,6 @@ parameters:
     net_if: eth0
     server:
       enabled: False
-      count: 3
     client:
       enabled: True
    # consul:
@@ -23,7 +22,7 @@ parameters:
     home: /var/lib/nomad
     group: nomad
     user: nomad
-    run_as_user: nomad
+    run_as_user: root
     ports:
       http: 4646
       rpc:  4647
