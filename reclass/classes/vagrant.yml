@@ -1,5 +1,4 @@
 classes:
-  - base
   - hashistack-single-node
 parameters:
   nomad:
