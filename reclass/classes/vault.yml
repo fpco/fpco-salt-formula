@@ -1,5 +1,6 @@
 applications:
   - vault.service
+  - vault.ufw
 #classes:
 #  - foo
 parameters:
