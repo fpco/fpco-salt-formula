@@ -96,6 +96,14 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
 
+  # Work around nix bug
+  config.vm.provision "shell", inline: <<-SHELL
+    BASHPATH=/nix/store/czx8vkrb9jdgjyz8qfksh10vrnqa723l-bash-4.4-p23
+    mkdir -p $BASHPATH/bin
+    ln -s /bin/sh $BASHPATH/bin
+  SHELL
+
+
   # Salt Provisioner
   config.vm.provision :salt do |salt|
     # Relative location of configuration file to use for minion
@@ -119,9 +127,12 @@ Vagrant.configure("2") do |config|
     # This is nice to have when you are testing things out. Once you know they
     # work well you can comment this line out.
     salt.verbose = true
+    salt.colorize = true
+    salt.log_level = "trace"
   end
 
   config.vm.provision "shell", inline: <<-SHELL
+    set -x
     salt-call --local state.sls python.pip
     salt-call --local state.sls reclass
     salt-call --local state.sls reclass.managed_tops
