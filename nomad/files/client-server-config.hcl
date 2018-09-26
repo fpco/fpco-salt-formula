@@ -97,11 +97,13 @@ server {
   bootstrap_expect = {{ bootstrap_expect }}
     {%- if num_schedulers %}"num_schedulers = "{{ num_schedulers }}"{% endif %}
     {%- if enabled_schedulers %}"enabled_schedulers = "{{ enabled_schedulers }}"{% endif %}
-  retry_join = [
-      {% for s in join_servers %}"{{ s }}",
-      {% endfor -%}
-  ]
-  retry_interval = "{{ retry_interval }}"
+  server_join {
+    retry_join = [
+        {% for s in join_servers %}"{{ s }}",
+        {% endfor -%}
+    ]
+    retry_interval = "{{ retry_interval }}"
+  }
 }
 {%- endif %}
 
