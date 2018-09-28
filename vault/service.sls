@@ -23,6 +23,7 @@
 {%- endif %}
 
 include:
+  - vault.user
   - vault.config
 
 

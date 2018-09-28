@@ -1,5 +1,8 @@
 # manage the vault config file, leave dependents to vault.init
 
+include:
+  - vault.user
+
 {%- set conf_path = '/etc/vault' %}
 {%- set user = 'vault' %}
 
