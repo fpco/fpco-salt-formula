@@ -2,8 +2,10 @@
 
 set -uv
 
-echo "Execute formulas consul.service and nomad.service"
-salt-call --local state.sls consul.service,nomad.service test=True
+echo "running basic sanity checks against salt-formula"
+salt-call --local state.highstate test=True
+
+echo "running basic sanity checks against consul and nomad"
 
 sudo consul version
 sudo consul members
