@@ -53,7 +53,7 @@ log_level = "{{ log_level }}"
 node_name = "{{ salt['grains.get']('id') }}"
 server = {{ server }}
 
-{%- if leaders %}
+{% if leaders %}
 retry_join = [
   {% for leader in leaders %}"{{ leader }}"{%- if not loop.last %}
   {% endif %}
@@ -62,5 +62,5 @@ retry_join = [
 retry_interval = "{{ retry_interval }}"
 {%- endif %}
 
-{%- if webui %}ui = true{% endif %}
+{% if webui %}ui = true{% endif %}
 watches = []
