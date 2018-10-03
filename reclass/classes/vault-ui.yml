@@ -1,0 +1,4 @@
+# enable the vault UI
+parameters:
+  vault:
+    ui: True

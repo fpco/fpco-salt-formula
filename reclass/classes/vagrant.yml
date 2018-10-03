@@ -1,5 +1,6 @@
 classes:
   - hashistack-single-node
+  - vault-ui
 parameters:
   nomad:
     net_if: 'enp0s3'
