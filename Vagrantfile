@@ -28,7 +28,28 @@ Vagrant.configure("2") do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
-  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  #config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  
+  # hello world
+  config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
+  # consul
+  config.vm.network "forwarded_port", guest: 8500, host: 8500, host_ip: "127.0.0.1"
+  # vault
+  config.vm.network "forwarded_port", guest: 8200, host: 8200, host_ip: "127.0.0.1"
+  # nomad
+  config.vm.network "forwarded_port", guest: 4646, host: 4646, host_ip: "127.0.0.1"
+  # prometheus
+  config.vm.network "forwarded_port", guest: 9090, host: 9090, host_ip: "127.0.0.1"
+  # grafana
+  config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
+  # hashi-ui
+  config.vm.network "forwarded_port", guest: 5000, host: 5000, host_ip: "127.0.0.1"
+  # node_exporter
+  config.vm.network "forwarded_port", guest: 9100, host: 9100, host_ip: "127.0.0.1"
+  # nomad_exporter
+  config.vm.network "forwarded_port", guest: 9172, host: 9172, host_ip: "127.0.0.1"
+  # consul_exporter
+  config.vm.network "forwarded_port", guest: 9111, host: 9111, host_ip: "127.0.0.1"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -109,6 +130,16 @@ Vagrant.configure("2") do |config|
     vault operator init || true
     sleep 2
     vault status || true
+
+    ufw allow 9090
+    ufw allow 9100
+    ufw allow 9111
+    ufw allow 9172
+    ufw allow 3000
+    ufw allow 5000
+    ufw allow 8500
+    ufw allow 8200
+    ufw allow 4646
     echo "DONE! ssh in and get hacking: vagrant ssh"
   SHELL
 
