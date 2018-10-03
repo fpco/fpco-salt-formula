@@ -1,4 +1,5 @@
 {%- set home = '/var/lib/vault' %}
+{%- set ui = salt['pillar.get']('vault:ui', False) %}
 {%- set default_file_backend = home ~ '/tmp' %}
 {%- set default_netif = 'eth0' %}
 {%- set network_interface = salt['pillar.get']('vault:net_if', default_netif) %}
@@ -44,6 +45,8 @@ backend "consul" {
 backend "file" {
   path = "{{ default_file_backend }}"
 {%- endif %}
+
+{% if ui %}ui = true{% endif %}
 
 {#- configure vault HTTP listener #}
 listener "tcp" {
