@@ -314,3 +314,18 @@ directory and not the Vagrant environment itself.
 The current approach uses `cfssl` to generate the certs. For more information
 regarding that see the 
 [Nomad docs](https://www.nomadproject.io/guides/security/securing-nomad.html).
+
+
+## Multihots mode
+
+The multihost mode add an extra virtual machine that will configure hashistack creating two roles:
+- Leader
+- Worker
+
+The Leader role configures all hashistack as server role and the worker as client role.
+```
+mv Vagrantfile-multihost Vagranfile
+vagrant up
+```
+Unfortunally vagrant doesn't have the flag to pass the vagrantfile as an argument.
+
