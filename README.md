@@ -288,3 +288,29 @@ root@ubuntu-xenial:~# vault kv get -field=region secret/app_data
 us-west-1
 ```
 
+## TLS in the Vagrant Test Env 
+
+In order to emulate production deployments as best as possible, some tasks we want 
+to perform in our Vagrant environment will require TLS.
+We use self-signed certificates with a bootstrapped certificate authority in 
+order to achieve this.
+
+### Steps to Create TLS Certificates to use in Vagrant
+
+Make sure you have [cfssl](https://cfssl.org/) installed beforehand on your
+local machine.
+
+To generate the CA and TLS files first cd into the `tests/tls` directory on your local
+machine.
+From within that directory you may need to update the `vars.mk` file with the
+correct region.
+
+After this is complete run `make` (or `make -C tests/tls` if you are not in the directory).
+
+This will generate the certificates that you can then use when you provision your
+Vagrant box. Currently these certificates will just reside within the `tls` 
+directory and not the Vagrant environment itself.
+
+The current approach uses `cfssl` to generate the certs. For more information
+regarding that see the 
+[Nomad docs](https://www.nomadproject.io/guides/security/securing-nomad.html).
