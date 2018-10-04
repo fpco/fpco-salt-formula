@@ -1,14 +1,17 @@
 classes:
   - hashistack-single-node
+  - nomad-enable-raw-exec
+  - consul-ui
   - vault-ui
 parameters:
   nomad:
     net_if: 'enp0s3'
     datacenter: vagrant
+    node_class: "vagrant"
   consul:
     net_if: 'enp0s3'
     datacenter: vagrant
-    domain: vagrant
+    domain: local
   vault:
     net_if: enp0s3
 
