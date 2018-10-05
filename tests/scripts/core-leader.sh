@@ -3,7 +3,7 @@
 set -x
 
 # Set another path since this path is being shared for all vms
-bootstrap_pillar_file="/vagrant/tests/srv/pillar/bootstrap.sls"
+bootstrap_pillar_file="/vagrant/tests/multi/leader/srv/pillar/bootstrap.sls"
 leader_id=${LEADER_ID}
 echo $leader_id
 

@@ -137,8 +137,9 @@ Vagrant.configure("2") do |config|
     salt.verbose = true
   end
 
-
+  # Tests scripts
   config.vm.provision "shell", path: "tests/scripts/apply-formulas.sh"
   config.vm.provision "shell", path: "tests/scripts/test-hashistack.sh"
   config.vm.provision "shell", path: "tests/scripts/test-nomad-job.sh"
+
 end

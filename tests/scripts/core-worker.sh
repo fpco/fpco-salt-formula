@@ -3,7 +3,7 @@
 set -x
 
 # Set another path since this path is being shared for all vms
-bootstrap_pillar_file="/vagrant/tests/srv/pillar/bootstrap.sls"
+bootstrap_pillar_file="/vagrant/tests/multi/worker/srv/pillar/bootstrap.sls"
 worker_id=${WORKER_ID}
 echo $worker_id
 
