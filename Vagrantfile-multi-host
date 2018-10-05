@@ -1,0 +1,85 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Multihost mode 'yes'
+multihost = ENV['MULTIHOST']
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/xenial64"
+
+  # Global network config
+  config.vm.network "private_network", type: "dhcp"
+
+  # If mulstihost is true creates leader and worker nodes
+  #if multihost == "yes"
+
+    # Leader node
+    (1..2).each do |i|
+      config.vm.define "leader-#{i}" do |node|
+        config.vm.provider :virtualbox do |vm|
+          vm.memory = 512
+          vm.cpus = 1
+        end
+
+        # Salt Provisioner
+        config.vm.provision :salt do |salt|
+          salt.minion_config = "tests/etc/salt/minion"
+          salt.run_highstate = false
+          salt.install_type = "git"
+          salt.install_args = "v2018.3.0"
+          salt.verbose = true
+        end
+
+        # Leader provision
+        config.vm.provision "shell", path: "tests/scripts/apply-formulas.sh"
+        config.vm.provision "shell", path: "tests/scripts/test-hashistack.sh"
+        config.vm.provision "shell", path: "tests/scripts/core-leader.sh", args: "LEADER_ID=#{i}"
+        config.vm.provision "shell", path: "tests/scripts/test-nomad-job.sh"
+      end
+    end
+
+    # Worker node
+    (1..2).each do |i|
+      config.vm.define "worker-#{i}" do |node|
+        config.vm.provider :virtualbox do |vm|
+          vm.memory = 1024
+          vm.cpus = 1
+        end
+
+        # Salt Provisioner
+        config.vm.provision :salt do |salt|
+          salt.minion_config = "tests/etc/salt/minion"
+          salt.run_highstate = false
+          salt.install_type = "git"
+          salt.install_args = "v2018.3.0"
+          salt.verbose = true
+        end
+
+        # Leader provision
+        config.vm.provision "shell", path: "tests/scripts/apply-formulas.sh"
+        config.vm.provision "shell", path: "tests/scripts/test-hashistack.sh"
+        config.vm.provision "shell", path: "tests/scripts/core-leader.sh", args: "WORKER_ID=#{i}"
+        config.vm.provision "shell", path: "tests/scripts/test-nomad-job.sh"
+      end
+    end
+
+#  else
+#
+#    # Single host
+#
+#    # Salt Provisioner
+#    config.vm.provision :salt do |salt|
+#      salt.minion_config = "tests/etc/salt/minion"
+#      salt.run_highstate = false
+#      salt.install_type = "git"
+#      salt.install_args = "v2018.3.0"
+#      salt.verbose = true
+#    end
+#
+#    # Leader-Worker provision
+#    config.vm.provision "shell", path: "tests/scripts/apply-formulas.sh"
+#    config.vm.provision "shell", path: "tests/scripts/test-hashistack.sh"
+#    config.vm.provision "shell", path: "tests/scripts/test-nomad-job.sh"
+#  end
+
+end
