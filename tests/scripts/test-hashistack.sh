@@ -9,7 +9,7 @@ echo "running basic sanity checks against consul and nomad"
 
 sudo consul version
 sudo consul members
-sudo consul kv get -recurse
+sudo consul kv get -recurse -keys
 nomad version
 nomad status
 nomad agent-info
