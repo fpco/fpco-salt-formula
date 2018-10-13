@@ -127,10 +127,22 @@ Vagrant.configure("2") do |config|
     salt-call --local state.sls reclass.managed_tops
     salt-call --local state.highstate
     echo "$(vault version)" || true
-    vault operator init || true
-    sleep 2
-    vault status || true
 
+    echo "pause to let vault/consul services come online"
+    service vault status
+    # sleep before continuing, in case vault/vault aren't ready just yet
+    sleep 10
+
+    # tell the vault client where to find our vault server
+    # state.highstate has been run, we have all the ADDRs, just need to source it
+    source /etc/environment
+
+    # setup (initialize) vault for the first time
+    stdbuf -oL /vagrant/tests/scripts/init-vault.sh
+    # automatic parsing of those keys to unseal the vault
+    stdbuf -oL /vagrant/tests/scripts/unseal-vault.sh
+
+    # open ports so we can access potential services on the host
     ufw allow 9090
     ufw allow 9100
     ufw allow 9111
