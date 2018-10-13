@@ -5,6 +5,8 @@
 {%- set conf_path = salt['pillar.get']('nomad:config_root') %}
 # primary config file
 {%- set conf_file = salt['pillar.get']('nomad:config_file') %}
+# config file for vault
+{%- set vault_config_file = salt['pillar.get']('nomad:vault_config_file') %}
 # cli option for nomad, path to config file
 {%- set conf_opt_file = salt['pillar.get']('nomad:config_opt_file') %}
 # cli option for nomad, directory for additional config files
@@ -58,4 +60,15 @@ nomad-addr-system-env:
         NOMAD_CLIENT_CERT="{{ client_cert_path }}:"
         NOMAD_CLIENT_KEY="{{ client_key_path }}:"
         {%- endif %}
+
+nomad-vault-config:
+  file.managed:
+    - name: {{ vault_config_file }}
+    - source: salt://nomad/files/vault.hcl
+    - user: {{ user }}
+    - group: {{ group }}
+    - mode: 640
+    - template: jinja
+    - watch_in:
+      - service: nomad-service
 
