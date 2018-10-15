@@ -128,10 +128,11 @@ Vagrant.configure("2") do |config|
     salt-call --local state.highstate
     echo "$(vault version)" || true
 
-    echo "pause to let vault/consul services come online"
+    # what is the vault service's current status?
     service vault status
-    # sleep before continuing, in case vault/vault aren't ready just yet
-    sleep 10
+    # sleep before continuing, in case consul/vault aren't ready just yet
+    echo "pause to let vault/consul services come online"
+    sleep 30
 
     # tell the vault client where to find our vault server
     # state.highstate has been run, we have all the ADDRs, just need to source it
