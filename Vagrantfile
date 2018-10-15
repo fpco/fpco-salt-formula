@@ -152,9 +152,10 @@ Vagrant.configure("2") do |config|
     ufw allow 8500
     ufw allow 8200
     ufw allow 4646
+
+    stdbuf -oL /vagrant/tests/scripts/test-hashistack.sh
+    stdbuf -oL /vagrant/tests/scripts/test-nomad-job.sh
+
     echo "DONE! ssh in and get hacking: vagrant ssh"
   SHELL
-
-  config.vm.provision "shell", path: "tests/scripts/test-hashistack.sh"
-  config.vm.provision "shell", path: "tests/scripts/test-nomad-job.sh"
 end

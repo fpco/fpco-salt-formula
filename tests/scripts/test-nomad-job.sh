@@ -17,4 +17,4 @@ nomad status example
 
 # Test nomad job
 echo "Curl to check that nomad job is up"
-curl $ip:8080 || echo "Nomad Job Fail"
+stdbuf -oL curl -v $ip:8080
