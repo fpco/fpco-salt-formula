@@ -2,7 +2,7 @@
 # https://dl.bintray.com/mitchellh/terraform/terraform_0.4.2_linux_amd64.zip
 #
 {% from "terraform/checksum_map.jinja" import terraform_checksum_map with context %}
-{%- set default_version = '0.7.4' %}
+{%- set default_version = '0.11.9' %}
 {%- set version = salt['pillar.get']('terraform:version', default_version) %}
 {%- set default_checksum = terraform_checksum_map[version] %}
 {%- set checksum = salt['pillar.get']('terraform:checksum', default_checksum) %}
@@ -23,6 +23,7 @@ terraform-archive:
     - source_hash: sha512={{ checksum }}
     - if_missing: {{ bin_path }}-{{ version }}/{{ app }}
     - archive_format: zip
+    - enforce_toplevel: False
     - require:
         - pkg: unzip
   file.directory:
@@ -45,4 +46,3 @@ terraform-bin:
     - target: {{ bin_path }}-{{ version }}/{{ app }}
     - require:
         - file: terraform-archive
-

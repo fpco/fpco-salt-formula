@@ -5,7 +5,7 @@
 # this has no assurance on the version installed.
 
 {% from "consul/checksum_map.jinja" import consul_checksum_map with context %}
-{%- set default_version = '1.2.1' %}
+{%- set default_version = '1.3.0' %}
 {%- set version = salt['pillar.get']('consul:version', default_version) %}
 {%- set default_checksum = consul_checksum_map[version] %}
 {%- set checksum = salt['pillar.get']('consul:checksum', default_checksum) %}
@@ -82,4 +82,3 @@ consul-sudoers-conf:
         # the consul user can run the list of approved commands on any host,
         # no password is required
         consul ALL = NOPASSWD: AGENT_CMD
-
