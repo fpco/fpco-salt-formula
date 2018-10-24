@@ -20,6 +20,7 @@
   {%- set default_consul_addr = default_ip ~ ':8500' %}
   {%- set consul_addr = salt['pillar.get']('vault:consul:address', default_consul_addr) %}
   {%- set consul_path = salt['pillar.get']('vault:consul:path', 'vault') %}
+  {%- set consul_service_tags = salt['pillar.get']('vault:consul:service_tags', '') %}
   {%- set consul_scheme = salt['pillar.get']('vault:consul:scheme', 'https') %}
   {%- set consul_token = salt['pillar.get']('vault:consul:token', 'CONSUL_TOKEN_GOES_HERE') %}
   {%- if consul_scheme == 'https' %}
@@ -36,6 +37,7 @@ backend "consul" {
   path = "{{ consul_path }}"
   advertise_addr = "{{ default_http_addr }}"
   scheme = "{{ consul_scheme }}"
+  service_tags = "{{ consul_service_tags }}"
   token = "{{ consul_token }}"
   {%- if dc %}"datacenter": "{{ dc }}",{%- endif %}
   tls_skip_verify = "{{ tls_skip_verify }}"
