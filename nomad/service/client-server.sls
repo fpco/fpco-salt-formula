@@ -20,18 +20,59 @@
 # path to the template/source rendered for the config file for nomad server service
 {%- set conf_src = 'salt://nomad/files/client-server-config.hcl' %}
 # cli options passed to nomad executable in the systemd unit file
-{%- set args = salt['pillar.get']('nomad:systemd_bin_args') %}
+{%- set nomad_args = salt['pillar.get']('nomad:systemd_bin_args') %}
 # description for the service unit and ufw configuration files
 {%- set desc = salt['pillar.get']('nomad:systemd_desc') %}
 # name of the app, for config, systemd and ufw rendering macros
 {%- set app_name = salt['pillar.get']('nomad:systemd_name') %}
-{%- set bin_path = '/usr/local/bin/nomad' %}
+{%- set nomad_bin_path = '/usr/local/bin/nomad' %}
+
+{%- set vault_credstash  = salt['pillar.get']('nomad:vault:credstash:enabled', False) %}
+{%- set credstash_table  = salt['pillar.get']('nomad:vault:credstash:table', 'credstash') %}
+{%- set credstash_region = salt['pillar.get']('nomad:vault:credstash:aws_region', False) %}
+{%- set credstash_role   = salt['pillar.get']('nomad:vault:credstash:role', False) %}
+{%- set token_key_path   = salt['pillar.get']('nomad:vault:credstash:token_key_path', False) %}
+
+{%- if vault_credstash %}
+{%- set pre_start_script = '/usr/local/bin/credstash_nomad.sh' %}
+{%- set vault_env_file = '/etc/nomad/vault.env' %}
+{%- else %}
+{%- set pre_start_script = False %}
+{%- set vault_env_file = False %}
+{%- endif %}
+
+# at minimum, the vault.env file needs to exist and be owned/writable by the nomad user
+nomad-vault-env:
+  file.managed:
+    - name: {{ vault_env_file }}
+    - user: {{ user }}
+    - group: {{ group }}
+    - mode: 600
+
+# nomad user can execute but not write or change the script
+nomad-start-service-script:
+  file.managed:
+    - name: {{ pre_start_script }}
+    - user: {{ user }}
+    - group: {{ group }}
+    - mode: 550
+    - contents: |
+        #!/usr/bin/env bash
+        # someone please make this less ugly
+        cat << EOF > {{ vault_env_file }}
+        {% if vault_credstash %}
+        VAULT_TOKEN=$(GCREDSTASH_TABLE={{ credstash_table }} GCREDSTASH_KMS_KEY="alias/${GCREDSTASH_TABLE}" AWS_REGION={{ credstash_region }} gcredstash get {{ token_key_path }} role={{ credstash_role }})
+        {% endif %}
+        EOF
+        # end credstash_nomad.sh script
+    - watch_in:
+      - service: nomad-service
 
 {%- from "hashicorp/macro.sls" import render_app_config_formula with context %}
 {%- from "hashicorp/macro.sls" import render_app_service_formula with context %}
 
 {{ render_app_config_formula(app_name, conf_file, conf_src, user, group) }}
-{{ render_app_service_formula(app_name, desc, run_user, group, home, bin_path, args) }}
+{{ render_app_service_formula(app_name, desc, run_user, group, home, nomad_bin_path, nomad_args, pre_start_script, vault_env_file) }}
 
 
 # default network interface
