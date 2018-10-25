@@ -55,7 +55,7 @@
 
 
 # render a systemd service config and running state for the app
-{%- macro render_app_service_formula(app, desc, user, group, home, bin_path, args) %}
+{%- macro render_app_service_formula(app, desc, user, group, home, bin_path, args=False, pre_start=False, env_file=False) %}
 
 {{ app }}-service:
   file.managed:
@@ -68,11 +68,13 @@
     - defaults: 
         description: {{ desc }}
         bin_path: {{ bin_path }}
-        bin_opts: {{ args }}
+        {% if args %}bin_opts: {{ args }}{% endif %}
         runas_user: {{ user }}
         runas_group: {{ group }}
         home: {{ home }}
         requires: network-online.target
+        {% if pre_start %}pre_start: {{ pre_start }}{% endif %}
+        {% if env_file %}env_file: {{ env_file }}{% endif %}
   service.running:
     - name: {{ app }}
     - enable: True
