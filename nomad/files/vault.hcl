@@ -6,7 +6,7 @@
 
 vault {
   address = "{{ address }}"
-  {% if create_from_role is defined %}create_from_role = "{{ create_from_role }}"{% endif %}
+  {% if create_from_role %}create_from_role = "{{ create_from_role }}"{% endif %}
   enabled = {{ enabled }}
-  {% if token is defined %}token = "{{ token }}"{% endif %}
+  {% if token %}token = "{{ token }}"{% endif %}
 }
