@@ -18,6 +18,7 @@ nomad:
     # to use when accessing vault as a client
     # here is a static token
     token: "5205a4cf-344b-2198-684a-cf8620564844"
+    create_from_role: nomad-cluster
     # can also retrieve the token dynamically from credstash
     #credstash:
     #  enabled: True
