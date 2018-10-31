@@ -288,3 +288,15 @@ root@ubuntu-xenial:~# vault kv get -field=region secret/app_data
 us-west-1
 ```
 
+## Multihots mode
+The multihost mode add an extra virtual machine that will configure hashistack creating two roles:
+- Leader
+- Worker
+
+The Leader role configures all hashistack as server role and the worker as client role.
+```
+mv Vagrantfile-multihost Vagranfile
+vagrant up
+```
+Unfortunally vagrant doesn't have the flag to pass the vagrantfile as an argument.
+

@@ -7,14 +7,22 @@ bootstrap_pillar_file="/vagrant/tests/multi/leader/srv/pillar/bootstrap.sls"
 leader_id=${LEADER_ID}
 echo $leader_id
 
-cat <<EOT >> ${bootstrap_pillar_file}
+cat <<EOT > ${bootstrap_pillar_file}
 reclass:
   paths:
     base: /vagrant
-    localhost:
-      classes:
-        - hashistack-install
-        - hashistack-server
+  localhost:
+    classes:
+      - hashistack-install
+      - hashistack-server
+      - nomad-enable-raw-exec
+      - consul-ui
+      - vault-ui
+
+    # these "parameters" are provided to the node and override defaults
+    # inherited from the params defined in other "upstream" classes.
+    parameters:
+      network_interface: enp0s3
 
 nomad:
   consul:
@@ -36,8 +44,10 @@ consul:
 vault:
   consul:
     token: b684a56c-cf86-443b-a48f-52056f21986f
+    service_tags: "fpco,haskell,rust,elixir"
   disable_tls: True
   scheme: http
+  net_if: enp0s3
 EOT
 echo "role: leaders" > /etc/salt/grains
 

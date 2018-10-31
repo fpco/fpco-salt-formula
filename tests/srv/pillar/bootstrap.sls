@@ -19,7 +19,8 @@ consul:
   client_token: "b684a56c-cf86-443b-a48f-52056f21986f"
   # use `consul keygen` to generate some of these to pick from
   secret_key: "5BqoSqOrQwUuS4QywjePNg=="
-      
+
 vault:
   consul:
     token: b684a56c-cf86-443b-a48f-52056f21986f
+    service_tags: "fpco,haskell,rust,elixir"

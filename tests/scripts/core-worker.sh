@@ -7,14 +7,18 @@ bootstrap_pillar_file="/vagrant/tests/multi/worker/srv/pillar/bootstrap.sls"
 worker_id=${WORKER_ID}
 echo $worker_id
 
-cat <<EOT >> ${bootstrap_pillar_file}
+cat <<EOT > ${bootstrap_pillar_file}
 reclass:
   paths:
     base: /vagrant
-    localhost:
-      classes:
-        - hashistack-install
-        - hashistack
+  localhost:
+    classes:
+      - hashistack-install
+      - hashistack
+    # these "parameters" are provided to the node and override defaults
+    # inherited from the params defined in other "upstream" classes.
+    parameters:
+      network_interface: enp0s3
 
 nomad:
   client:
@@ -28,9 +32,15 @@ consul:
   client_token: "b684a56c-cf86-443b-a48f-52056f21986f"
   secret_key: "5BqoSqOrQwUuS4QywjePNg=="
 
+vault:
+  consul:
+    token: b684a56c-cf86-443b-a48f-52056f21986f
+    service_tags: "fpco,haskell,rust,elixir"
+  net_if: enp0s3
+
 EOT
 
-echo "role: leaders" > /etc/salt/grains
+echo "role: worker" > /etc/salt/grains
 
 # Install nomad as Worker
 salt-call --local state.sls nomad.install --log-level=debug
