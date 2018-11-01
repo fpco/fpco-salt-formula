@@ -3,10 +3,7 @@ reclass:
     base: /vagrant
   localhost:
     classes:
-      - hashistack-install
-      - hashistack-server
-      - consul-ui
-      - vault-ui
+      - vagrant-multi-node.yml
 
     # these "parameters" are provided to the node and override defaults
     # inherited from the params defined in other "upstream" classes.
@@ -16,18 +13,14 @@ reclass:
 nomad:
   consul:
     token: "b684a56c-cf86-443b-a48f-52056f21986f"
-  datacenter: vagrant
-  net_if: enp0s3
+  node_class: leader
   server:
     count: 1
 
 consul:
   client_token: "b684a56c-cf86-443b-a48f-52056f21986f"
-  datacenter: vagrant
-  domain: vagrant
   leader_count: 1
   master_token: "b684a56c-cf86-443b-a48f-52056f21986f"
-  net_if: 'enp0s3'
   secret_key: "5BqoSqOrQwUuS4QywjePNg=="
 
 vault:
@@ -36,4 +29,3 @@ vault:
     service_tags: "fpco,haskell,rust,elixir"
   disable_tls: True
   scheme: http
-  net_if: enp0s3

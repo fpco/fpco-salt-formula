@@ -3,9 +3,7 @@ reclass:
     base: /vagrant
   localhost:
     classes:
-      - hashistack-install
-      - hashistack
-      - nomad-enable-raw-exec
+      - vagrant-multi-node.yml
     # these "parameters" are provided to the node and override defaults
     # inherited from the params defined in other "upstream" classes.
     parameters:

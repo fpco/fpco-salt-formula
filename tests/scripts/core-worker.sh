@@ -13,8 +13,7 @@ reclass:
     base: /vagrant
   localhost:
     classes:
-      - hashistack-install
-      - hashistack
+      - vagrant-multi-node.yml
     # these "parameters" are provided to the node and override defaults
     # inherited from the params defined in other "upstream" classes.
     parameters:
@@ -23,8 +22,6 @@ reclass:
 nomad:
   client:
     enabled: True
-  datacenter: vagrant
-  net_if: enp0s3
   server:
     count: ${worker_id}
 
@@ -36,7 +33,6 @@ vault:
   consul:
     token: b684a56c-cf86-443b-a48f-52056f21986f
     service_tags: "fpco,haskell,rust,elixir"
-  net_if: enp0s3
 
 EOT
 

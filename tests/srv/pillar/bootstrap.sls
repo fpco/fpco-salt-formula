@@ -4,7 +4,7 @@ reclass:
   localhost:
     # list of classes to associate with this node
     classes:
-      - vagrant
+      - vagrant-single-node
     # these "parameters" are provided to the node and override defaults
     # inherited from the params defined in other "upstream" classes.
     parameters:
