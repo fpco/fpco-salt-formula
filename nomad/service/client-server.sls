@@ -110,6 +110,10 @@ nomad-vault-config:
     - group: {{ group }}
     - mode: 640
     - template: jinja
+    - require:
+      - file: nomad-config
+    - require_in:
+      - file: nomad-service
     - watch_in:
       - service: nomad-service
 
