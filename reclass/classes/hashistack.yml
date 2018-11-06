@@ -10,4 +10,3 @@ applications:
 # - prometheus.node-exporter
 # - users.consul-template
   - git.repos
-  - swap
