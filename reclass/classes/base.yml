@@ -3,6 +3,7 @@ applications:
   - python.pip
   - apps.common
   - aws.cli.install
+  - crontab.envvars
   - ufw.default_deny
   - ufw.allow_ssh
   - ufw.enable
