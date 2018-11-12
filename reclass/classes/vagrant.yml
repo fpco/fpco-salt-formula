@@ -5,14 +5,23 @@ classes:
   - vault-ui
 parameters:
   nomad:
-    net_if: 'enp0s3'
+    consul:
+      addr: consul.service.local:8500
     datacenter: vagrant
+    net_if: 'enp0s3'
     node_class: "vagrant"
+    servers:
+      - nomad.service.local
+    vault:
+      address: http://vault.service.local:8200
   consul:
     net_if: 'enp0s3'
     datacenter: vagrant
     domain: local
   vault:
+    consul:
+      address: consul.service.local:8500
+      scheme: http
     net_if: enp0s3
 
   # this is the name of the network interface used by vbox/vagrant
