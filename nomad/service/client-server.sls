@@ -41,6 +41,7 @@
 {%- set vault_env_file = False %}
 {%- endif %}
 
+{%- if vault_credstash %}
 # at minimum, the vault.env file needs to exist and be owned/writable by the nomad user
 nomad-vault-env:
   file.managed:
@@ -67,6 +68,7 @@ nomad-start-service-script:
         # end credstash_nomad.sh script
     - watch_in:
       - service: nomad-service
+{%- endif %}
 
 {%- from "hashicorp/macro.sls" import render_app_config_formula with context %}
 {%- from "hashicorp/macro.sls" import render_app_service_formula with context %}
