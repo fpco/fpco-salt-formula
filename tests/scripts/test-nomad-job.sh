@@ -9,7 +9,7 @@ echo "Run example (hello world) job"
 nomad run /vagrant/tests/scripts/test-nomad.nomad
 
 echo "Wait until the job starts (might take a moment to download the docker image)"
-ops http poll -r 60 $ip:8080
+ops http poll http://$ip:8080 -r 90
 
 echo "Example job status"
 nomad status example
