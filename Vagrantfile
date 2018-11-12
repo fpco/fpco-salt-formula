@@ -126,6 +126,9 @@ Vagrant.configure("2") do |config|
     salt-call --local state.sls reclass
     salt-call --local state.sls reclass.managed_tops
     salt-call --local state.highstate
+    # reload dnsmasq during highstate doesn't work, restart now so it uses the
+    # updated config for consul integration
+    service dnsmasq restart
     echo "$(vault version)" || true
 
     # what is the vault service's current status?
