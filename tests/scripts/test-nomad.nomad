@@ -75,6 +75,10 @@ job "example" {
           timeout  = "2s"
           path     = "/"
         }
+
+        tags = [
+          "urlprefix-/"
+        ]
       }
       # The "template" stanza instructs Nomad to manage a template, such as
       # a configuration file or script. This template can optionally pull data
