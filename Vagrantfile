@@ -151,15 +151,15 @@ Vagrant.configure("2") do |config|
     stdbuf -oL /vagrant/tests/scripts/unseal-vault.sh
 
     # open ports so we can access potential services on the host
-    ufw allow 9090
-    ufw allow 9100
-    ufw allow 9111
-    ufw allow 9172
-    ufw allow 3000
-    ufw allow 5000
-    ufw allow 8500
-    ufw allow 8200
-    ufw allow 4646
+    ufw allow 9090 # prometheus
+    ufw allow 9100 # node_exporter
+    ufw allow 9111 # consul-exporter
+    ufw allow 9172 # nomad-exporter
+    ufw allow 3000 # grafana
+    ufw allow 5000 # hashi-ui
+    ufw allow 8500 # consul
+    ufw allow 8200 # vault
+    ufw allow 4646 # nomad
     ufw allow 9999 # fabio
     ufw allow 9998 # fabio-admin
 
