@@ -50,6 +50,10 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 9172, host: 9172, host_ip: "127.0.0.1"
   # consul_exporter
   config.vm.network "forwarded_port", guest: 9111, host: 9111, host_ip: "127.0.0.1"
+  # fabio
+  config.vm.network "forwarded_port", guest: 9999, host: 9999, host_ip: "127.0.0.1"
+  # fabio admin
+  config.vm.network "forwarded_port", guest: 9998, host: 9998, host_ip: "127.0.0.1"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -156,6 +160,8 @@ Vagrant.configure("2") do |config|
     ufw allow 8500
     ufw allow 8200
     ufw allow 4646
+    ufw allow 9999 # fabio
+    ufw allow 9998 # fabio-admin
 
     stdbuf -oL /vagrant/tests/scripts/test-hashistack.sh
     stdbuf -oL /vagrant/tests/scripts/test-nomad-job.sh
