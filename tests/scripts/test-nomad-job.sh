@@ -6,7 +6,7 @@ set -ux
 ip=`ifconfig enp0s3 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'`
 
 echo "Run example (hello world) job"
-nomad run /vagrant/tests/scripts/test-nomad.nomad
+nomad run /vagrant/tests/jobs/hello-world.hcl
 
 echo "Wait until the job starts (might take a moment to download the docker image)"
 ops http poll http://$ip:8080 -r 90
