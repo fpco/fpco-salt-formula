@@ -1,6 +1,5 @@
 # setup vault service as an agent
 
-{%- set os_release = salt['grains.get']('oscodename') %}
 {%- set home = '/var/lib/vault' %}
 {%- set user = 'vault' %}
 {%- set conf_path = '/etc/vault' %}
@@ -14,13 +13,8 @@
 {%- set http_ip = salt['pillar.get']('vault:ip', default_ip) %}
 {%- set http_port = salt['pillar.get']('vault:port', '8200') %}
 
-{%- if os_release == 'trusty' %}
-  {%- set service_config = '/etc/init/vault.conf' %}
-  {%- set service_tpl = 'salt://upstart/files/generic.conf' %}
-{%- else %}
-  {%- set service_config = '/etc/systemd/system/vault.service' %}
-  {%- set service_tpl = 'salt://systemd/files/basic.service.tpl' %}
-{%- endif %}
+{%- set service_config = '/etc/systemd/system/vault.service' %}
+{%- set service_tpl = 'salt://systemd/files/basic.service.tpl' %}
 
 include:
   - vault.user
