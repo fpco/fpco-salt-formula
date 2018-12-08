@@ -60,21 +60,27 @@
 {{ app }}-service:
   file.managed:
     - name: /etc/systemd/system/{{ app }}.service
-    - source: salt://systemd/files/basic.service.tpl
+    - source: salt://systemd/files/service.tpl
     - mode: 640
     - user: root
     - group: root
     - template: jinja
     - defaults: 
-        description: {{ desc }}
-        bin_path: {{ bin_path }}
-        {% if args %}bin_opts: {{ args }}{% endif %}
-        runas_user: {{ user }}
-        runas_group: {{ group }}
-        home: {{ home }}
-        requires: network-online.target
-        {% if pre_start %}pre_start: {{ pre_start }}{% endif %}
-        {% if env_file %}env_file: {{ env_file }}{% endif %}
+        unit_params:
+          Description: {{ desc }}
+          Requires: network-online.target
+          After: network-online.target
+        service_params:
+          ExecStart: {{ bin_path }} {% if args %}{{ args }}{% endif %}
+          Restart: on-failure
+          WorkingDirectory: {{ home }}
+          User: {{ user }}
+          Group: {{ group }}
+          {% if pre_start %}ExecStartPre: {{ pre_start }}{% endif %}
+          {% if env_file %}EnvironmentFile: {{ env_file }}{% endif %}
+        install_params:
+          WantedBy: multi-user.target
+
   service.running:
     - name: {{ app }}
     - enable: True
