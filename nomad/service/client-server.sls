@@ -26,6 +26,8 @@
 # name of the app, for config, systemd and ufw rendering macros
 {%- set app_name = salt['pillar.get']('nomad:systemd_name') %}
 {%- set nomad_bin_path = '/usr/local/bin/nomad' %}
+# for the open file limit set via LimitNOFILE in the systemd unit file
+{%- set open_file_limit = salt['pillar.get']('nomad:open_file_limit') %}
 
 {%- set vault_credstash  = salt['pillar.get']('nomad:vault:credstash:enabled', False) %}
 {%- set credstash_table  = salt['pillar.get']('nomad:vault:credstash:table', 'credstash') %}
@@ -71,11 +73,41 @@ nomad-start-service-script:
 {%- endif %}
 
 {%- from "hashicorp/macro.sls" import render_app_config_formula with context %}
-{%- from "hashicorp/macro.sls" import render_app_service_formula with context %}
 
 {{ render_app_config_formula(app_name, conf_file, conf_src, user, group) }}
-{{ render_app_service_formula(app_name, desc, run_user, group, home, nomad_bin_path, nomad_args, pre_start_script, vault_env_file) }}
 
+nomad-service:
+  file.managed:
+    - name: /etc/systemd/system/{{ app_name }}.service
+    - source: salt://systemd/files/service.tpl
+    - mode: 640
+    - user: root
+    - group: root
+    - template: jinja
+    - defaults: 
+        unit_params:
+          Description: {{ desc }}
+          Requires: network-online.target
+          After: network-online.target
+        service_params:
+          ExecStart: {{ nomad_bin_path }} {{ nomad_args }}
+          Restart: on-failure
+          WorkingDirectory: {{ home }}
+          User: {{ run_user }}
+          Group: {{ group }}
+          {% if pre_start_script %}ExecStartPre: {{ pre_start_script }}{% endif %}
+          {% if vault_env_file %}EnvironmentFile: {{ vault_env_file }}{% endif %}
+          LimitNOFILE: {{ open_file_limit }}
+          Environment: "GOMAXPROCS=nproc"
+        install_params:
+          WantedBy: multi-user.target
+
+  service.running:
+    - name: {{ app_name }}
+    - enable: True
+    - watch:
+        - file: {{ app_name }}-config
+        - file: {{ app_name }}-service
 
 # default network interface
 {%- set default_netif = 'eth0' %}
