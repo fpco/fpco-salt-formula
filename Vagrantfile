@@ -149,6 +149,8 @@ Vagrant.configure("2") do |config|
     stdbuf -oL /vagrant/tests/scripts/init-vault.sh
     # automatic parsing of those keys to unseal the vault
     stdbuf -oL /vagrant/tests/scripts/unseal-vault.sh
+    # create token for nomad to use when accessing vault
+    stdbuf -oL /vagrant/tests/scripts/create-vault-client-token.sh
 
     # open ports so we can access potential services on the host
     ufw allow 9090 # prometheus
