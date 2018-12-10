@@ -17,6 +17,7 @@ parameters:
     config_opt_file: -config ${nomad:config_file}
     config_opt_dir: -config ${nomad:config_path}
     default_args: ${nomad:config_opt_file} ${nomad:config_opt_dir}
+    open_file_limit: 65536
     systemd_bin_args: agent ${nomad:default_args}
     systemd_desc: Nomad
     systemd_name: nomad
