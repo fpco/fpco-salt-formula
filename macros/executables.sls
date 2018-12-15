@@ -1,4 +1,4 @@
-{%- macro install_executable(bin_name, file_url, checksum, version, user='root', group='root', mode='755', install_to='/usr/local/bin') %}
+{%- macro install_executable(bin_name, file_url, checksum, version, user='root', group='root', mode='755', install_to='/usr/local/bin', flag='--version') %}
 
 {{ bin_name }}-release:
   file.managed:
@@ -16,7 +16,7 @@
     - require:
         - file: {{ bin_name }}-release
   cmd.run:
-    - name: {{ bin_name }} --version
+    - name: {{ bin_name }} {{ flag }}
     - require:
         - file: {{ bin_name }}-bin
 {%- endmacro %}
