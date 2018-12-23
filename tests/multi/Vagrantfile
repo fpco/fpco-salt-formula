@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
 
        # Salt Provisioner
         config.vm.provision :salt do |salt|
-          salt.minion_config = "tests/multi/leader/etc/salt/minion"
+          salt.minion_config = "./leader/etc/salt/minion"
           salt.run_highstate = false
           salt.install_type = "git"
           salt.install_args = "v2018.3.0"
@@ -33,10 +33,10 @@ Vagrant.configure("2") do |config|
         end
 
         # Leader provision
-        config.vm.provision "shell", path: "tests/scripts/apply-formulas.sh"
-        config.vm.provision "shell", path: "tests/scripts/test-hashistack.sh"
-        config.vm.provision "shell", path: "tests/scripts/core-leader.sh", args: "LEADER_ID=#{i}"
-        config.vm.provision "shell", path: "tests/scripts/test-nomad-job.sh"
+        config.vm.provision "shell", path: "../scripts/apply-formulas.sh"
+        config.vm.provision "shell", path: "../scripts/test-hashistack.sh"
+        config.vm.provision "shell", path: "../scripts/core-leader.sh", args: "LEADER_ID=#{i}"
+        config.vm.provision "shell", path: "../scripts/test-nomad-job.sh"
       end
     end
 
@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
         node.vm.network "private_network", ip: "10.0.2.16"
         # Salt Provisioner
         config.vm.provision :salt do |salt|
-          salt.minion_config = "tests/multi/worker/etc/salt/minion"
+          salt.minion_config = "./worker/etc/salt/minion"
           salt.run_highstate = true
           salt.install_type = "git"
           salt.install_args = "v2018.3.0"
@@ -59,10 +59,10 @@ Vagrant.configure("2") do |config|
         end
 
         # Worker provision
-        config.vm.provision "shell", path: "tests/scripts/apply-formulas.sh"
-        config.vm.provision "shell", path: "tests/scripts/test-hashistack.sh"
-        config.vm.provision "shell", path: "tests/scripts/core-worker.sh", args: "WORKER_ID=#{i}"
-        config.vm.provision "shell", path: "tests/scripts/test-nomad-job.sh"
+        config.vm.provision "shell", path: "../scripts/apply-formulas.sh"
+        config.vm.provision "shell", path: "../scripts/test-hashistack.sh"
+        config.vm.provision "shell", path: "../scripts/core-worker.sh", args: "WORKER_ID=#{i}"
+        config.vm.provision "shell", path: "../scripts/test-nomad-job.sh"
       end
     end
 

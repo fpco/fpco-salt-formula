@@ -316,16 +316,17 @@ regarding that see the
 [Nomad docs](https://www.nomadproject.io/guides/security/securing-nomad.html).
 
 
-## Multihots mode
+## Multi-host mode
 
-The multihost mode add an extra virtual machine that will configure hashistack creating two roles:
+The multihost mode adds a second vm so we can run the hashistack with separate hosts for the two roles:
 - Leader
 - Worker
 
 The Leader role configures all hashistack as server role and the worker as client role.
+
 ```
-mv Vagrantfile-multihost Vagranfile
-vagrant up
+ᐅ VAGRANT_CWD=./tests/multi vagrant up
 ```
+
 Unfortunally vagrant doesn't have the flag to pass the vagrantfile as an argument.
 
