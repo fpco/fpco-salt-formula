@@ -16,6 +16,7 @@ Vagrant.configure("2") do |config|
     # Leader node
     1.upto(1) do |i|
       config.vm.define "leader-#{i}" do |node|
+        config.vm.hostname = "leader-#{i}"
         config.vm.provider :virtualbox do |vm|
           vm.memory = 512
           vm.cpus = 1
@@ -43,6 +44,7 @@ Vagrant.configure("2") do |config|
     # Worker node
     1.upto(1) do |i|
       config.vm.define "worker-#{i}" do |node|
+        config.vm.hostname = "worker-#{i}"
         config.vm.provider :virtualbox do |vm|
           vm.memory = 1024
           vm.cpus = 1
