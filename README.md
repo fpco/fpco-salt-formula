@@ -330,3 +330,31 @@ The Leader role configures all hashistack as server role and the worker as clien
 
 Unfortunally vagrant doesn't have the flag to pass the vagrantfile as an argument.
 
+
+To remove the hosts
+
+```
+ᐅ VAGRANT_CWD=./tests/multi vdf
+==> worker-1: Forcing shutdown of VM...
+==> worker-1: Destroying VM and associated drives...
+==> leader-1: Forcing shutdown of VM...
+==> leader-1: Destroying VM and associated drives...
+```
+
+SSH to the leader:
+
+```
+ᐅ VAGRANT_CWD=./tests/multi vs leader-1
+...
+vagrant@leader-1:~$ sudo su -l
+root@leader-1:~# 
+```
+
+SSH to the worker:
+
+```
+ᐅ VAGRANT_CWD=./tests/multi vs worker-1
+...
+vagrant@worker-1:~$ sudo su -l
+root@worker-1:~# 
+```
