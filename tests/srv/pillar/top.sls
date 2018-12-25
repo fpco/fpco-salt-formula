@@ -3,8 +3,8 @@ base:
     - bootstrap-single
     - credstash
 
-  'leaders-*':
+  'leader-*':
     - bootstrap-leaders
 
-  'workers-*':
+  'worker-*':
     - bootstrap-workers
