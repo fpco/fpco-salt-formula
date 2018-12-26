@@ -1,4 +1,7 @@
 base:
+  'foundation':
+    - bootstrap-box
+
   'ubuntu-xenial':
     - bootstrap-single
     - credstash
