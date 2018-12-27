@@ -105,5 +105,5 @@ Vagrant.configure("2") do |config|
   end
 
   # all init for the vagrant box build should be in here
-  config.vm.provision "shell", path: "tests/scripts/init/box.sh"
+  config.vm.provision "shell", path: "tests/scripts/vagrant-init/box.sh"
 end
