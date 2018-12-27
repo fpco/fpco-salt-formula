@@ -76,24 +76,74 @@ Drop the `test=True` to really apply the formula.
 This is primarily used to test the various formula and functions of those systems
 configured. Here is how to setup and use Vagrant for testing and R&D.
 
-## Get the VM running and provisioned
+## Create a base box
 
-### `vagrant up`
+Rather than have each `vagrant up` or provisioning run go through a whole build,
+we can create a vagrant box which is used as a foundation for the `vagrant up` to
+build on top of.
+
+### Initial VM build
+
+Copy the `Vagrantfile.box` to `Vagrantfile`:
+
+```
+ᐅ cp Vagrantfile.box Vagrantfile
+```
+
+This might take 10 - 15 minutes on the average workstation:
+```
+ᐅ vagrant up
+```
+
+### Package the VM as a `.box` for Vagrant
+
+```
+ᐅ vagrant package --output foundation.box
+```
+
+### Import the `.box` so it's available for a `Vagrantfile` to reference
+
+```
+ᐅ vagrant box add fpco/foundation fpco/foundation.box
+```
+
+### Also Note..
+
+This VM is fine for working with the formula, R&D, debugging, etc. If you would
+like to use the running hashistack for some R&D, etc (such as on a metrics or
+logging stack, developing solutions around vault, etc), continue on to the next
+section. Otherwise, `vagrant ssh` would be next, most likely.
+
+
+## Singlebox
+
+This build produces a single VM that runs the whole hashistack on one host.
+
+```
+ᐅ cp Vagrantfile.single Vagrantfile
+ᐅ vagrant up
+```
 
 It'll take a while to run, about 15 minutes on an older desktop.
 
 When it's ready, ssh in with `vagrant ssh` and then `sudo su -l` to switch to
 the root user.
 
-### Hashistack test
 
-After finish setup the virtual machine and setup the formulas vagrant executes 
-scripts that test Consul and Nomad, making sure that these are up and processing requests.
+## Multi-Host
 
-To execute the just the provision steps in the Vagranfile:
+This is not yet functional, but here is how the build is run.
+
+This build produces 2 VMs, one that runs as a leader and the other a worker in
+the hashistack.
+
 ```
-vagrant provision
+ᐅ cp Vagrantfile.multi Vagrantfile
+ᐅ vagrant up
 ```
+
+
+---
 
 ## Vault
 
@@ -288,6 +338,8 @@ root@ubuntu-xenial:~# vault kv get -field=region secret/app_data
 us-west-1
 ```
 
+---
+
 ## TLS in the Vagrant Test Env 
 
 In order to emulate production deployments as best as possible, some tasks we want 
@@ -314,47 +366,3 @@ directory and not the Vagrant environment itself.
 The current approach uses `cfssl` to generate the certs. For more information
 regarding that see the 
 [Nomad docs](https://www.nomadproject.io/guides/security/securing-nomad.html).
-
-
-## Multi-host mode
-
-The multihost mode adds a second vm so we can run the hashistack with separate hosts for the two roles:
-- Leader
-- Worker
-
-The Leader role configures all hashistack as server role and the worker as client role.
-
-```
-ᐅ VAGRANT_CWD=./tests/multi vagrant up
-```
-
-Unfortunally vagrant doesn't have the flag to pass the vagrantfile as an argument.
-
-
-To remove the hosts
-
-```
-ᐅ VAGRANT_CWD=./tests/multi vdf
-==> worker-1: Forcing shutdown of VM...
-==> worker-1: Destroying VM and associated drives...
-==> leader-1: Forcing shutdown of VM...
-==> leader-1: Destroying VM and associated drives...
-```
-
-SSH to the leader:
-
-```
-ᐅ VAGRANT_CWD=./tests/multi vs leader-1
-...
-vagrant@leader-1:~$ sudo su -l
-root@leader-1:~# 
-```
-
-SSH to the worker:
-
-```
-ᐅ VAGRANT_CWD=./tests/multi vs worker-1
-...
-vagrant@worker-1:~$ sudo su -l
-root@worker-1:~# 
-```
