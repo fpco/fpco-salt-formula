@@ -1,5 +1,5 @@
 classes:
-  - vault
+  - vault.service
 parameters:
   vault:
     server: True
