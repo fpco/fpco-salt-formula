@@ -3,3 +3,4 @@ classes:
 parameters:
   vault:
     server: True
+    disable_tls: True
