@@ -19,7 +19,6 @@ salt-call --local state.highstate --log-level=debug
 apt-get clean
 dd if=/dev/zero of=/compact bs=1M
 rm -f /compact
-rm -rf /home/*/.ssh /root/.ssh/
 
 # parting message
 echo "DONE! repackage VM into box with:"
