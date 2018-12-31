@@ -35,6 +35,7 @@ parameters:
       tasks: 20000:60000/tcp|20000:60000/udp
       open_agent_ports: True
     vault_config_file: ${nomad:config_path}/vault.hcl
+    metrics_config_file: ${nomad:config_path}/metrics.hcl
     # other parameters available to be set
     #node_id: hostname
     #node_class:

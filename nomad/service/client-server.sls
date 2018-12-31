@@ -5,6 +5,8 @@
 {%- set conf_path = salt['pillar.get']('nomad:config_root') %}
 # primary config file
 {%- set conf_file = salt['pillar.get']('nomad:config_file') %}
+# config file for telemetry/metrics
+{%- set metrics_config_file = salt['pillar.get']('nomad:metrics_config_file') %}
 # config file for vault
 {%- set vault_config_file = salt['pillar.get']('nomad:vault_config_file') %}
 # cli option for nomad, path to config file
@@ -140,6 +142,21 @@ nomad-vault-config:
   file.managed:
     - name: {{ vault_config_file }}
     - source: salt://nomad/files/vault.hcl
+    - user: {{ user }}
+    - group: {{ group }}
+    - mode: 640
+    - template: jinja
+    - require:
+      - file: nomad-config
+    - require_in:
+      - file: nomad-service
+    - watch_in:
+      - service: nomad-service
+
+nomad-metrics-config:
+  file.managed:
+    - name: {{ metrics_config_file }}
+    - source: salt://nomad/files/metrics.hcl
     - user: {{ user }}
     - group: {{ group }}
     - mode: 640
