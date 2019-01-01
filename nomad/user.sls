@@ -1,6 +1,8 @@
 # setup and manage user (and home directory), for the nomad service
 
 {%- set home = '/var/lib/nomad' %}
+{%- set default_data_dir = home ~ '/tmp' %}
+{%- set data_dir = salt['pillar.get']('nomad:data_dir', default_data_dir) %}
 {%- set user = 'nomad' %}
 
 
@@ -33,7 +35,7 @@ nomad-user:
 
 nomad-data-dir:
   file.directory:
-    - name: {{ home }}/tmp
+    - name: {{ data_dir }}
     - user: {{ user }}
     - group: {{ user }}
     - mode: 750

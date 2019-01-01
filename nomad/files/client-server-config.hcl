@@ -1,5 +1,7 @@
 # vim: sts=2 ts=2 sw=2 ft=jinja et ai
-{%- set home = salt['pillar.get']('nomad:server:home') %}
+{%- set home = salt['pillar.get']('nomad:home') %}
+{%- set default_data_dir = home ~ '/tmp' %}
+{%- set data_dir = salt['pillar.get']('nomad:data_dir', default_data_dir) %}
 {%- set region = salt['pillar.get']('nomad:region', 'us') %}
 {%- set dc = salt['pillar.get']('nomad:datacenter', 'dc1') %}
 {%- set syslog_facility = salt['pillar.get']('nomad:syslog_facility', 'LOCAL0') %}
@@ -71,7 +73,7 @@ addresses {
     {% if http_ip %}http = "{{ http_ip }}"{% endif %}
 }
 datacenter = "{{ dc }}"
-data_dir = "{{ home }}/tmp/"
+data_dir = "{{ data_dir }}"
 disable_anonymous_signature = true
 disable_update_check = true
 enable_debug = {{ enable_debug }}
