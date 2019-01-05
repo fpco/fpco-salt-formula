@@ -71,7 +71,7 @@ consul-tpl-consul-service:
             "check": [
               {
                 "args": ["pgrep","consul-template"],
-                "interval": "30s"
+                "interval": "300s"
               }
             ]
           }
