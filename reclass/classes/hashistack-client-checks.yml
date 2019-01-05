@@ -1,0 +1,5 @@
+applications:
+  - nomad.client_check
+  - consul.client_check
+  - ntp.consul_check
+  - docker.registry.consul_check

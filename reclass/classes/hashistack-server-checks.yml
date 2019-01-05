@@ -1,0 +1,5 @@
+applications:
+  - nomad.server_check
+  - vault.server_check
+  - consul.leader_check
+  - ntp.consul_check
