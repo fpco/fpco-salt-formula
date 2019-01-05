@@ -1,5 +1,6 @@
 classes:
   - hashistack-single-node
+  - hashistack-server-checks
   - nomad-enable-raw-exec
   - consul-ui
   - vault-ui
