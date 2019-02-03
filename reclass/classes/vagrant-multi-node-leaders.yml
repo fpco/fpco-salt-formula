@@ -1,0 +1,28 @@
+classes:
+  - hashistack-install
+  - hashistack-server
+  - nomad-enable-raw-exec
+parameters:
+  nomad:
+    net_if: 'enp0s3'
+    datacenter: vagrant
+    node_class: "vagrant"
+    client:
+      count: 1
+  consul:
+    net_if: 'enp0s3'
+    datacenter: vagrant
+    domain: local
+  vault:
+    net_if: enp0s3
+    consul:
+      scheme: http
+      disable_tls: True
+
+  # this is the name of the network interface used by vbox/vagrant
+  # note that the specific name of your interface may differ.
+  network_interface: enp0s3
+
+  salt:
+    minion:
+      config: {}

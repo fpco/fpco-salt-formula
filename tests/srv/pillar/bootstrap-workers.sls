@@ -4,16 +4,18 @@ reclass:
   localhost:
     # list of classes to associate with this node
     classes:
-      - vagrant
+      - vagrant-multi-node-workers
     # these "parameters" are provided to the node and override defaults
     # inherited from the params defined in other "upstream" classes.
     parameters:
-      foo: bar
+      network_interface: enp0s3
 
 nomad:
   consul:
     # to use when accessing consul as a client
     token: "b684a56c-cf86-443b-a48f-52056f21986f"
+  servers:
+    - 'nomad.service.local'
   vault:
     # to use when accessing vault as a client
     # here is a static token
@@ -33,8 +35,5 @@ consul:
   client_token: "b684a56c-cf86-443b-a48f-52056f21986f"
   # use `consul keygen` to generate some of these to pick from
   secret_key: "5BqoSqOrQwUuS4QywjePNg=="
-
-vault:
-  consul:
-    token: b684a56c-cf86-443b-a48f-52056f21986f
-    service_tags: "fpco,haskell,rust,elixir"
+  leaders:
+    - leader-1

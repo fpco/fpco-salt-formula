@@ -12,7 +12,10 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "fpco/foundation"
+
+  # be explicit about the vm's hostname
+  config.vm.hostname = "ubuntu-xenial"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -54,6 +57,14 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 9999, host: 9999, host_ip: "127.0.0.1"
   # fabio admin
   config.vm.network "forwarded_port", guest: 9998, host: 9998, host_ip: "127.0.0.1"
+  # logstash beats
+  config.vm.network "forwarded_port", guest: 5044, host: 5044, host_ip: "127.0.0.1"
+  # logstash http
+  config.vm.network "forwarded_port", guest: 9600, host: 9600, host_ip: "127.0.0.1"
+  # postgres
+  config.vm.network "forwarded_port", guest: 5432, host: 5432, host_ip: "127.0.0.1"
+  # steadfast
+  config.vm.network "forwarded_port", guest: 8000, host: 8000, host_ip: "127.0.0.1"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -74,13 +85,13 @@ Vagrant.configure("2") do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
+   config.vm.provider "virtualbox" do |vb|
+     # Display the VirtualBox GUI when booting the machine
+     #vb.gui = true
+  
+     # Customize the amount of memory on the VM:
+     vb.memory = "2560"
+   end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -104,7 +115,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision :salt do |salt|
     # Relative location of configuration file to use for minion
     # since we need to tell our minion to run in masterless mode
-    salt.minion_config = "tests/etc/salt/minion"
+    salt.minion_config = "tests/etc/salt/minion-single"
 
     # On provision, run state.highstate (which installs packages, services, etc).
     # Highstate basicly means "comapre the VMs current machine state against
@@ -125,49 +136,12 @@ Vagrant.configure("2") do |config|
     salt.verbose = true
   end
 
-  config.vm.provision "shell", inline: <<-SHELL
-    salt-call --local state.sls python.pip
-    salt-call --local state.sls reclass
-    salt-call --local state.sls reclass.managed_tops
-    salt-call --local state.highstate
-    # reload dnsmasq during highstate doesn't work, restart now so it uses the
-    # updated config for consul integration
-    service dnsmasq restart
-    echo "$(vault version)" || true
-
-    # what is the vault service's current status?
-    service vault status
-    # sleep before continuing, in case consul/vault aren't ready just yet
-    echo "pause to let vault/consul services come online"
-    sleep 30
-
-    # tell the vault client where to find our vault server
-    # state.highstate has been run, we have all the ADDRs, just need to source it
-    source /etc/environment
-
-    # setup (initialize) vault for the first time
-    stdbuf -oL /vagrant/tests/scripts/init-vault.sh
-    # automatic parsing of those keys to unseal the vault
-    stdbuf -oL /vagrant/tests/scripts/unseal-vault.sh
-    # create token for nomad to use when accessing vault
-    stdbuf -oL /vagrant/tests/scripts/create-vault-client-token.sh
-
-    # open ports so we can access potential services on the host
-    ufw allow 9090 # prometheus
-    ufw allow 9100 # node_exporter
-    ufw allow 9111 # consul-exporter
-    ufw allow 9172 # nomad-exporter
-    ufw allow 3000 # grafana
-    ufw allow 5000 # hashi-ui
-    ufw allow 8500 # consul
-    ufw allow 8200 # vault
-    ufw allow 4646 # nomad
-    ufw allow 9999 # fabio
-    ufw allow 9998 # fabio-admin
-
-    stdbuf -oL /vagrant/tests/scripts/test-hashistack.sh
-    stdbuf -oL /vagrant/tests/scripts/test-nomad-job.sh
-
-    echo "DONE! ssh in and get hacking: vagrant ssh"
-  SHELL
+  # run init, this configures and runs the hashistack as a "single-host" VM
+  config.vm.provision "shell", path: "tests/scripts/vagrant-init/single.sh"
+  # run hashistack tests
+  config.vm.provision "shell", path: "tests/scripts/test-hashistack.sh"
+  config.vm.provision "shell", path: "tests/scripts/init-vault.sh"
+  config.vm.provision "shell", path: "tests/scripts/unseal-vault.sh"
+  config.vm.provision "shell", path: "tests/scripts/create-vault-client-token.sh"
+  #config.vm.provision "shell", path: "tests/scripts/test-nomad-job.sh"
 end
