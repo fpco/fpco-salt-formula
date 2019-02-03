@@ -15,3 +15,5 @@ nomad status
 nomad agent-info
 nomad server members
 nomad node status
+vault version
+vault status
