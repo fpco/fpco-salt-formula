@@ -1,8 +1,10 @@
 classes:
   - hashistack
   - consul-server
+  - consul-ui
   - nomad-server
   - vault-server
+  - vault-ui
 parameters:
   vault:
     consul:
