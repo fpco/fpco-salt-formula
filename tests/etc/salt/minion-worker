@@ -6,7 +6,12 @@ file_roots:
   base:
     - /vagrant/
 
+# disable salt using a cached minion id
+minion_id_caching: False
+
 ## Where your Pillar data is located (see README.md for more details)
 pillar_roots:
   base:
     - /vagrant/tests/srv/pillar
+
+state_top: top-worker.sls
