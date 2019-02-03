@@ -9,7 +9,10 @@ base:
     - python.pip
     - apps.common
     - aws.cli.install
-    - docker
+    - docker.install
     - dnsmasq
     - sysdig
     - ntp
+    - consul.install
+    - vault.install
+    - nomad.install
