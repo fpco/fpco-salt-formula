@@ -15,6 +15,7 @@
 
 include:
   - apps.unzip
+  - .user
 
 vault-archive:
   archive.extracted:
