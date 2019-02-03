@@ -76,24 +76,93 @@ Drop the `test=True` to really apply the formula.
 This is primarily used to test the various formula and functions of those systems
 configured. Here is how to setup and use Vagrant for testing and R&D.
 
-## Get the VM running and provisioned
+## Create a base box
 
-### `vagrant up`
+Rather than have each `vagrant up` or provisioning run go through a whole build,
+we can create a vagrant box which is used as a foundation for the `vagrant up` to
+build on top of.
+
+### Initial VM build
+
+Build the base box, this will be used by other vagrant builds.
+
+The automated way: `make box`
+
+#### Manual way:
+
+Copy the `Vagrantfile.box` to `Vagrantfile`:
+
+```
+ᐅ cp Vagrantfile.box Vagrantfile
+```
+
+Run the build, this might take 10 - 15 minutes on the average workstation:
+```
+ᐅ vagrant up
+```
+
+Package the VM as a `.box` for Vagrant
+
+```
+ᐅ vagrant package --output foundation.box
+```
+
+### Import the `.box` so it's available for a `Vagrantfile` to reference
+
+Use either `make import` or:
+
+```
+ᐅ vagrant box add fpco/foundation foundation.box
+```
+
+Note: the `fpco/foundation` in the command above is what we reference in our
+`Vagrantfile`, if you change one, change the other.
+
+### Also Note..
+
+This VM is fine for working with the formula, R&D, debugging, etc. If you would
+like to use the running hashistack for some R&D, etc (such as on a metrics or
+logging stack, developing solutions around vault, etc), continue on to the next
+section. Otherwise, `vagrant ssh` would be next, most likely.
+
+
+## Singlebox
+
+This build produces a single VM that runs the whole hashistack on one host.
+
+Use either `make single` or:
+```
+ᐅ cp Vagrantfile.single Vagrantfile
+ᐅ vagrant up
+```
 
 It'll take a while to run, about 15 minutes on an older desktop.
 
 When it's ready, ssh in with `vagrant ssh` and then `sudo su -l` to switch to
 the root user.
 
-### Hashistack test
 
-After finish setup the virtual machine and setup the formulas vagrant executes 
-scripts that test Consul and Nomad, making sure that these are up and processing requests.
+## Multi-Host
 
-To execute the just the provision steps in the Vagranfile:
+This is not yet functional, but here is how the build is run.
+
+This build produces 2 VMs, one that runs as a leader and the other a worker in
+the hashistack.
+
+Use either `make multi` or:
+
 ```
-vagrant provision
+ᐅ cp Vagrantfile.multi Vagrantfile
+ᐅ vagrant up
 ```
+
+## `make world`
+
+```
+ᐅ vdf && vup && vpo foundation.box && vba --force fpco/foundation foundation.box && cp Vagrantfile.single Vagrantfile && vdf && vup
+```
+
+---
 
 ## Vault
 
@@ -287,6 +356,8 @@ foobar
 root@ubuntu-xenial:~# vault kv get -field=region secret/app_data
 us-west-1
 ```
+
+---
 
 ## TLS in the Vagrant Test Env 
 
