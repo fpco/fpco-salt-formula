@@ -30,9 +30,4 @@ pip-echo-version:
         - cmd: pip-upgrade
 
 # if we update the pip package, we need to reload modules
-pip-refresh_modules:
-  module.wait:
-    - name: saltutil.refresh_modules
-    - watch:
-        - cmd: pip
-        - cmd: pip-upgrade
+# call python.pip separately first.
