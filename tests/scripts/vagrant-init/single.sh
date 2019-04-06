@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# this lets us easily run salt to (re)configure reclass when we do a single/multihost box next
+rm -f /etc/salt/minion.d/reclass.conf
+
 echo hostname: $(hostname)
 sed -i 's/foundation/'$(hostname)'/' /etc/hosts
 salt-call --local state.sls hostname,salt.minion --log-level=debug

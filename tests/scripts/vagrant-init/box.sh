@@ -10,7 +10,7 @@ salt-call --local state.sls reclass --log-level=debug
 # this will use reclass config to control contents of top.sls
 # when creating a base box, we aim to install tools, not run them
 # the node/class mapping controls this, edit bootstrap pillar to customize
-#salt-call --local state.sls reclass.managed_tops --log-level=debug
+salt-call --local state.sls reclass.managed_tops --log-level=debug
 
 # using the updated top.sls, run highstate (all formula in node's top.sls)
 salt-call --local state.highstate --log-level=debug
@@ -32,6 +32,8 @@ apt-get clean
 
 # this lets us easily set the hostname/minion id
 rm -f /etc/salt/minion_id
+# this lets us easily run salt to (re)configure reclass when we do a single/multihost box next
+rm -f /etc/salt/minion.d/ext_reclass.conf
 
 echo "\n=================================================================\n"
 echo "This next step will use dd to fill the remaining empty space with"
