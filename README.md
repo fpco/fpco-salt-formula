@@ -76,49 +76,68 @@ Drop the `test=True` to really apply the formula.
 This is primarily used to test the various formula and functions of those systems
 configured. Here is how to setup and use Vagrant for testing and R&D.
 
-## Create a base box
+## Dependencies
+
+You'll need to install Virtualbox and Vagrant for your host OS.
+
+## box, single, multi-host
 
 Rather than have each `vagrant up` or provisioning run go through a whole build,
 we can create a vagrant box which is used as a foundation for the `vagrant up` to
 build on top of.
 
-### Initial VM build
+The `box` build produces a Vagrant box we can import and use in new vagrant builds
+(eg, with `vagrant up`).
+
+The `single` build uses the `foundation` Vagrant box to run the complete hashistack
+on a single VM.
+
+The `multi-host` build creates multiple VMs with the `foundation` Vagrant box. ATM
+there are two VMs. One is a `worker` and the other a `leader`.
+
+
+## How to run and use the vagrant env
+
+Here is the short version (skip to next section for more details):
+
+```
+make box           # 1) create a vagrant box we can import and use for another build
+make import        # 2) import the base box we just built (into vagrant)
+make single        # 3) use the base box to build a new host applying the "single" role
+make init-vault    # 4) reset and init the Vault, it is sealed (WIP, see scripts instead)
+make unseal-vault  # 5) unseal the Vault to start using it (WIP, see scripts instead)
+```
+
+Proceed below for the more manual method that is the same as above
+
+## If you want the details
+
+### 1) Create a base box
+
 
 Build the base box, this will be used by other vagrant builds.
 
 The automated way: `make box`
 
-#### Manual way:
+This shortcut will:
+* copy the `Vagrantfile.box` to `Vagrantfile`
+* Run the `box` build, with `vagrant up`
+  * this might take 10 - 15 minutes on the average workstation
+* Package the VM as a `.box` for Vagrant with `vagrant package`
 
-Copy the `Vagrantfile.box` to `Vagrantfile`:
+### 2) Import the `.box` so it's available for a `Vagrantfile` to reference
 
-```
-ᐅ cp Vagrantfile.box Vagrantfile
-```
+The automated way: `make import`
 
-Run the build, this might take 10 - 15 minutes on the average workstation:
-```
-ᐅ vagrant up
-```
+This shortcut will:
+* Use `vagrant box add` to use the `foundation.box` for the `fpco/foundation` box in Vagrant
 
-Package the VM as a `.box` for Vagrant
+#### Note..
 
-```
-ᐅ vagrant package --output foundation.box
-```
-
-### Import the `.box` so it's available for a `Vagrantfile` to reference
-
-Use either `make import` or:
-
-```
-ᐅ vagrant box add fpco/foundation foundation.box
-```
-
-Note: the `fpco/foundation` in the command above is what we reference in our
+The `fpco/foundation` in the command above is what we reference in our
 `Vagrantfile`, if you change one, change the other.
 
-### Also Note..
+#### Also Note..
 
 This VM is fine for working with the formula, R&D, debugging, etc. If you would
 like to use the running hashistack for some R&D, etc (such as on a metrics or
@@ -126,20 +145,26 @@ logging stack, developing solutions around vault, etc), continue on to the next
 section. Otherwise, `vagrant ssh` would be next, most likely.
 
 
-## Singlebox
+### Singlebox
 
 This build produces a single VM that runs the whole hashistack on one host.
 
-Use either `make single` or:
-```
-ᐅ cp Vagrantfile.single Vagrantfile
-ᐅ vagrant up
-```
+The automated way: `make single`
 
-It'll take a while to run, about 15 minutes on an older desktop.
+This shortcut will:
+* copy the `Vagrantfile.single` to `Vagrantfile`
+* Run the `single` build, with `vagrant up`
+  * It'll take a while to run, about 15 minutes on an older desktop.
 
 When it's ready, ssh in with `vagrant ssh` and then `sudo su -l` to switch to
-the root user.
+the root user to use it as-is, or proceed to setup Vault as described below.
+
+### Initialize and Unseal Vault (quick)
+
+```
+/vagrant/tests/scripts/init-vault.sh
+/vagrant/tests/scripts/unseal-vault.sh
+```
 
 
 ## Multi-Host
@@ -166,112 +191,13 @@ Use either `make multi` or:
 
 ## Vault
 
-### Initialize and Unseal Vault
+Be sure to have initialized and unsealed the vault (see section above).
 
-Check status:
-```
-root@ubuntu-xenial:~# vault status
-Error checking seal status: Error making API request.
+See also the scripts for Vault in `tests/scripts/`.
 
-URL: GET http://10.0.2.15:8200/v1/sys/seal-status
-Code: 400. Errors:
+### Login w/ Root Token
 
-* server is not yet initialized
-```
-
-Initialize:
-```
-root@ubuntu-xenial:~# vault operator init
-Unseal Key 1: ....
-Unseal Key 2: ....
-Unseal Key 3: ....
-Unseal Key 4: ....
-Unseal Key 5: ....
-
-Initial Root Token: c25....
-
-Vault initialized with 5 key shares and a key threshold of 3. Please securely
-distribute the key shares printed above. When the Vault is re-sealed,
-restarted, or stopped, you must supply at least 3 of these keys to unseal it
-before it can start servicing requests.
-
-Vault does not store the generated master key. Without at least 3 key to
-reconstruct the master key, Vault will remain permanently sealed!
-
-It is possible to generate new unseal keys, provided you have a quorum of
-existing unseal keys shares. See "vault operator rekey" for more information.
-```
-
-Unseal, times 3:
-```root@ubuntu-xenial:~# vault unseal
-WARNING! The "vault unseal" command is deprecated. Please use "vault operator
-unseal" instead. This command will be removed in Vault 0.11 (or later).
-
-Unseal Key (will be hidden):
-Key                Value
----                -----
-Seal Type          shamir
-Sealed             true
-Total Shares       5
-Threshold          3
-Unseal Progress    1/3
-Unseal Nonce       533969ba-89aa-a883-b2f6-ec9594c8ef52
-Version            0.10.3
-HA Enabled         true
-root@ubuntu-xenial:~# vault unseal
-WARNING! The "vault unseal" command is deprecated. Please use "vault operator
-unseal" instead. This command will be removed in Vault 0.11 (or later).
-
-Unseal Key (will be hidden):
-Key                Value
----                -----
-Seal Type          shamir
-Sealed             true
-Total Shares       5
-Threshold          3
-Unseal Progress    2/3
-Unseal Nonce       533969ba-89aa-a883-b2f6-ec9594c8ef52
-Version            0.10.3
-HA Enabled         true
-root@ubuntu-xenial:~# vault unseal
-root@ubuntu-xenial:~# vault unseal
-WARNING! The "vault unseal" command is deprecated. Please use "vault operator
-unseal" instead. This command will be removed in Vault 0.11 (or later).
-
-Unseal Key (will be hidden):
-Key                    Value
----                    -----
-Seal Type              shamir
-Sealed                 false
-Total Shares           5
-Threshold              3
-Version                0.10.3
-Cluster Name           vault-cluster-9a2b698e
-Cluster ID             3634a7c4-912c-1510-2f29-424091906628
-HA Enabled             true
-HA Cluster             n/a
-HA Mode                standby
-Active Node Address    <none>
-```
-
-Check status again:
-```
-root@ubuntu-xenial:~# vault status
-Key             Value
----             -----
-Seal Type       shamir
-Sealed          false
-Total Shares    5
-Threshold       3
-Version         0.10.3
-Cluster Name    vault-cluster-9a2b698e
-Cluster ID      3634a7c4-912c-1510-2f29-424091906628
-HA Enabled      true
-HA Cluster      https://10.0.2.15:8201
-HA Mode         active
-```
-
-login w/ Root Token, from `vault init`:
+The root token is returned from Vault as part of the vault initialization.
 ```
 root@ubuntu-xenial:~# vault login
 Token (will be hidden):
