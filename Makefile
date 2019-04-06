@@ -14,7 +14,6 @@ box:
 	cp Vagrantfile.box Vagrantfile
 	vagrant destroy --force
 	vagrant up
-	rm foundation.box
 	vagrant package --output foundation.box
 
 ## use vagrant package to import the .box file, made availble use in a Vagrantfile
