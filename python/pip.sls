@@ -10,7 +10,7 @@ include:
 # install pip with easy_install, if it is missing
 pip:
   cmd.run:
-    - name: easy_install -U pip "{{ pip_version }}"
+    - name: python /usr/lib/python2.7/dist-packages/easy_install.py -U pip "{{ pip_version }}"
     - unless: which pip
     - require:
         - pkg: python-setuptools
