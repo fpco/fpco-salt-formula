@@ -2,9 +2,10 @@
 
 python:
   pkg.installed:
-    - name: python
+    - name: python3
 
 python-setuptools:
   pkg.installed:
+    - name: python3-setuptools
     - require:
         - pkg: python
