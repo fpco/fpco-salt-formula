@@ -23,7 +23,6 @@ docker-dependencies:
     - name:  docker-py
     - require:
         - cmd: pip
-        - module: pip-refresh_modules
         - pkg: docker-dependencies
 
 docker-refresh_modules:
