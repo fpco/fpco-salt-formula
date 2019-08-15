@@ -90,6 +90,9 @@ Vagrant.configure("2") do |config|
     # what it should be and make changes if necessary".
     salt.run_highstate = false
 
+    # Tell the bootstrap script to install and use python3
+    salt.bootstrap_options = "-x python3"
+
     # What version of salt to install, and from where.
     # Because by default it will install the latest, its better to explicetly
     # choose when to upgrade what version of salt to use.
