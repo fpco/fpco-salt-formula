@@ -26,7 +26,7 @@ job "hashi-ui" {
 
         check {
           type     = "http"
-          path     = "/"
+          path     = "/_status"
           interval = "10s"
           timeout  = "2s"
         }
@@ -37,8 +37,12 @@ job "hashi-ui" {
       }
 
       env {
+        CONSUL_ENABLE = 1
+        CONSUL_ADDR = "http://consul.service.local:8500"
         NOMAD_ENABLE = 1
         NOMAD_ADDR   = "http://http.nomad.service.local:4646"
+        #PROXY_ADDRESS = "localhost:3000/hashi-ui"
+        PROXY_ADDRESS = "localhost:3000"
       }
 
       resources {
