@@ -1,5 +1,5 @@
-
-job "example" {
+job "hello-world" {
+  region      = "us"
   datacenters = ["vagrant"]
   type = "service"
 
@@ -20,7 +20,7 @@ job "example" {
   }
 
   group "cache" {
-    count = 1
+    count = 2
     restart {
       attempts = 2
       interval = "30m"
@@ -58,7 +58,7 @@ job "example" {
           mbits = 10
 
           port "http" {
-            static = 8080
+           #static = 8080
           }
         }
       }
@@ -105,6 +105,15 @@ job "example" {
       #   destination = "local/file.env"
       #   env         = true
       # }
+      template {
+        data = <<EOH
+SECRET_API_KEY = {{with secret "kv/hello-world/secret_api_key"}}{{.Data.secret_api_key}}{{end}}
+EOF
+        EOH
+
+        destination = "local/secret.env"
+      }
+
 
       # The "vault" stanza instructs the Nomad client to acquire a token from
       # a HashiCorp Vault server. The Nomad servers must be configured and
