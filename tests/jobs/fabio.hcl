@@ -23,7 +23,7 @@ job "fabio" {
 
         args = [
           "-cfg", "local/fabio.properties",
-          "-proxy.addr", "${NOMAD_ADDR_https};cs=fabio"
+          "-proxy.addr", "${NOMAD_ADDR_https}" #;cs=fabio"
         ]
       }
 
@@ -46,7 +46,7 @@ job "fabio" {
         memory = 512
 
         network {
-          mbits = 100
+          mbits = 10
 
           port "https" {
             static = 9999
@@ -60,16 +60,16 @@ job "fabio" {
 
       template {
         data = <<EOH
-proxy.cs = cs=fabio;type=vault;cert=secret/fabio/certs
+#proxy.cs = cs=fabio;type=vault;cert=secret/fabio/certs
 registry.consul.addr = consul.service.local:8500
         EOH
 
         destination = "local/fabio.properties"
       }
 
-      vault {
-        policies = ["fabio-secrets"]
-      }
+#     vault {
+#       policies = ["fabio-secrets"]
+#     }
 
     }
   }
