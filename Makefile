@@ -16,7 +16,7 @@ box:
 	vagrant up
 	vagrant package --output foundation.box
 
-## use vagrant package to import the .box file, made availble use in a Vagrantfile
+## use vagrant package to import the .box file, made availble to use in a Vagrantfile
 import:
 	vagrant box add --force fpco/foundation foundation.box
 
@@ -25,6 +25,14 @@ single:
 	cp Vagrantfile.single Vagrantfile
 	vagrant destroy --force
 	vagrant up
+
+## use vagrant and the single box just built to create an importable box for the "single node" build
+single-box: #single
+	vagrant package --output single.box
+
+## use vagrant package to import the single.box file, made availble to use in a Vagrantfile
+single-import:
+	vagrant box add --force fpco/hashi-stack single.box
 
 ## use vagrant and Vagrantfile.single to build a hashistack on a single VM
 multi:
