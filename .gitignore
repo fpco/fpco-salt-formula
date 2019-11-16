@@ -1,11 +1,20 @@
+# make updates to top.sls manually
+top.sls
+# This version of the Vagrantfile is overwritten and temporary, don't track it
 Vagrantfile
+# ignore vagrant .box file, it's big
 *.box
+# vagrant's working cache/directory
+.vagrant
+# ignore vim files
 *.swp
 *.swo
+# salt and python object files
 *.slsc
 *.pyc
 *.pyo
-.vagrant
+# dynamic configs used by reclass, generated during vagrant builds
 reclass/nodes/*.yml
 reclass-config.yml
+# log file
 ubuntu-xenial-16.04-cloudimg-console*
