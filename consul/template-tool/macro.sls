@@ -1,6 +1,7 @@
 {%- macro render_consul_monitor(name, cmd, template_src) %}
 
-{%- set consul_home = '/home/consul' %}
+{%- set consul_home = '/etc/consul' %}
+{%- set user = 'root' %}
 {%- set user = 'consul' %}
 {%- set consul_conf_path = consul_home ~ 'conf.d' %}
 {%- set tpl_conf_path = consul_home ~ '/template-tool' %}
@@ -14,7 +15,7 @@ consul-tpl-config-{{ name }}:
   file.managed:
     - name: {{ tpl_conf_path }}/{{ name }}.hcl
     - user: {{ user }}
-    - group: {{ user }}
+    - group: {{ group }}
     - mode: 640
     - contents: |
         template {
@@ -29,8 +30,8 @@ consul-tpl-config-{{ name }}:
 consul-tpl-template-{{ name }}:
   file.managed:
     - name: {{ template_path }}/{{ name }}.tpl
-    - user: root
-    - group: root
+    - user: {{ user }}
+    - group: {{ group }}
     - mode: 640
     - template: jinja
     - source: {{ template_src }}
@@ -44,7 +45,7 @@ consul-tpl-pillar-{{ name }}:
   file.managed:
     - name: {{ pillar_path }}/{{ name }}.sls
     - user: {{ user }}
-    - group: root
+    - group: {{ group }}
     - mode: 640
 
 {% endmacro %}
