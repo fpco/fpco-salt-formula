@@ -34,12 +34,12 @@ registry-systemd:
     - enable: True
     - watch:
         - file: registry-systemd
-  cron.present:
-    - name: salt-call --local state.sls docker.registry.systemd
-    - identifier: salt-call-apply-registry-formula
-    - user: root
-    - hour: '*'
-    - minute: '{{ cron_frequency }}'
+#  cron.present:
+#    - name: salt-call --local state.sls docker.registry.systemd
+#    - identifier: salt-call-apply-registry-formula
+#    - user: root
+#    - hour: '*'
+#    - minute: '{{ cron_frequency }}'
 
 
 registry-ufw-app-config:
