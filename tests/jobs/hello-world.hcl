@@ -77,7 +77,7 @@ job "example" {
         }
 
         tags = [
-          "urlprefix-/"
+          "urlprefix-/hello"
         ]
       }
       # The "template" stanza instructs Nomad to manage a template, such as
