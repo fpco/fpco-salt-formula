@@ -10,16 +10,16 @@ job "fabio" {
       driver = "exec"
 
       artifact {
-        source      = "https://github.com/fabiolb/fabio/releases/download/v1.5.9/fabio-1.5.9-go1.10.2-linux_amd64"
+        source      = "https://github.com/fabiolb/fabio/releases/download/v1.5.13/fabio-1.5.13-go1.13.4-linux_amd64"
         destination = "local/"
 
         options {
-          checksum = "sha256:bba27283a09f6473f5e9781a1a30d8fdd9b45912b6c977949fcc8fd8e0ea4763"
+          checksum = "sha256:716aaa264e2ffb7a98a574220e0e20d7d40e2f1b2717584d6f260e01f89220fc"
         }
       }
 
       config {
-        command = "local/fabio-1.5.9-go1.10.2-linux_amd64"
+        command = "local/fabio-1.5.13-go1.13.4-linux_amd64"
 
         args = [
           "-cfg", "local/fabio.properties",
