@@ -1,4 +1,4 @@
-hostname: ubuntu-xenial
+hostname: ubuntu-bionic
 
 reclass:
   paths:
