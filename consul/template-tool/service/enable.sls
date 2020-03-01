@@ -8,6 +8,7 @@
 {%- set template_path = '/srv/consul-templates' %}
 {%- set log_level = salt['pillar.get']('consul_template:log_level', 'info') %}
 {%- set hostname = salt['grains.get']('id') %}
+{%- set vault_token = salt['pillar.get']('consul_template:vault_token', 'VAULT_TOKEN') %}
 
 {%- if os_release == 'trusty' %}
   {%- set service_config = '/etc/init/' ~ service_name ~ '.conf' %}
@@ -54,6 +55,13 @@ consul-tpl-templates-path:
     - user: {{ user }}
     - group: root
     - mode: 750
+
+
+consul-template-system-env:
+  file.append:
+    - name: /etc/environment
+    - text: |
+        CONSUL_TOKEN="{{ vault_token }}"
 
 
 consul-tpl-consul-service:
