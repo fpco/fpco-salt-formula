@@ -22,7 +22,7 @@ nomad-archive:
   archive.extracted:
     - name: {{ bin_path }}-{{ version }}
     - source: {{ release_url }}
-    - source_hash: sha512={{ checksum }}
+    - source_hash: {{ checksum }}
     - if_missing: {{ bin_path }}-{{ version }}/{{ app }}
     - archive_format: zip
     - enforce_toplevel: False

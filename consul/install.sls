@@ -5,7 +5,7 @@
 # this has no assurance on the version installed.
 
 {% from "consul/checksum_map.jinja" import consul_checksum_map with context %}
-{%- set default_version = '1.3.0' %}
+{%- set default_version = '1.8.5' %}
 {%- set version = salt['pillar.get']('consul:version', default_version) %}
 {%- set default_checksum = consul_checksum_map[version] %}
 {%- set checksum = salt['pillar.get']('consul:checksum', default_checksum) %}
@@ -30,7 +30,7 @@ consul-archive:
   archive.extracted:
     - name: {{ install_path }}
     - source: {{ release_url }}
-    - source_hash: sha512={{ checksum }}
+    - source_hash: {{ checksum }}
     - if_missing: {{ install_path }}/{{ app }}
     - archive_format: zip
     - enforce_toplevel: False
