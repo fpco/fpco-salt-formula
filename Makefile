@@ -9,33 +9,36 @@ clean:
 	rm -f foundation.box
 
 ## use vagrant and the Vagrantfile.box to build a .box we can import into vagrant
-box:
+build-foundation:
 	#git checkout top.sls
 	cp Vagrantfile.box Vagrantfile
 	vagrant destroy --force
 	vagrant up
+
+## use Vagrant to package the foundation box, writing it to a file that can be imported
+pkg-foundation:
 	vagrant package --output foundation.box
 
-## use vagrant package to import the .box file, made availble to use in a Vagrantfile
-import:
-	vagrant box add --force fpco/foundation foundation.box
+## use vagrant package to import the foundation.box file, made available for use in a Vagrantfile
+import-foundation:
+	vagrant box add --force fpco/foundation-bionic foundation.box
 
 ## use vagrant and Vagrantfile.single to build a hashistack on a single VM
-single:
+build-single:
 	cp Vagrantfile.single Vagrantfile
 	vagrant destroy --force
 	vagrant up
 
 ## use vagrant and the single box just built to create an importable box for the "single node" build
-single-box: #single
+pkg-single:
 	vagrant package --output single.box
 
 ## use vagrant package to import the single.box file, made availble to use in a Vagrantfile
-single-import:
-	vagrant box add --force fpco/hashi-stack single.box
+import-single:
+	vagrant box add --force fpco/hashi-stack-bionic single.box
 
-## use vagrant and Vagrantfile.single to build a hashistack on a single VM
-multi:
+## (WIP, not funcitonal) use vagrant and Vagrantfile.single to build a hashistack on a multiple VM
+build-multi:
 	cp Vagrantfile.multi Vagrantfile
 	vagrant destroy --force
 	vagrant up
