@@ -75,7 +75,7 @@ include:
     {% if 'prime_group' in user and 'gid' in user['prime_group'] -%}
     - gid: {{ user['prime_group']['gid'] }}
     {% else -%}
-    - gid_from_name: True
+    - usergroup: True
     {% endif -%}
     {% if 'fullname' in user %}
     - fullname: {{ user['fullname'] }}

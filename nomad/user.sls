@@ -13,7 +13,7 @@ nomad-user:
   user.present:
     - name: {{ user }}
     - system: True
-    - gid_from_name: True
+    - usergroup: True
     - home: {{ home }}
     - shell: /bin/sh
     - groups:

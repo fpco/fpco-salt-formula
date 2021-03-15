@@ -9,7 +9,7 @@ curators:
     - home: {{ home }}
     - shell: /bin/bash
 #   - uid:
-    - gid_from_name: True
+    - usergroup: True
     - createhome: False
     - groups:
         - docker
