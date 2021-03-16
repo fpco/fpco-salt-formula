@@ -39,7 +39,7 @@ consul-systemd-resolved-conf:
         # THIS FILE IS MANAGED BY SALTSTACK, DO NOT EXPECT CHANGES TO PERSIST
 
         [Resolve]
-        DNS=127.0.0.2
+        DNS=127.0.0.1
         Domains=~{{ domain }}
     - require:
         - file: consul-dnsmasq
