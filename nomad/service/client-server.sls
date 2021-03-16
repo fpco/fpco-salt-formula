@@ -45,6 +45,13 @@
 {%- set vault_env_file = False %}
 {%- endif %}
 
+nomad-conf-dir:
+  file.directory:
+    - name: /etc/nomad
+    - user: {{ user }}
+    - group: {{ group }}
+    - mode: 750
+
 {%- if vault_credstash %}
 # at minimum, the vault.env file needs to exist and be owned/writable by the nomad user
 nomad-vault-env:
@@ -53,6 +60,9 @@ nomad-vault-env:
     - user: {{ user }}
     - group: {{ group }}
     - mode: 600
+    - replace: False
+    - require:
+        - file: nomad-conf-dir
 
 # nomad user can execute but not write or change the script
 nomad-start-service-script:
