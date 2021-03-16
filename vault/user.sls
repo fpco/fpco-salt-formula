@@ -5,17 +5,12 @@
 
 
 vault-user:
-  group.present:
-    - name: {{ user }}
-    - system: True
   user.present:
     - name: {{ user }}
     - system: True
     - usergroup: True
     - home: {{ home }}
     - shell: /bin/sh
-    - require:
-        - group: vault-user
   file.directory:
     - name: {{ home }}
     - user: {{ user }}

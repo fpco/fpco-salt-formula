@@ -55,13 +55,15 @@ include:
       - user: {{ name }}
       - group: {{ user_group }}
   {%- endif %}
+  {%- if 'prime_group' in user %}
   group.present:
     - name: {{ user_group }}
-    {%- if 'prime_group' in user and 'gid' in user['prime_group'] %}
+    {%- if 'gid' in user['prime_group'] %}
     - gid: {{ user['prime_group']['gid'] }}
     {%- elif 'uid' in user %}
     - gid: {{ user['uid'] }}
     {%- endif %}
+  {%- endif %}
   user.present:
     - name: {{ name }}
     - home: {{ home }}
