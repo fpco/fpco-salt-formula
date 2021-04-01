@@ -19,12 +19,6 @@ nomad-user:
     - name: {{ home }}
     - user: {{ user }}
     - group: {{ user }}
-    - dir_mode: 750
-    - file_mode: 640
-    - recurse:
-        - user
-        - group
-        - mode
     - require:
         - file: nomad-data-dir
 
