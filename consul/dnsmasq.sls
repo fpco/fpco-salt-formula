@@ -12,7 +12,7 @@ consul-dnsmasq:
         - service: dnsmasq
 
 restart-resolved:
-  cmd.waiting:
+  cmd.wait:
     - name: service systemd-resolved restart
     - watch:
         - file: consul-systemd-resolved-conf
