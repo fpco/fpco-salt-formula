@@ -1,4 +1,4 @@
-{%- set conf_path = '/home/consul/template-tool/' %}
+{%- set conf_path = '/etc/consul/template-tool/' %}
 {%- set log_path = '/var/log/consul-template-once.log' %}
 {%- set log_it = ' >> ' ~ log_path ~ ' 2>&1' %}
 {%- set bin = '/usr/local/bin/consul-template' %}
