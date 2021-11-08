@@ -3,7 +3,7 @@
 
 {%- set opts = salt['pillar.get']('docker:default_opts', '') %}
 {%- set lsb = salt['grains.get']('lsb_distrib_codename') %}
-{%- set default_docker_version = '5:20.10.5~3-0~ubuntu-bionic' %}
+{%- set default_docker_version = '5:20.10.10~3-0~ubuntu-focal' %}
 {%- set docker_version = salt['pillar.get']('docker:version', default_docker_version) %}
 {% set docker_pkg_name = 'docker-ce' %}
 
